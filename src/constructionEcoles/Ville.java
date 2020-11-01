@@ -60,10 +60,12 @@ public class Ville {
 	 * @return un booléen si l'une des villes voisines qui existe une école ou non.
 	 */
 	public boolean hasEcoleVoisins() {
+		  boolean hasEcole = false;
 		  for(int i=0; i< voisins.size(); i++) {
-			   
+			 if (getHasEcole(voisins.get(i))) return true;  
 		  }
-	}     return 
+		 return false;
+	}
 	
      
 }

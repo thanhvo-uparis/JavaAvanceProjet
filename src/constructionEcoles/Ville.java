@@ -31,7 +31,7 @@ public class Ville {
 	}
 	
 	
-	// Les Methodes
+	//Methodes
 	/** La méthode getHasEcole() permet d'accéder à la valeur de variable
 	 *  d'instance privée hasEcole.
 	 */
@@ -62,7 +62,7 @@ public class Ville {
 	public boolean hasEcoleVoisins() {
 		  boolean hasEcole = false;
 		  for(int i=0; i< voisins.size(); i++) {
-			 if (getHasEcole(voisins.get(i))) return true;  
+			 if (voisins.get(i).getHasEcole()) return true;  
 		  }
 		 return false;
 	}

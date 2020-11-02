@@ -1,4 +1,8 @@
 package constructionEcoles;
+import java.util.List;
+
+import constructionEcoles.exceptions.*;
+
 import java.util.ArrayList; 
 import java.util.LinkedList;
 
@@ -11,7 +15,7 @@ import java.util.LinkedList;
 
 public class Agglomeration {
 
-	private ArrayList<Ville> villes;
+	private List<Ville> villes; //permet de ne pas se fermer de porte ensuite.
 	
 	/**
 	 * Constructeur par défaut de la classe. Il initialise le ArrayList villes avec une taille de 10
@@ -23,17 +27,10 @@ public class Agglomeration {
 	/**
 	 * Constructeur initialisant ses villes grâce aux villes passées en arguments
 	 * @param villes	varargs de villes qui seront stockées dans l'attribut villes de l'objet
-	 * 					traite les exceptions dans le cas où il y aurait des doublons dans le varargs
 	 */
 	public Agglomeration(Ville...villes) {
 		this.villes = new ArrayList<Ville>() ;		
-		for (Ville a : villes) {
-			try {
-				addVille(a) ;
-			} catch (Exception e) {
-				System.out.println(e) ;
-			}
-		}
+		for (Ville a : villes) addVille(a) ;
 	}
 	
 	/**
@@ -42,7 +39,7 @@ public class Agglomeration {
 	 * 					lance une exception si l'argument est < 1 ou > 26
 	 */
 	public Agglomeration(int nb_villes) throws Exception {
-		if(nb_villes < 1 || nb_villes > 26) throw new Exception("Nombre de villes invalide.");
+		if(nb_villes < 1 || nb_villes > 26) throw new ExceptionNbVilles("Nombre de villes invalide.");
 		this.villes = new ArrayList<Ville>(nb_villes);
 		char c ;
 		for(c = 'a'; c < 'a'+nb_villes; c++) this.villes.add(new Ville(c)) ;
@@ -57,11 +54,11 @@ public class Agglomeration {
 	 * Methode permettant d'ajouter une ville dans une agglomeration. Throws une exception si la ville est déjà dans l'agglo
 	 * @param	a	ville à ajouter
 	 */
-	public void addVille(Ville a) throws Exception {
+	public void addVille(Ville a){
 		if(!hasVille(a)) {
 			villes.add(a) ;
 		} else {
-			throw new Exception("La ville "+a.getKey()+" est déjà dans l'agglomeration.");
+			System.out.println("La ville "+a.getKey()+" est déjà dans l'agglomeration.");
 		}
 	}
 	
@@ -83,32 +80,30 @@ public class Agglomeration {
 	 * @param	b	seconde ville du couple de villes à relier par une route
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
-		if(a.getVoisins().contains(b)) throw new Exception("Les deux villes sont déjà reliées");
+		if(a.getVoisins().contains(b)) throw new ExceptionUnicite("Les deux villes sont déjà reliées");
 		a.getVoisins().add(b) ;
 		b.getVoisins().add(a) ;
 	}
 	
 	/**
 	 * Méthode permettant d'ajouter une école à une ville en faisant passer son attribut hasEcole de false à true 
-	 * dans le cas où si cet ajout ne brise pas la contrainte d'Economie
-	 * @param	a	la ville dans laquelle on essaiera d'ajouter une école
-	 * 				lance une exception si la ville a déjà une école
+	 * dans le cas où cet ajout ne brise pas la contrainte Economique
+	 * @param		a					la ville dans laquelle on essaiera d'ajouter une école
+	 * @exception	ExceptionEconomie	si ajouter une école dans la ville casse la contrainte Economique
 	 */
 	public void ajouterEcole(Ville a) throws Exception {
-		if(a.getHasEcole()) throw new Exception("La ville a déjà une école.");
-		if(a.hasEcoleVoisins()) throw new Exception("La ville est déjà proche d'une école.");
+		if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est déjà proche d'une école.");
 		a.setHasEcole(true);
 	}
 	
 	/**
 	 * Methode permettant de retirer une école à une ville en faisant passer son attribut hasEcole de true à false 
-	 * dans le cas où si cet ajout ne brise pas la contrainte d'Accessibilité
-	 * @param	a	la ville dans laquelle on essaiera d'ajouter une école
-	 * 				lance une exception si la ville n'a déjà pas d'école
+	 * dans le cas où cet ajout ne brise pas la contrainte d'Accessibilité
+	 * @param		a						la ville dans laquelle on essaiera de retirer une école
+	 * @exception	ExceptionAccessibilite	si enlever l'école de la ville casse la contrainte d'Accessibilité
 	 */
 	public void retirerEcole(Ville a) throws Exception {
-		if(!a.getHasEcole()) throw new Exception("La ville n'a déjà pas d'école.");
-		if(!a.hasEcoleVoisins()) throw new Exception("La ville ne sera plus proche une école.");
+		if(!a.hasEcoleVoisins()) throw new ExceptionAccessibilite("La ville ne serait plus assez proche une école.");
 		a.setHasEcole(false);
 	}
 	

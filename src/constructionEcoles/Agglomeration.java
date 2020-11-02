@@ -28,9 +28,9 @@ public class Agglomeration {
 	public Agglomeration(Ville...villes) throws Exception {
 		this.villes = new ArrayList<Ville>() ;		
 		for (Ville a : villes) {
-			if(!a.hasEcole) a.setHasEcole(true) ;
-			if(!villes.contains(a) { //ce constructeur suppose que l'objet ville implémente bien la méthode equals
-				villes.add(a);	
+			if(!a.getHasEcole()) a.setHasEcole(true) ;
+			if(!this.villes.contains(a)) { //ce constructeur suppose que l'objet ville implémente bien la méthode equals
+				this.villes.add(a);	
 			} else {
 				throw new Exception("Deux villes passées en arguments portent le même identifiant.");
 			}
@@ -65,9 +65,9 @@ public class Agglomeration {
 	 * @param	b	seconde ville du couple de villes à relier par une route
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
-		if(a.voisins.contains(b)) throw new Exception("Les deux villes sont déjà reliées");
-		a.voisins.add(b) ;
-		b.voisins.add(a) ;
+		if(a.getVoisins().contains(b)) throw new Exception("Les deux villes sont déjà reliées");
+		a.getVoisins().add(b) ;
+		b.getVoisins().add(a) ;
 	}
 	
 	/**
@@ -111,13 +111,13 @@ public class Agglomeration {
 		ArrayList<Character> marques = new ArrayList<Character>(0); //villes déjà parcourues, contiendra les identifiants de chaque villes
 		
 		file.add(villes.get(0)) ; //enfile le premier élément de villes dans la file
-		marques.add(villes.get(0).getKey()) ; //la première ville est visitée
+		marques.add(villes.get(0).getKey().charAt(0)) ; //la première ville est visitée
 		
 		while(!file.isEmpty()) { //tant que la file n'est pas vide
 			Ville v = file.pollFirst() ; //on défile le dernier élément v de la file
-			for(Ville a : v.voisins) { //pour tous les voisins de v
-				if(!marques.contains(a.getKey())) { //on regarde si la ville a un identifiant déjà visité
-					marques.add(a.getKey()) ; // si elle ne l'est pas, on la marque comme visitée
+			for(Ville a : v.getVoisins()) { //pour tous les voisins de v
+				if(!marques.contains(a.getKey().charAt(0))) { //on regarde si la ville a un identifiant déjà visité
+					marques.add(a.getKey().charAt(0)) ; // si elle ne l'est pas, on la marque comme visitée
 					file.offer(a) ; //et on l'enfile dans la file
 				}
 			}
@@ -133,7 +133,7 @@ public class Agglomeration {
 	public void afficheVilleAEcole() {
 		StringBuilder sb = new StringBuilder() ;
 		for(Ville a : villes) {
-			if(a.hasEcole()) sb.add(a.getKey()+" ") ;
+			if(a.getHasEcole()) sb.append(a.getKey()+" ") ;
 		}
 		System.out.println(sb) ;
 	}
@@ -145,7 +145,7 @@ public class Agglomeration {
 	public int nbEcoles() {
 		int c = 0 ;
 		for(Ville a : villes) {
-			if(a.hasEcole()) c++ ;
+			if(a.getHasEcole()) c++ ;
 		}
 		return c ;
 	}

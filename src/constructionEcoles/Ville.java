@@ -66,6 +66,12 @@ public class Ville {
 		  }
 		 return false;
 	}
+
+
+	public ArrayList<Ville> getVoisins() {
+		// TODO Auto-generated method stub
+		return voisins;
+	}
 	
      
 }

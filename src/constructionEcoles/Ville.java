@@ -72,6 +72,4 @@ public class Ville {
 		// TODO Auto-generated method stub
 		return voisins;
 	}
-	
-     
 }

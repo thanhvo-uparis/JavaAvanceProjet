@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * Classe qui definit une agglomeration dans le cadre
- ∗ du projet de construction décoles.
+ ∗ du projet de construction d'écoles.
  * @author Yann Trividic
  * @version 1.0
  */
@@ -23,16 +23,15 @@ public class Agglomeration {
 	/**
 	 * Constructeur initialisant ses villes grâce aux villes passées en arguments
 	 * @param villes	varargs de villes qui seront stockées dans l'attribut villes de l'objet
-	 * 					lance une exception s'il existe deux villes identiques dans le varargs
+	 * 					traite les exceptions dans le cas où il y aurait des doublons dans le varargs
 	 */
-	public Agglomeration(Ville...villes) throws Exception {
+	public Agglomeration(Ville...villes) {
 		this.villes = new ArrayList<Ville>() ;		
 		for (Ville a : villes) {
-			if(!a.getHasEcole()) a.setHasEcole(true) ;
-			if(!this.villes.contains(a)) { //ce constructeur suppose que l'objet ville implémente bien la méthode equals
-				this.villes.add(a);	
-			} else {
-				throw new Exception("Deux villes passées en arguments portent le même identifiant.");
+			try {
+				addVille(a) ;
+			} catch (Exception e) {
+				System.out.println(e) ;
 			}
 		}
 	}
@@ -45,6 +44,25 @@ public class Agglomeration {
 	public Agglomeration(int nb_villes) throws Exception {
 		if(nb_villes < 1 || nb_villes > 26) throw new Exception("Nombre de villes invalide.");
 		this.villes = new ArrayList<Ville>(nb_villes);
+		char c ;
+		for(c = 'a'; c < 'a'+nb_villes; c++) this.villes.add(new Ville(c)) ;
+	}
+	
+	private boolean hasVille(Ville a) {
+		for (Ville v : villes) if (v.getKey() == a.getKey()) return true ;
+		return false ;
+	}
+	
+	/**
+	 * Methode permettant d'ajouter une ville dans une agglomeration. Throws une exception si la ville est déjà dans l'agglo
+	 * @param	a	ville à ajouter
+	 */
+	public void addVille(Ville a) throws Exception {
+		if(!hasVille(a)) {
+			villes.add(a) ;
+		} else {
+			throw new Exception("La ville "+a.getKey()+" est déjà dans l'agglomeration.");
+		}
 	}
 	
 	/**
@@ -90,7 +108,7 @@ public class Agglomeration {
 	 */
 	public void retirerEcole(Ville a) throws Exception {
 		if(!a.getHasEcole()) throw new Exception("La ville n'a déjà pas d'école.");
-		if(!a.hasEcoleVoisins()) throw new Exception("La ville ne sera plus procheune école.");
+		if(!a.hasEcoleVoisins()) throw new Exception("La ville ne sera plus proche une école.");
 		a.setHasEcole(false);
 	}
 	
@@ -111,13 +129,13 @@ public class Agglomeration {
 		ArrayList<Character> marques = new ArrayList<Character>(0); //villes déjà parcourues, contiendra les identifiants de chaque villes
 		
 		file.add(villes.get(0)) ; //enfile le premier élément de villes dans la file
-		marques.add(villes.get(0).getKey().charAt(0)) ; //la première ville est visitée
+		marques.add(villes.get(0).getKey()) ; //la première ville est visitée
 		
 		while(!file.isEmpty()) { //tant que la file n'est pas vide
 			Ville v = file.pollFirst() ; //on défile le dernier élément v de la file
 			for(Ville a : v.getVoisins()) { //pour tous les voisins de v
-				if(!marques.contains(a.getKey().charAt(0))) { //on regarde si la ville a un identifiant déjà visité
-					marques.add(a.getKey().charAt(0)) ; // si elle ne l'est pas, on la marque comme visitée
+				if(!marques.contains(a.getKey())) { //on regarde si la ville a un identifiant déjà visité
+					marques.add(a.getKey()) ; // si elle ne l'est pas, on la marque comme visitée
 					file.offer(a) ; //et on l'enfile dans la file
 				}
 			}

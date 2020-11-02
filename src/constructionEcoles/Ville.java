@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Classe qui définit une ville dans le cadre
  ∗ du projet de construction d'écoles.
- *@author thanhcongvo
+ * @author thanhcongvo
  * @version 1.0
  */
 
@@ -17,7 +17,7 @@ public class Ville {
 	 */
 	private Boolean hasEcole;
 	private ArrayList<Ville> voisins;
-	private String key;
+	private String key; 
 	
 	
 	//Constructeur
@@ -25,9 +25,9 @@ public class Ville {
 	 * 
 	 */
 	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, String key){
-		this.hasEcole = hasEcole;
-		this.voisins = voisins;
-		this.key= key;
+		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
+		this.voisins = voisins;		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
+		this.key= key;				//On veut que la clé soit une lettre entre A et Z, il faut s'assurer de ça
 	}
 	
 	
@@ -60,7 +60,6 @@ public class Ville {
 	 * @return un booléen si l'une des villes voisines qui existe une école ou non.
 	 */
 	public boolean hasEcoleVoisins() {
-		  boolean hasEcole = false;
 		  for(int i=0; i< voisins.size(); i++) {
 			 if (voisins.get(i).getHasEcole()) return true;  
 		  }

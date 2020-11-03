@@ -17,16 +17,22 @@ public class Ville {
 	 */
 	private Boolean hasEcole;
 	private ArrayList<Ville> voisins;
-	private String key; 
+	private char key; 
 	
 	
 	//Constructeur
 	/** Un constructeur de la classe Ville.
 	 * 
 	 */
-	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, String key){
+	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, char key){
 		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
 		this.voisins = voisins;		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
+		this.key= key;				//On veut que la clé soit une lettre entre A et Z, il faut s'assurer de ça
+	}
+	
+	public Ville(char key){
+		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
+		this.voisins = new ArrayList<Ville>(0);		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
 		this.key= key;				//On veut que la clé soit une lettre entre A et Z, il faut s'assurer de ça
 	}
 	
@@ -51,7 +57,7 @@ public class Ville {
 	/** La méthode getKey() permet d'accéder à la valeur de variable
 	 *  d'instance privée key.
 	 */
-	public String getKey() {
+	public char getKey() {
 		return key;
 	}
 	
@@ -66,9 +72,22 @@ public class Ville {
 		 return false;
 	}
 
+	public String afficherVoisins() {
+		StringBuilder sb = new StringBuilder() ;
+		for(Ville v : voisins) sb.append("["+this.key+", "+v.getKey()+"]") ;
+		return sb.toString() ;
+	}
 
 	public ArrayList<Ville> getVoisins() {
 		// TODO Auto-generated method stub
 		return voisins;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder() ;
+		sb.append(key+ " - "+hasEcole+" : ") ;
+		for(Ville v : voisins) sb.append(v.getKey()+" ") ;
+		return sb.toString() ;
 	}
 }

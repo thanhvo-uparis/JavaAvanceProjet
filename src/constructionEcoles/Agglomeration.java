@@ -6,6 +6,10 @@ import constructionEcoles.exceptions.*;
 import java.util.ArrayList; 
 import java.util.LinkedList;
 
+// Contraintes :	faut-il que l'utilisateur soit totalement libre et que les contraintes soient vérifiées à la fin ?
+// 					ou que les contraintes soient respectées en chaque instant du programme
+
+
 /**
  * Classe qui definit une agglomeration dans le cadre
  ∗ du projet de construction d'écoles.
@@ -38,16 +42,20 @@ public class Agglomeration {
 	 * @param villes	tableau de villes qui seront stockées dans l'attribut villes de l'objet
 	 * 					lance une exception si l'argument est < 1 ou > 26
 	 */
-	public Agglomeration(int nb_villes) throws Exception {
-		if(nb_villes < 1 || nb_villes > 26) throw new ExceptionNbVilles("Nombre de villes invalide.");
+	public Agglomeration(int nb_villes) {
 		this.villes = new ArrayList<Ville>(nb_villes);
 		char c ;
 		for(c = 'a'; c < 'a'+nb_villes; c++) this.villes.add(new Ville(c)) ;
 	}
 	
-	private boolean hasVille(Ville a) {
-		for (Ville v : villes) if (v.getKey() == a.getKey()) return true ;
-		return false ;
+	public Ville hasVille(char a) throws Exception {
+		for (Ville v : villes) if (v.getKey() == a) return v ;
+		throw new ExceptionVille("La ville n'existe pas") ;
+	}
+	
+	public Ville hasVille(Ville a) throws Exception {
+		for (Ville v : villes) if (v.getKey() == a.getKey()) return v ;
+		throw new ExceptionVille("La ville n'existe pas") ;
 	}
 	
 	/**
@@ -55,9 +63,9 @@ public class Agglomeration {
 	 * @param	a	ville à ajouter
 	 */
 	public void addVille(Ville a){
-		if(!hasVille(a)) {
-			villes.add(a) ;
-		} else {
+		try {
+			if(hasVille(a.getKey()) == null) villes.add(a) ;
+		} catch(Exception e) {
 			System.out.println("La ville "+a.getKey()+" est déjà dans l'agglomeration.");
 		}
 	}
@@ -80,9 +88,13 @@ public class Agglomeration {
 	 * @param	b	seconde ville du couple de villes à relier par une route
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
+		if(a.equals(b)) throw new ExceptionVille("Les deux villes sont identiques") ; // equals ne marche pas ?
+		if(hasVille(a) == null || hasVille(b) == null) throw new ExceptionVille("L'une des villes n'existe pas") ;
 		if(a.getVoisins().contains(b)) throw new ExceptionUnicite("Les deux villes sont déjà reliées");
 		a.getVoisins().add(b) ;
 		b.getVoisins().add(a) ;
+		System.out.println(a.toString()) ;
+		System.out.println(b.toString()) ;
 	}
 	
 	/**
@@ -92,7 +104,9 @@ public class Agglomeration {
 	 * @exception	ExceptionEconomie	si ajouter une école dans la ville casse la contrainte Economique
 	 */
 	public void ajouterEcole(Ville a) throws Exception {
-		if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est déjà proche d'une école.");
+		hasVille(a) ;
+		//if(a.getHasEcoleVoisins()) throw new ExceptionEconomie("La ville est déjà proche d'une école.");
+		if(a.getHasEcole()) throw new ExceptionEconomie("La ville a déjà une école.");
 		a.setHasEcole(true);
 	}
 	
@@ -103,6 +117,7 @@ public class Agglomeration {
 	 * @exception	ExceptionAccessibilite	si enlever l'école de la ville casse la contrainte d'Accessibilité
 	 */
 	public void retirerEcole(Ville a) throws Exception {
+		hasVille(a) ;
 		if(!a.hasEcoleVoisins()) throw new ExceptionAccessibilite("La ville ne serait plus assez proche une école.");
 		a.setHasEcole(false);
 	}
@@ -161,6 +176,16 @@ public class Agglomeration {
 			if(a.getHasEcole()) c++ ;
 		}
 		return c ;
+	}
+	
+	public String afficherRoutes() {
+		StringBuilder sb = new StringBuilder() ;
+		for(Ville ville : villes) {
+			for(Ville voisin : ville.getVoisins()) {
+				if(voisin.getKey()>ville.getKey()) sb.append("["+ville.getKey()+", "+voisin.getKey()+"]\n") ;
+			}
+		}
+		return sb.toString() ;
 	}
 	
 	@Override

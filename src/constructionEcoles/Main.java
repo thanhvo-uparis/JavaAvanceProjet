@@ -11,6 +11,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrechoice un nombre de villes ");
 		Agglomeration agg = new Agglomeration(sc.nextInt());
+		//Il faut que tu ajoutes ici une sécurité dans le cas où l'utilateur rentre une valeur erronée
 		
 		
 		/* On cr�e ici le 1er menu qui va nous afficher les choix suivants : 1/ajouter une route ou 2/fin.
@@ -74,6 +75,7 @@ public class Main {
 			System.out.println("Veuillechoice entrer votre choix");
 			
 			switch(choice){ //Je te laisse t'occuper de calquer ce qui a été dans le premier menu
+			
 			case 1:
 				agg.ajouterEcole(nextVille);
 				agg.afficheVilleAEcole();

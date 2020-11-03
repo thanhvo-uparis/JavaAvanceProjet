@@ -19,7 +19,7 @@ import java.util.LinkedList;
 
 public class Agglomeration {
 
-	private List<Ville> villes; //permet de ne pas se fermer de porte ensuite.
+	private List<Ville> villes; // le type List permet de ne pas se fermer de portes pour la suite.
 	
 	/**
 	 * Constructeur par défaut de la classe. Il initialise le ArrayList villes avec une taille de 10
@@ -40,7 +40,6 @@ public class Agglomeration {
 	/**
 	 * Constructeur initialisant le ArrayList villes avec la taille de l'entier passé en argument tant qu'il ne dépasse pas 26
 	 * @param villes	tableau de villes qui seront stockées dans l'attribut villes de l'objet
-	 * 					lance une exception si l'argument est < 1 ou > 26
 	 */
 	public Agglomeration(int nb_villes) {
 		this.villes = new ArrayList<Ville>(nb_villes);
@@ -48,21 +47,31 @@ public class Agglomeration {
 		for(c = 'a'; c < 'a'+nb_villes; c++) this.villes.add(new Ville(c)) ;
 	}
 	
+	/**
+	 * Methode permettant de vérifier si une ville est déjà dans l'agglo
+	 * @param		a	Char correspondant à l'attribut key de la ville à vérifier
+	 * @exception	ExceptionVille dans le cas où la ville n'existe pas.
+	 * @return		v	la ville trouvée dans l'agglo si elle a été trouvée
+	 */
 	public Ville hasVille(char a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a) return v ;
 		throw new ExceptionVille("La ville n'existe pas") ;
 	}
 	
+	/**
+	 * Methode permettant de vérifier si une ville est déjà dans l'agglo
+	 * @see hasVille(char)
+	 */
 	public Ville hasVille(Ville a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a.getKey()) return v ;
 		throw new ExceptionVille("La ville n'existe pas") ;
 	}
 	
 	/**
-	 * Methode permettant d'ajouter une ville dans une agglomeration. Throws une exception si la ville est déjà dans l'agglo
+	 * Methode permettant d'ajouter une ville dans une agglomeration. 
 	 * @param	a	ville à ajouter
 	 */
-	public void addVille(Ville a){
+	private void addVille(Ville a){
 		try {
 			if(hasVille(a.getKey()) == null) villes.add(a) ;
 		} catch(Exception e) {
@@ -78,14 +87,15 @@ public class Agglomeration {
 	 */
 	public String placerEcoles() {
 		StringBuilder sb = new StringBuilder() ;
-		//[...] 
+		//[...] à définir
 		return sb.toString() ;
 	}
 	
 	/**
 	 * Methode permettant d'ajouter une route entre deux villes dans le cas où celles-ci ne seraient pas déjà reliées
-	 * @param	a	première ville du couple de villes à relier par une route
-	 * @param	b	seconde ville du couple de villes à relier par une route
+	 * @param		a	première ville du couple de villes à relier par une route
+	 * @param		b	seconde ville du couple de villes à relier par une route
+	 * @exception	ExceptionVille dans le cas où les deux villes sont identiques, si elles sont déjà reliées ou si l'une d'elles n'existe pas
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
 		if(a.equals(b)) throw new ExceptionVille("Les deux villes sont identiques") ; // equals ne marche pas ?
@@ -93,8 +103,6 @@ public class Agglomeration {
 		if(a.getVoisins().contains(b)) throw new ExceptionUnicite("Les deux villes sont déjà reliées");
 		a.getVoisins().add(b) ;
 		b.getVoisins().add(a) ;
-		System.out.println(a.toString()) ;
-		System.out.println(b.toString()) ;
 	}
 	
 	/**
@@ -105,8 +113,8 @@ public class Agglomeration {
 	 */
 	public void ajouterEcole(Ville a) throws Exception {
 		hasVille(a) ;
-		//if(a.getHasEcoleVoisins()) throw new ExceptionEconomie("La ville est déjà proche d'une école.");
 		if(a.getHasEcole()) throw new ExceptionEconomie("La ville a déjà une école.");
+		if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est déjà proche d'une école.");
 		a.setHasEcole(true);
 	}
 	
@@ -118,8 +126,10 @@ public class Agglomeration {
 	 */
 	public void retirerEcole(Ville a) throws Exception {
 		hasVille(a) ;
-		if(!a.hasEcoleVoisins()) throw new ExceptionAccessibilite("La ville ne serait plus assez proche une école.");
+		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new ExceptionAccessibilite("La ville ne serait plus assez proche une école.");
 		a.setHasEcole(false);
+		//pour l'instant, on peut retirer des écoles dans le cas où au moins l'un des voisins a une école.
+		//cela pose un problème sur la contrainte d'accessibilité si l'école retirée était la seule école accessible à certaines villes.
 	}
 	
 	/**
@@ -170,7 +180,7 @@ public class Agglomeration {
 	 * Methode permettant de savoir combien il y a d'écoles dans l'agglomération
 	 * @return	un int correspondant au nombre de villes dans l'agglomération
 	 */
-	public int nbEcoles() {
+	private int nbEcoles() {
 		int c = 0 ;
 		for(Ville a : villes) {
 			if(a.getHasEcole()) c++ ;
@@ -178,6 +188,12 @@ public class Agglomeration {
 		return c ;
 	}
 	
+	
+	/**
+	 * Methode permettant d'afficher toutes les routes de l'agglomération. Il n'y a pas de doublons. 
+	 * Par exemple, si [a, b] apparait, alors [b, a] n'apparaitra pas.
+	 * @return	un string composé d'autant de lignes qu'il y a de routes.
+	 */
 	public String afficherRoutes() {
 		StringBuilder sb = new StringBuilder() ;
 		for(Ville ville : villes) {
@@ -186,6 +202,11 @@ public class Agglomeration {
 			}
 		}
 		return sb.toString() ;
+	}
+	
+	public boolean respecteAccessibilite() {
+		for(Ville v : villes) if(!v.getHasEcole() && !v.hasEcoleVoisins()) return false ;
+		return true ;
 	}
 	
 	@Override

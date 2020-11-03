@@ -21,8 +21,7 @@ public class Ville {
 	
 	
 	//Constructeur
-	/** Un constructeur de la classe Ville.
-	 * 
+	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec ses voisins et une école ou non
 	 */
 	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, char key){
 		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
@@ -30,6 +29,8 @@ public class Ville {
 		this.key= key;				//On veut que la clé soit une lettre entre A et Z, il faut s'assurer de ça
 	}
 	
+	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec sa key
+	 */
 	public Ville(char key){
 		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
 		this.voisins = new ArrayList<Ville>(0);		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
@@ -66,28 +67,35 @@ public class Ville {
 	 * @return un booléen si l'une des villes voisines qui existe une école ou non.
 	 */
 	public boolean hasEcoleVoisins() {
+		boolean b = false ;
 		  for(int i=0; i< voisins.size(); i++) {
-			 if (voisins.get(i).getHasEcole()) return true;  
+			 if (voisins.get(i).getHasEcole()) b = true;  
 		  }
-		 return false;
+		 return b;
 	}
 
+	/** Methode retournant un string contenant les voisins de la ville instanciée 
+	 * @return un string contenant tous les voisins de la ville
+	 */
 	public String afficherVoisins() {
 		StringBuilder sb = new StringBuilder() ;
-		for(Ville v : voisins) sb.append("["+this.key+", "+v.getKey()+"]") ;
-		return sb.toString() ;
+		sb.append("[ ") ;
+		for(Ville v : voisins) sb.append(v.getKey()+" ") ;
+		return sb.append("]").toString() ;
 	}
-
+	
+	
+	/** La méthode getVoisins() permet d'accéder à la valeur de variable
+	 *  d'instance privée voisins.
+	 */
 	public ArrayList<Ville> getVoisins() {
-		// TODO Auto-generated method stub
 		return voisins;
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder() ;
-		sb.append(key+ " - "+hasEcole+" : ") ;
-		for(Ville v : voisins) sb.append(v.getKey()+" ") ;
+		sb.append(key+ " - Ecole : "+(hasEcole?"Oui":"Non")+" - Voisins : "+afficherVoisins()) ;
 		return sb.toString() ;
 	}
 }

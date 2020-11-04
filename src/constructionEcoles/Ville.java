@@ -64,7 +64,7 @@ public class Ville {
 	
 	
 	/** La méthode hasEcoleVoisins() 
-	 * @return un booléen si l'une des villes voisines qui existe une école ou non.
+	 * @return un booléen si l'une des villes voisines possède une école ou non.
 	 */
 	public boolean hasEcoleVoisins() {
 		boolean b = false ;
@@ -73,9 +73,25 @@ public class Ville {
 		  }
 		 return b;
 	}
+	
+	//retourne le nombre d'écoles accessibles à la ville en dehors de celle-ci
+	private int nbEcolesVoisins() {
+		int nbEcoles = 0 ;
+		  for(int i=0; i< voisins.size(); i++) {
+			 if (voisins.get(i).getHasEcole()) nbEcoles++ ;  
+		  }
+		 return nbEcoles;
+	}
+	
+	/** Methode permettant de savoir combien d'écoles sont accessibles depuis cette ville
+	 * @return un int correspondant au nombre 
+	 */
+	public int getNbEcolesAccessibles() {
+		return nbEcolesVoisins()+(hasEcole?1:0) ;
+	}
 
 	/** Methode retournant un string contenant les voisins de la ville instanciée 
-	 * @return un string contenant tous les voisins de la ville
+	 * @return un int de la valeur du nombre d'écoles accessibles depuis cette ville
 	 */
 	public String afficherVoisins() {
 		StringBuilder sb = new StringBuilder() ;
@@ -83,7 +99,6 @@ public class Ville {
 		for(Ville v : voisins) sb.append(v.getKey()+" ") ;
 		return sb.append("]").toString() ;
 	}
-	
 	
 	/** La méthode getVoisins() permet d'accéder à la valeur de variable
 	 *  d'instance privée voisins.

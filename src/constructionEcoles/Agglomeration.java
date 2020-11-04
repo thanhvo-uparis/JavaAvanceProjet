@@ -53,27 +53,25 @@ public class Agglomeration {
 	 * @exception	ExceptionVille dans le cas où la ville n'existe pas.
 	 * @return		v	la ville trouvée dans l'agglo si elle a été trouvée
 	 */
-	public Ville hasVille(char a) throws Exception {
+	public Ville getVille(char a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a) return v ;
-		throw new ExceptionVille("La ville n'existe pas") ;
+		throw new ExceptionVille("La ville "+a+" n'existe pas dans l'agglomération") ;
 	}
 	
 	/**
 	 * Methode permettant de vérifier si une ville est déjà dans l'agglo
-	 * @see hasVille(char)
+	 * @see getVille(char)
 	 */
-	public Ville hasVille(Ville a) throws Exception {
+	public Ville getVille(Ville a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a.getKey()) return v ;
-		throw new ExceptionVille("La ville n'existe pas") ;
+		throw new ExceptionVille("La ville "+a.getKey()+" n'existe pas dans l'agglomération") ;
 	}
 	
-	/**
-	 * Methode permettant d'ajouter une ville dans une agglomeration. 
-	 * @param	a	ville à ajouter
-	 */
+
+	//ajoute une ville dans l'agglomération en vérifiant que celle-ci n'est pas déjà dans l'agglo
 	private void addVille(Ville a){
 		try {
-			if(hasVille(a.getKey()) == null) villes.add(a) ;
+			if(getVille(a.getKey()) == null) villes.add(a) ;
 		} catch(Exception e) {
 			System.out.println("La ville "+a.getKey()+" est déjà dans l'agglomeration.");
 		}
@@ -87,7 +85,17 @@ public class Agglomeration {
 	 */
 	public String placerEcoles() {
 		StringBuilder sb = new StringBuilder() ;
-		//[...] à définir
+		//Première idée :
+		//
+		//	Dans un premier temps, placer des écoles dans toutes les villes qui devront forcément en accueillir.
+		//	Cela concerne toutes les villes voisines de villes de degré 1 (c'est-à-dire les villes accessibles uniquement via une route)
+		//	
+		//	Dans un second temps, tant que la contrainte d'accessibilité n'est pas remplie : 
+		//		On cherche la ville pour laquelle l'ajout d'une école permettrait au plus grand nombre de ville d'accéder à une école
+		//		Ajout d'une école dans la ville trouvée
+		//	
+		//	Question : 	est-ce qu'il existe des cas où le résultat obtenu ne serait pas optimal ?
+		//				dans le cas où on a le choix entre x villes à l'étape 2, comment choisir une ville en particulier ?
 		return sb.toString() ;
 	}
 	
@@ -99,23 +107,39 @@ public class Agglomeration {
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
 		if(a.equals(b)) throw new ExceptionVille("Les deux villes sont identiques") ; // equals ne marche pas ?
-		if(hasVille(a) == null || hasVille(b) == null) throw new ExceptionVille("L'une des villes n'existe pas") ;
+		if(getVille(a) == null || getVille(b) == null) throw new ExceptionVille("L'une des villes n'existe pas") ;
 		if(a.getVoisins().contains(b)) throw new ExceptionUnicite("Les deux villes sont déjà reliées");
 		a.getVoisins().add(b) ;
 		b.getVoisins().add(a) ;
 	}
 	
 	/**
-	 * Méthode permettant d'ajouter une école à une ville en faisant passer son attribut hasEcole de false à true 
-	 * dans le cas où cet ajout ne brise pas la contrainte Economique
-	 * @param		a					la ville dans laquelle on essaiera d'ajouter une école
-	 * @exception	ExceptionEconomie	si ajouter une école dans la ville casse la contrainte Economique
+	 * Methode permettant d'ajouter une route entre deux villes dans le cas où celles-ci ne seraient pas déjà reliées
+	 * @param		a	première ville du couple de villes à relier par une route
+	 * @param		b	seconde ville du couple de villes à relier par une route
+	 * @exception	ExceptionVille dans le cas où les deux villes sont identiques, si elles sont déjà reliées ou si l'une d'elles n'existe pas
+	 */
+	public void ajouterRoute(char a, char b) throws Exception {
+		ajouterRoute(getVille(a), getVille(b)) ;
+	}
+	
+	/**
+	 * Surcharge de la méthode ajouterRoute(Ville, Ville) avec à la place des arguments Ville des char
+	 * @see		ajouterRoute(Char, Char)
 	 */
 	public void ajouterEcole(Ville a) throws Exception {
-		hasVille(a) ;
+		getVille(a) ;
 		if(a.getHasEcole()) throw new ExceptionEconomie("La ville a déjà une école.");
 		if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est déjà proche d'une école.");
 		a.setHasEcole(true);
+	}
+	
+	/**
+	 * Surcharge de la méthode ajouterEcole(Ville) avec à la place de l'argument Ville un char
+	 * @see		ajouterEcole(Ville)
+	 */
+	public void ajouterEcole(char c) throws Exception {
+		ajouterEcole(getVille(c)) ;
 	}
 	
 	/**
@@ -125,16 +149,22 @@ public class Agglomeration {
 	 * @exception	ExceptionAccessibilite	si enlever l'école de la ville casse la contrainte d'Accessibilité
 	 */
 	public void retirerEcole(Ville a) throws Exception {
-		hasVille(a) ;
-		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new ExceptionAccessibilite("La ville ne serait plus assez proche une école.");
+		getVille(a) ;
+		boolean accessibiliteVoisins = true ;
+		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new ExceptionAccessibilite("La ville "+a.getKey()+" ne serait plus assez proche une école.");
+		for(Ville voisin : a.getVoisins()) if(voisin.getNbEcolesAccessibles() == 1 && !voisin.getHasEcole()) accessibiliteVoisins = false ;
+		if(!accessibiliteVoisins) throw new ExceptionAccessibilite("L'école de la ville "+a.getKey()+" est l'unique école accessible pour au moins une de ses villes voisines.");
 		a.setHasEcole(false);
-		//pour l'instant, on peut retirer des écoles dans le cas où au moins l'un des voisins a une école.
-		//cela pose un problème sur la contrainte d'accessibilité si l'école retirée était la seule école accessible à certaines villes.
 	}
 	
-	/**
-	 * Methode permettant de retirer toutes les écoles des villes
+	/* Surcharge de la méthode retirerEcole(Ville) avec à la place de l'argument Ville un char
+	 * @see		retirerEcole(Ville)
 	 */
+	public void retirerEcole(char c) throws Exception {
+		retirerEcole(getVille(c)) ;
+	}
+	
+	//permet de supprimer toutes les écoles de l'agglomération
 	private void clearEcole() {
 		for(Ville a : villes) a.setHasEcole(false);
 	}
@@ -176,10 +206,8 @@ public class Agglomeration {
 		System.out.println(sb) ;
 	}
 	
-	/**
-	 * Methode permettant de savoir combien il y a d'écoles dans l'agglomération
-	 * @return	un int correspondant au nombre de villes dans l'agglomération
-	 */
+
+	//retourne le nombre d'écoles de l'agglomération
 	private int nbEcoles() {
 		int c = 0 ;
 		for(Ville a : villes) {
@@ -187,7 +215,6 @@ public class Agglomeration {
 		}
 		return c ;
 	}
-	
 	
 	/**
 	 * Methode permettant d'afficher toutes les routes de l'agglomération. Il n'y a pas de doublons. 
@@ -204,6 +231,10 @@ public class Agglomeration {
 		return sb.toString() ;
 	}
 	
+	/**
+	 * Methode vérifiant si toutes les villes de l'agglomération ont bien accès à une école 
+	 * @return	un booléen avec la valeur true si la contrainte d'accessibilité est respectée et false sinon.
+	 */
 	public boolean respecteAccessibilite() {
 		for(Ville v : villes) if(!v.getHasEcole() && !v.hasEcoleVoisins()) return false ;
 		return true ;

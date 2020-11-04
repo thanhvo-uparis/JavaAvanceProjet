@@ -1,3 +1,4 @@
+# JavaAvanceProjet
 Projet, date début 12/10/2020, Construction d'écoles
 
 Problème de théorie des graphes.
@@ -14,6 +15,7 @@ Il nous demande de l'aider en développant un logiciel qui permet :
 
 - Toutes les routes sont à double-sens et de même longueur.
 - Le coût est estimé en fonction du nombre d'écoles à construire.
+
 
 
 

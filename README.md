@@ -1,5 +1,5 @@
 # JavaAvanceProjet
-Projet, date début 12/10/2020, Construction d'écoles
+Projet, date début 12/10/2020, Construction d'écoles 
 
 Problème de théorie des graphes.
 Dans le cadre d'une politique ambitieuse concernant l'éducation, un élu souhaite construire de nouvelles écoles, modernes, dans la communauté d'agglomération dont il est responsable. Durant la campagne électorale, il a promis deux choses :

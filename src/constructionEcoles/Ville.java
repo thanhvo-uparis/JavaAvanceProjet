@@ -2,7 +2,7 @@ package constructionEcoles;
 import java.util.ArrayList;
 
 /**
- * Classe qui définit une ville dans le cadre du projet de construction d'écoles.
+ * Classe qui definit une ville dans le cadre du projet de construction d'ecoles.
  * @author thanhcongvo
  * @version 1.0
  */
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class Ville {
 	
 	//Attributs
-	/** hasEcole: indique si la ville contient une école ou non. @return: Oui (par défaut): 1,  Non: 0
-	 * voisins: contenant toutes les villes reliées à l'instance de Ville appelant la méthode.
+	/** hasEcole: indique si la ville contient une ecole ou non. @return: Oui (par defaut): 1,  Non: 0
+	 * voisins: contenant toutes les villes reliees à l'instance de Ville appelant la methode.
 	 * @param	key: un identifiant unique de chaque ville.
 	 */
 	private Boolean hasEcole;
@@ -20,30 +20,30 @@ public class Ville {
 	
 	
 	//Constructeur
-	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec ses voisins et une école ou non
+	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec ses voisins et une ecole ou non
 	 *  @param	key			un identifiant unique de chaque ville.
-	 *  @param	voisins 	un ArrayList contenant les voisins de la ville à instancier
-	 *  @param	hasEcole	booléen pour renseigner si la ville a une école ou non
+	 *  @param	voisins 	un ArrayList contenant les voisins de la ville a instancier
+	 *  @param	hasEcole	booleen pour renseigner si la ville a une ecole ou non
 	 */
 	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, char key){
-		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
+		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des ecoles à l'initialisation. 
 		this.voisins = voisins;		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
-		this.key= key;				//On veut que la clé soit une lettre entre A et Z, il faut s'assurer de ça
+		this.key= key;				//On veut que la cle soit une lettre entre A et Z, il faut s'assurer de ca
 	}
 	
 	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec sa key
 	 * @param	key			un identifiant unique de chaque ville.
 	 */
 	public Ville(char key){
-		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
+		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des ecoles a l'initialisation. 
 		this.voisins = new ArrayList<Ville>(0);		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
-		this.key= key;				//On veut que la clé soit une lettre entre A et Z, il faut s'assurer de ça
+		this.key= key;				//On veut que la cle soit une lettre entre A et Z, il faut s'assurer de ca
 	}
 	
 	
 	//Methodes
-	/** La méthode getHasEcole() permet d'accéder à la valeur de variable
-	 *  d'instance privée hasEcole.
+	/** La methode getHasEcole() permet d'acceder a la valeur de variable
+	 *  d'instance privee hasEcole.
 	 *  @return	hasEcole
 	 */
 	public boolean getHasEcole() {
@@ -51,17 +51,17 @@ public class Ville {
 	}
 	
 	
-	/** La méthode setHasEcole() permet de modifier la valeur
-	 *  de variable d'instance privée hasEcole par une valeur d'un paramètre dans cette méthode.	 
-	 *  @param	hasEcole	true pour si on veut ajouter une école, false si on veut en retirer une
+	/** La methode setHasEcole() permet de modifier la valeur
+	 *  de variable d'instance privee hasEcole par une valeur d'un parametre dans cette methode.	 
+	 *  @param	hasEcole	true pour si on veut ajouter une ecole, false si on veut en retirer une
 	 */
 	public void setHasEcole(boolean hasEcole) {
 		 this.hasEcole = hasEcole;
 	}
 	
 	
-	/** La méthode getKey() permet d'accéder à la valeur de variable
-	 *  d'instance privée key.
+	/** La methode getKey() permet d'acceder a la valeur de variable
+	 *  d'instance privee key.
 	 *  @return	key			un identifiant unique de chaque ville.
 	 */
 	public char getKey() {
@@ -69,8 +69,8 @@ public class Ville {
 	}
 	
 	
-	/** Methode permettant de savoir si au moins un voisin de la ville instanciée possède une école ou non.
-	 * @return un booléen si l'une des villes voisines possède une école ou non.
+	/** Methode permettant de savoir si au moins un voisin de la ville instanciee possede une ecole ou non.
+	 * @return un booleen si l'une des villes voisines possede une ecole ou non.
 	 */
 	public boolean hasEcoleVoisins() {
 		boolean b = false ;
@@ -80,7 +80,7 @@ public class Ville {
 		 return b;
 	}
 	
-	//retourne le nombre d'écoles accessibles à la ville en dehors de celle-ci
+	//retourne le nombre d'ecoles accessibles a la ville en dehors de celle-ci
 	private int nbEcolesVoisins() {
 		int nbEcoles = 0 ;
 		  for(int i=0; i< voisins.size(); i++) {
@@ -96,8 +96,8 @@ public class Ville {
 		return nbEcolesVoisins()+(hasEcole?1:0) ;
 	}
 
-	/** Methode retournant un string contenant les voisins de la ville instanciée 
-	 * @return un int de la valeur du nombre d'écoles accessibles depuis cette ville
+	/** Methode retournant un string contenant les voisins de la ville instanciee 
+	 * @return un int de la valeur du nombre d'ecoles accessibles depuis cette ville
 	 */
 	public String afficherVoisins() {
 		StringBuilder sb = new StringBuilder() ;
@@ -106,9 +106,9 @@ public class Ville {
 		return sb.append("]").toString() ;
 	}
 	
-	/** La méthode getVoisins() permet d'accéder à la valeur de variable
-	 *  d'instance privée voisins.
-	 *  @return	voisins	les voisins de la ville instanciée
+	/** La methode getVoisins() permet d'acceder a la valeur de variable
+	 *  d'instance privee voisins.
+	 *  @return	voisins	les voisins de la ville instanciee
 	 */
 	public ArrayList<Ville> getVoisins() {
 		return voisins;

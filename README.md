@@ -1,51 +1,43 @@
-# JavaAvanceProjet : Construction d'écoles
+# JavaAvanceProjet : Construction d'ecoles
 
 Version : 1.0 
+
 Auteurs : Baptista Anthony, thanh-vo, Trividic Yann 
 GitHub du projet : https://github.com/thanhvo-uparis/JavaAvanceProjet
-Date de début : 12/10/2020
+Date de debut : 12/10/2020
 
 Programme de construction  d'ecoles :
 
 Pour pouvoir utiliser ce programme, veuillez suivre les instructions suivantes afin de le configurer correctement et d'en avoir une utilisation optimale.
 
-Configuration recommandee (développé avec) :
+**Configuration recommandee (developpe avec)** :
 
 	IDE Eclipse 2020-09
 	JAVA SE.12
 	Windows 10 ou Ubuntu 18.04
 
-Protocole d'installation du programme :
+**Protocole d'installation du programme** :
 Une fois la configuration necessaire installee, vous devez telecharger le projet.
-Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from File System` puis sélectionnez le projet).
+Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from File System` puis selectionnez le projet).
 
-Protocole de lancement du programme :
+**Protocole de lancement du programme :**
 Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
-
-//ici, préciser qu'il y a deux mains, expliquer en quoi consiste Test (tu peux copier le texte que j'ai fait dans le diagramme UML) 
-//ensuite il faut expliquer comment paramétrer Eclipse pour que l'un ou l'autre se lance (sachant que Test prend deux arguments)
-
-
-**Execution du programme :**
-
-<<<<<<< HEAD
-Protocole d'installation du programme:
-
-Une fois la configuration n�cessaire install�e, vous devez t�l�charger le projet.
-Ensuite, ouvrez le projet directement sur eclipse(File > Open projects From File Systeme puis choisissez le projet).
-
-Protocole de lancement du programme:
-
-Le projet �tant charg� dans Eclipse, il ne reste plus qu'� le lancer via le bouton Run.
 Vous aurez ici le choix entre 2 fonctions main: Test ou Main.
-Vous devez s�lectionner la fonction Main.
 
-Execution du programme:
+La classe Test permet de tester les differents cas de figure pouvant se presenter a� l'execution du programme. Elle permet de passer en argument le nombre de Ville constituant l'Agglomeration à tester, et le nombre d'operations "n" a� effectuer sur celle-ci.
+Le programme relie aleatoirement des Ville jusqu'a� ce que l'agglomeration soit connexe.
+Puis execute "n" operations sur ces villes (ajout d'ecoles, retraits d'ecoles).
+Toutes les operations sont affichees pour permettre de comprendre l'execution du programme pas a pas.
+Si vous voulez lancer la classe Test, il faut param�trer les deux arguments.
 
-Maintenant que le programme est lanc�, il ne vous reste plus qu'� l'utiliser correctement. 
-=======
+Si vous voulez lancer la classe Main, cliquez sur Run as > java application puis s�lectionnez ensuite main.
+
+
+**Execution du programme**:
+
+
 Maintenant que le programme est lance, il ne vous reste plus qu'a l'utiliser correctement. 
->>>>>>> branch 'main' of https://github.com/thanhvo-uparis/JavaAvanceProjet
+
 
 Voici un bref descriptif de son fonctionnement:
 
@@ -63,54 +55,43 @@ Si vous voulez ajouter une ecole, rentrez le nom de la ville dans laquelle ajout
 Si vous voulez retirer une ecole, rentrez le nom de l'ecole dans laquelle retirer une ecole, si la ville ne possede pas d'ecole, elle ne sera pas retiree. Si le retrait de cette ecole ne respecte pas la contrainte d'accessibilite, alors elle ne sera pas retiree non plus.
 A la fin de chaque action, les villes possedant des ecoles seront affichees.
 
-<<<<<<< HEAD
 
-Version: 1.0 
 
-Auteurs:
 
-@Baptista Anthony
-@thanh-vo
-@Trividic Yann 
-
-GitHub du projet:
-
-https://github.com/thanhvo-uparis/JavaAvanceProjet
- 
-=======
 Une fois que vous etes satisfait vous n'avez plus qu'a terminer le programme.
->>>>>>> branch 'main' of https://github.com/thanhvo-uparis/JavaAvanceProjet
 
 
 
-**Quelques informations contextuelles :**
 
-Il s'agit d'un problème de théorie des graphes.
-Dans le cadre d'une politique ambitieuse concernant l'éducation, un élu souhaite construire de nouvelles écoles, modernes, dans la communauté d'agglomération dont il est responsable. Durant la campagne électorale, il a promis deux choses :
-
-- Accessibilité : Chaque ville doit posséder son école, ou être directement reliée à une ville qui possède une école.
-
-- Economie : Le coût du projet doit être le plus bas possible, ce qui signifie que le nombre d'écoles à construire doit être le plus petit possible.
-
-Il nous demande de l'aider en développant un logiciel qui permet : 
-1. de représenter les villes d'une communauté d'agglomération, et les routes qui les relient ;
-2. de simuler la construction d'école dans les villes de la communauté ;
-3. de calculer le coût d'une solution (le nombre d'école), et le minimiser.
-
-- Toutes les routes sont à double-sens et de même longueur.
-- Le coût est estimé en fonction du nombre d'écoles à construire.
+**Quelques informations contextuelles** :
 
 
-Ce problème est un problème de théorie des graphes. Il s'agit de représenter la communauté d'agglomération avec un graphe dont les sommets seraient les villes et les arêtes seraient les routes qui relient les villes entre-elles.
+Il s'agit d'un probleme de theorie des graphes.
+Dans le cadre d'une politique ambitieuse concernant l'education, un elu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
 
-Ainsi, le problème peut se traduire de la manière suivante :
-- Les villes avec écoles sont représentées avec sommet pondéré à 0.
-- Les villes sans école sont représentées avec sommet pondéré à 1.
-- Chaque sommet doit être pondéré à 1 ou avoir l'un de ses voisins pondéré à 1.
-- Le nombre de sommets pondéré à 1 doit être minimal.
-- La somme des pondération est égale au nombre d'écoles à construire.
+- Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee a� une ville qui possede une ecole.
+
+- Economie : Le cout du projet doit etre le plus bas possible, ce qui signifie que le nombre d'ecoles a construire doit etre le plus petit possible.
+
+Il nous demande de l'aider en developpant un logiciel qui permet : 
+1. de representer les villes d'une communaute d'agglomeration, et les routes qui les relient ;
+2. de simuler la construction d'ecole dans les villes de la communaute ;
+3. de calculer le coût d'une solution (le nombre d'ecole), et le minimiser.
+
+- Toutes les routes sont a double-sens et de meme longueur.
+- Le cout est estime en fonction du nombre d'ecoles a construire.
 
 
-Les questions auxquelles il faut répondre :
-- Quelle est la meilleure manière de représenter ce graphe ? (matrice d'adjacence, liste d'arêtes, liste d'adjacence ?)
-- Quel algorithme appliquer pour pondérer de manière optimale le graphe ? Potentiellement ranger les sommets par degrés décroissants et pondérer ainsi ? 
+Ce probleme est un probleme de theorie des graphes. Il s'agit de representer la communaute d'agglomeration avec un graphe dont les sommets seraient les villes et les arêtes seraient les routes qui relient les villes entre-elles.
+
+Ainsi, le probleme peut se traduire de la maniere suivante :
+- Les villes avec ecoles sont representees avec sommet pondere a� 0.
+- Les villes sans ecole sont representees avec sommet pondere a� 1.
+- Chaque sommet doit etre pondere a� 1 ou avoir l'un de ses voisins pondere a� 1.
+- Le nombre de sommets pondere a� 1 doit etre minimal.
+- La somme des ponderation est egale au nombre d'ecoles a construire.
+
+
+Les questions auxquelles il faut repondre :
+- Quelle est la meilleure maniere de representer ce graphe ? (matrice d'adjacence, liste d'arêtes, liste d'adjacence ?)
+- Quel algorithme appliquer pour ponderer de maniere optimale le graphe ? Potentiellement ranger les sommets par degres decroissants et ponderer ainsi ? 

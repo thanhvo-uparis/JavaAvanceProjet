@@ -1,18 +1,16 @@
 # JavaAvanceProjet : Construction d'ecoles
 
 Version : 1.0 
-
 Auteurs : Baptista Anthony, thanh-vo, Trividic Yann 
-
-GitHub du projet : https://github.com/thanhvo-uparis/JavaAvanceProjet
-
+Dépôt GitHub du projet : https://github.com/thanhvo-uparis/JavaAvanceProjet
 Date de debut : 12/10/2020
 
-Programme de construction  d'ecoles :
+
+
 
 Pour pouvoir utiliser ce programme, veuillez suivre les instructions suivantes afin de le configurer correctement et d'en avoir une utilisation optimale.
 
-**Configuration recommandee (developpe avec)** :
+**Configuration recommandee (developpe avec) :**
 
 	IDE Eclipse 2020-09
 	JAVA SE.12
@@ -23,14 +21,17 @@ Une fois la configuration necessaire installee, vous devez telecharger le projet
 Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from File System` puis selectionnez le projet).
 
 **Protocole de lancement du programme :**
+
+Pour comprendre la structure du programme, référez-vous au document `class-diagram.svg`.
+
 Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
 Vous aurez ici le choix entre deux fonctions programme : `Test` ou `Main`.
 
 * __La classe__  `Test` permet de tester les differents cas de figure pouvant se presenter a l'execution du programme. Elle permet de passer en argument `nbVilles` (le nombre de villes constituant l'Agglomeration a tester) et `nbOperations` (le nombre d'opérations ajout ou retraits d'école qui sera effectué).
 Le programme relie aleatoirement des Ville jusqu'a ce que l'agglomeration soit connexe.
-Puis execute "n" operations sur ces villes (ajout d'ecoles, retraits d'ecoles).
+Le programme execute ensuite `nbOperations` operations sur ces villes (ajout d'ecole oou retrait d'ecole).
 Toutes les operations sont affichees pour permettre de comprendre l'execution du programme pas a pas.
-Si vous voulez lancer la classe `Test`, il faut parametrer les deux arguments : clic droit sur `Test.java` puis `Run As... > Run Configurations...`. Un menu s'ouvre : aller dans l'onglet `Arguments` et dans le champ `Program arguments` rentrez deux entiers naturels : le premier est `nbVilles` et le second `nbOperations`. Ils doivent être séparés par une espace.
+Si vous voulez executer la classe `Test`, il faut parametrer les deux arguments : clic droit sur `Test.java` puis `Run As... > Run Configurations...`. Un menu s'ouvre : aller dans l'onglet `Arguments` et rentrez dans le champ `Program arguments` deux entiers naturels : le premier est `nbVilles` et le second `nbOperations`. Ils doivent être séparés par une espace.
 
 * __Pour la classe__  `Main`, cliquez sur `Run As... > Java Application` puis selectionnez ensuite `Main`.
 
@@ -71,7 +72,7 @@ Une fois que vous etes satisfait vous n'avez plus qu'a terminer le programme.
 Il s'agit d'un probleme de theorie des graphes.
 Dans le cadre d'une politique ambitieuse concernant l'education, un elu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
 
-- Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee a� une ville qui possede une ecole.
+- Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee a une ville qui possede une ecole.
 
 - Economie : Le cout du projet doit etre le plus bas possible, ce qui signifie que le nombre d'ecoles a construire doit etre le plus petit possible.
 
@@ -87,10 +88,10 @@ Il nous demande de l'aider en developpant un logiciel qui permet :
 Ce probleme est un probleme de theorie des graphes. Il s'agit de representer la communaute d'agglomeration avec un graphe dont les sommets seraient les villes et les arêtes seraient les routes qui relient les villes entre-elles.
 
 Ainsi, le probleme peut se traduire de la maniere suivante :
-- Les villes avec ecoles sont representees avec sommet pondere a� 0.
-- Les villes sans ecole sont representees avec sommet pondere a� 1.
-- Chaque sommet doit etre pondere a� 1 ou avoir l'un de ses voisins pondere a� 1.
-- Le nombre de sommets pondere a� 1 doit etre minimal.
+- Les villes avec ecoles sont representees avec sommet pondere a `false`.
+- Les villes sans ecole sont representees avec sommet pondere a `true`.
+- Chaque sommet doit etre pondere a `true` ou avoir l'un de ses voisins pondere a `true`.
+- Le nombre de sommets pondere a `true` doit etre minimal.
 - La somme des ponderation est egale au nombre d'ecoles a construire.
 
 

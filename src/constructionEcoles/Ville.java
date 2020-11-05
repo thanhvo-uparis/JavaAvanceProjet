@@ -13,7 +13,7 @@ public class Ville {
 	//Attributs
 	/** hasEcole: indique si la ville contient une école ou non. @return: Oui (par défaut): 1,  Non: 0
 	 * voisins: contenant toutes les villes reliées à l'instance de Ville appelant la méthode.
-	 * key: un identifiant unique de chaque ville.
+	 * @param	key: un identifiant unique de chaque ville.
 	 */
 	private Boolean hasEcole;
 	private ArrayList<Ville> voisins;
@@ -22,6 +22,9 @@ public class Ville {
 	
 	//Constructeur
 	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec ses voisins et une école ou non
+	 *  @param	key			un identifiant unique de chaque ville.
+	 *  @param	voisins 	un ArrayList contenant les voisins de la ville à instancier
+	 *  @param	hasEcole	booléen pour renseigner si la ville a une école ou non
 	 */
 	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, char key){
 		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
@@ -30,6 +33,7 @@ public class Ville {
 	}
 	
 	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec sa key
+	 * @param	key			un identifiant unique de chaque ville.
 	 */
 	public Ville(char key){
 		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des écoles à l'initialisation. 
@@ -41,6 +45,7 @@ public class Ville {
 	//Methodes
 	/** La méthode getHasEcole() permet d'accéder à la valeur de variable
 	 *  d'instance privée hasEcole.
+	 *  @return	hasEcole
 	 */
 	public boolean getHasEcole() {
 		  return hasEcole;
@@ -49,6 +54,7 @@ public class Ville {
 	
 	/** La méthode setHasEcole() permet de modifier la valeur
 	 *  de variable d'instance privée hasEcole par une valeur d'un paramètre dans cette méthode.	 
+	 *  @param	hasEcole	true pour si on veut ajouter une école, false si on veut en retirer une
 	 */
 	public void setHasEcole(boolean hasEcole) {
 		 this.hasEcole = hasEcole;
@@ -57,6 +63,7 @@ public class Ville {
 	
 	/** La méthode getKey() permet d'accéder à la valeur de variable
 	 *  d'instance privée key.
+	 *  @return	key			un identifiant unique de chaque ville.
 	 */
 	public char getKey() {
 		return key;
@@ -102,6 +109,7 @@ public class Ville {
 	
 	/** La méthode getVoisins() permet d'accéder à la valeur de variable
 	 *  d'instance privée voisins.
+	 *  @return	voisins	les voisins de la ville instanciée
 	 */
 	public ArrayList<Ville> getVoisins() {
 		return voisins;

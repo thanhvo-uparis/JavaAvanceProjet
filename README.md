@@ -3,7 +3,9 @@
 Version : 1.0 
 
 Auteurs : Baptista Anthony, thanh-vo, Trividic Yann 
+
 GitHub du projet : https://github.com/thanhvo-uparis/JavaAvanceProjet
+
 Date de debut : 12/10/2020
 
 Programme de construction  d'ecoles :
@@ -24,7 +26,7 @@ Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from Fi
 Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
 Vous aurez ici le choix entre 2 fonctions main: Test ou Main.
 
-La classe Test permet de tester les differents cas de figure pouvant se presenter a  l'execution du programme. Elle permet de passer en argument le nombre de Ville constituant l'Agglomeration Ã  tester, et le nombre d'operations "n" a  effectuer sur celle-ci.
+La classe Test permet de tester les differents cas de figure pouvant se presenter a  l'execution du programme. Elle permet de passer en argument le nombre de Ville constituant l'Agglomeration a  tester, et le nombre d'operations "n" a  effectuer sur celle-ci.
 Le programme relie aleatoirement des Ville jusqu'a  ce que l'agglomeration soit connexe.
 Puis execute "n" operations sur ces villes (ajout d'ecoles, retraits d'ecoles).
 Toutes les operations sont affichees pour permettre de comprendre l'execution du programme pas a pas.
@@ -93,5 +95,5 @@ Ainsi, le probleme peut se traduire de la maniere suivante :
 
 
 Les questions auxquelles il faut repondre :
-- Quelle est la meilleure maniere de representer ce graphe ? (matrice d'adjacence, liste d'arÃªtes, liste d'adjacence ?)
+- Quelle est la meilleure maniere de representer ce graphe ? (matrice d'adjacence, liste d'aretes, liste d'adjacence ?)
 - Quel algorithme appliquer pour ponderer de maniere optimale le graphe ? Potentiellement ranger les sommets par degres decroissants et ponderer ainsi ? 

@@ -26,13 +26,13 @@ Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from Fi
 Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
 Vous aurez ici le choix entre 2 fonctions main: Test ou Main.
 
-La classe Test permet de tester les differents cas de figure pouvant se presenter a  l'execution du programme. Elle permet de passer en argument le nombre de Ville constituant l'Agglomeration a  tester, et le nombre d'operations "n" a  effectuer sur celle-ci.
-Le programme relie aleatoirement des Ville jusqu'a  ce que l'agglomeration soit connexe.
+La classe `Test` permet de tester les differents cas de figure pouvant se presenter a l'execution du programme. Elle permet de passer en argument `nbVilles` (le nombre de villes constituant l'Agglomeration a tester) et `nbOperations` (le nombre d'opÃ©rations ajout ou retraits d'Ã©cole qui sera effectuÃ©).
+Le programme relie aleatoirement des Ville jusqu'a ce que l'agglomeration soit connexe.
 Puis execute "n" operations sur ces villes (ajout d'ecoles, retraits d'ecoles).
 Toutes les operations sont affichees pour permettre de comprendre l'execution du programme pas a pas.
-Si vous voulez lancer la classe Test, il faut paramétrer les deux arguments.
+Si vous voulez lancer la classe `Test`, il faut parametrer les deux arguments : clic droit sur `Test.java` puis `Run As... > Run Configurations...`. Un menu s'ouvre : aller dans l'onglet `Arguments` et dans le champ `Program arguments` rentrez deux entiers naturels : le premier est `nbVilles` et le second `nbOperations`. Ils doivent Ãªtre sÃ©parÃ©s par une espace.
 
-Si vous voulez lancer la classe Main, cliquez sur Run as > java application puis sélectionnez ensuite main.
+Si vous voulez executer la classe `Main`, cliquez sur `Run As... > Java Application` puis selectionnez ensuite `Main`.
 
 
 **Execution du programme**:
@@ -41,7 +41,7 @@ Si vous voulez lancer la classe Main, cliquez sur Run as > java application puis
 Maintenant que le programme est lance, il ne vous reste plus qu'a l'utiliser correctement. 
 
 
-Voici un bref descriptif de son fonctionnement:
+Voici un bref descriptif du fonctionnement de la classe `Main` :
 
 Dans un premier temps rentrez le nombres de villes dans l'agglomeration (attention, ce nombre doit etre compris entre 1 et 26).
 Une fois le nombre de villes rentrees, le programme vous donnera la possibilite de relier les villes via des routes.
@@ -71,7 +71,7 @@ Une fois que vous etes satisfait vous n'avez plus qu'a terminer le programme.
 Il s'agit d'un probleme de theorie des graphes.
 Dans le cadre d'une politique ambitieuse concernant l'education, un elu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
 
-- Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee a  une ville qui possede une ecole.
+- Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee aï¿½ une ville qui possede une ecole.
 
 - Economie : Le cout du projet doit etre le plus bas possible, ce qui signifie que le nombre d'ecoles a construire doit etre le plus petit possible.
 
@@ -87,10 +87,10 @@ Il nous demande de l'aider en developpant un logiciel qui permet :
 Ce probleme est un probleme de theorie des graphes. Il s'agit de representer la communaute d'agglomeration avec un graphe dont les sommets seraient les villes et les arÃªtes seraient les routes qui relient les villes entre-elles.
 
 Ainsi, le probleme peut se traduire de la maniere suivante :
-- Les villes avec ecoles sont representees avec sommet pondere a  0.
-- Les villes sans ecole sont representees avec sommet pondere a  1.
-- Chaque sommet doit etre pondere a  1 ou avoir l'un de ses voisins pondere a  1.
-- Le nombre de sommets pondere a  1 doit etre minimal.
+- Les villes avec ecoles sont representees avec sommet pondere aï¿½ 0.
+- Les villes sans ecole sont representees avec sommet pondere aï¿½ 1.
+- Chaque sommet doit etre pondere aï¿½ 1 ou avoir l'un de ses voisins pondere aï¿½ 1.
+- Le nombre de sommets pondere aï¿½ 1 doit etre minimal.
 - La somme des ponderation est egale au nombre d'ecoles a construire.
 
 

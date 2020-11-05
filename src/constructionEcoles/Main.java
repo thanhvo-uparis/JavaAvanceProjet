@@ -106,23 +106,21 @@ public class Main {
 
 		System.out.println(agg.toString()) ;
 		
-		/* On cr�e ici le 2eme menu qui va permettre � l'utilisateur de soit: 1/ajouter une ecole 2/retirer une ecole 3/ fin.
-		 * 
-		 * Si l'on choisit ajouter une ecole, on utilise la fonction void ajouterEcole en utilisant comme argument la ville rentr�e au clavier par l'utilisateur.
-		 * 
-		 * Si l'on choisit retirer une �cole, on utilise la fonction void retirerEcole en utilisant comme argument la ville rentr�e au clavier par l'utilisateur.
-		 * 
-		 * Si l'on choisit fin , le programme s'arrete.
-		 */
-		
+		// On cree ici le 2eme menu qui va permettre a l'utilisateur de soit: 1/ajouter une ecole 2/retirer une ecole 3/fin.
 		while (choice != 3){ 
 			System.out.println("\n  - Menu 2 - ") ;
 			System.out.println("1 - ajouter une ecole");
 			System.out.println("2 - retirer une ecole");
 			System.out.println("3 - fin");	
 			System.out.print("Veuillez entrer votre choix : ");
-			choice = sc.nextInt() ;
 			
+			try {
+				choice = sc.nextInt() ;
+			} catch(InputMismatchException e) {
+				System.out.println("Il faut rentrer un int.") ;
+				sc.next();
+				choice = 4 ;
+			}
 			switch(choice) {
 				case 1 :
 					System.out.println("Entrez la ville dans laquelle vous souhaitez ajouter une ecole" );
@@ -132,6 +130,7 @@ public class Main {
 						System.out.println(e);
 					}
 					break ;
+					
 				case 2:
 					System.out.println("Entrez la ville dans laquelle vous souhaitez retirer une ecole" );
 					try {
@@ -140,8 +139,13 @@ public class Main {
 						System.out.println(e);
 					}
 					break ;
+					
 				case 3:
-				agg.afficheVilleAEcole();
+					agg.afficheVilleAEcole();
+					break ;
+				default : 
+					System.out.println("Choix incorrect.") ;
+					break ;
 			}
 			System.out.println("Bilan : \n"+agg.toString()+"\nLes écoles sont dans les villes suivantes : ") ;
 			System.out.println("Liste des routes de l'agglomération :\n"+agg.afficherRoutes()) ;

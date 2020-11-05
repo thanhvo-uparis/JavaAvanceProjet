@@ -38,7 +38,7 @@ public class Agglomeration {
 	
 	/**
 	 * Constructeur initialisant le ArrayList villes avec la taille de l'entier passe en argument tant qu'il ne depasse pas 26
-	 * @param nbVilles	le nombre de villes a† generer dans l'agglo
+	 * @param nbVilles	le nombre de villes a generer dans l'agglo
 	 * @see Agglomeration(Ville...)
 	 * @see Agglomeration(int)
 	 */
@@ -49,7 +49,7 @@ public class Agglomeration {
 	}
 	
 	/**
-	 * Methode permettant de verifier si une ville est deja† dans l'agglomeration
+	 * Methode permettant de verifier si une ville est deja dans l'agglomeration
 	 * @param		a	Char correspondant a l'attribut key de la ville a verifier
 	 * @exception	ExceptionVille dans le cas ou la ville n'existe pas.
 	 * @return		v	la ville trouvee dans l'agglomeration si elle a ete trouvee
@@ -61,7 +61,7 @@ public class Agglomeration {
 	}
 	
 	/**
-	 * Methode permettant de verifier si une ville est deja† dans l'agglo
+	 * Methode permettant de verifier si une ville est deja dans l'agglo
 	 * @param	a	ville a chercher dans l'agglomeration
 	 * @return	v	la ville trouvee dans l'agglomeration si elle a ete trouvee
 	 * @exception	ExceptionVille	lance une exception si la ville n'est pas dans l'agglomeration
@@ -73,7 +73,7 @@ public class Agglomeration {
 	}
 	
 
-	//ajoute une ville dans l'agglomeration en verifiant que celle-ci n'est pas deja† dans l'agglomeration
+	//ajoute une ville dans l'agglomeration en verifiant que celle-ci n'est pas deja dans l'agglomeration
 	private void addVille(Ville a){
 		try {
 			if(getVille(a.getKey()) == null) villes.add(a) ;
@@ -105,10 +105,10 @@ public class Agglomeration {
 	}
 	
 	/**
-	 * Methode permettant d'ajouter une route entre deux villes dans le cas ou celles-ci ne seraient pas deja† reliees
+	 * Methode permettant d'ajouter une route entre deux villes dans le cas ou celles-ci ne seraient pas deja reliees
 	 * @param		a	premiere ville du couple de villes a relier par une route
 	 * @param		b	seconde ville du couple de villes a relier par une route
-	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja† reliees ou si l'une d'elles n'existe pas
+	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
 	 * @see			ajouterRoute(char, char)
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
@@ -123,7 +123,7 @@ public class Agglomeration {
 	 * Surcharge de la methode ajouterRoute(Ville, Ville) avec a la place des arguments Ville deux char
 	 * @see		ajouterRoute(Ville, Ville)
 	 * @param		a	premiere ville du couple de villes a relier par une route
-	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja† reliees ou si l'une d'elles n'existe pas
+	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
 	 * @param		b	seconde ville du couple de villes a relier par une route
 	 */
 	public void ajouterRoute(char a, char b) throws Exception {
@@ -145,7 +145,7 @@ public class Agglomeration {
 	/**
 	 * Surcharge de la methode ajouterEcole(Ville) avec a la place de l'argument Ville un char
 	 * @param		c					la ville dans laquelle on veut ajouter une ecole
-	 * @exception	ExceptionEconomie 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja† proche d'une ecole)
+	 * @exception	ExceptionEconomie 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
 	 * @see		ajouterEcole(Ville)
 	 */
 	public void ajouterEcole(char c) throws Exception {
@@ -204,7 +204,7 @@ public class Agglomeration {
 			Ville v = file.pollFirst() ; //on defile le dernier element v de la file
 			for(Ville a : v.getVoisins()) { //pour tous les voisins de v
 				if(!marques.contains(a.getKey())) { //on regarde si la ville a un identifiant deja visite
-					marques.add(a.getKey()) ; // si elle ne l'est pas, on la marque comme visit√e
+					marques.add(a.getKey()) ; // si elle ne l'est pas, on la marque comme visite
 					file.offer(a) ; //et on l'enfile dans la file
 				}
 			}

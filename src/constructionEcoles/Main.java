@@ -84,8 +84,7 @@ public class Main {
 					}
 					break ;
 				case 2 :
-					System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"+(agg.estConnexe()?"Oui !\n\n":"Non ! Continuez d'ajouter des routes")) ;
-					//System.out.println(choice) ;
+					System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"+(agg.estConnexe()?"Oui !\n":"Non ! Continuez d'ajouter des routes")) ;
 					break ;
 				case 3 :
 					System.out.println("Fin du programme.") ;
@@ -100,7 +99,8 @@ public class Main {
 			
 		} while (!exit) ; //tant que la ville n'est pas connexe et que l'utilisateur ne veut pas sortir
 
-		System.out.println(agg.toString()) ;
+		System.out.println("Fin de la premiere etape. Bilan :\n") ;
+		System.out.println(agg.toString()+"Les routes sont les suivantes \n"+agg.afficherRoutes()) ;
 		
 		// On cree ici le 2eme menu qui va permettre a l'utilisateur de soit: 1/ajouter une ecole 2/retirer une ecole 3/fin.
 		while (choice != 3){ 

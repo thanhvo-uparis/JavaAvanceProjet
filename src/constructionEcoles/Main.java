@@ -21,9 +21,14 @@ public class Main {
 	//On demande ï¿½ l'utilisateur un nombre de villes qui servira ï¿½ construire l'agglomï¿½ration. Ce nombre doit etre compris entre 1 et 26 auquel cas on affiche une erreur.//
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Entrez un nombre de villes entre 1 et 26");
 		
-		Agglomeration agg = new Agglomeration(sc.nextInt());
+		int nbville=0 ;
+		while(nbville < 1 || nbville > 26){
+			System.out.println("Entrez un nombre de villes entre 1 et 26");
+			nbville = sc.nextInt();
+		}
+		
+		Agglomeration agg = new Agglomeration(nbville);
 		
 		//Tant que le nombre n'est pas compris entre 1 et 26, on demande à l'utilisateur de saisir un nombre.
 		

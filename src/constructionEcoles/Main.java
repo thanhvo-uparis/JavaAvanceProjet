@@ -22,9 +22,9 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrez un nombre de villes entre 1 et 26");
-		do {
+		
 		Agglomeration agg = new Agglomeration(sc.nextInt());
-		} while((sc.nextInt()) < 1 || (sc.nextInt()) > 26 );
+		
 		//Tant que le nombre n'est pas compris entre 1 et 26, on demande ‡ l'utilisateur de saisir un nombre.
 		
 		
@@ -99,14 +99,23 @@ public class Main {
 			System.out.println("3-fin");	
 			System.out.println("Veuillechoice entrer votre choix");
 			
-			switch(choice){ //Je te laisse t'occuper de calquer ce qui a √©t√© dans le premier menu
+			switch(choice){ // La variable choix permet de stocker le choix de l'utilisateur pour le menu
 			
 			case 1:
-				System.out.println( )
-				agg.ajouterEcole(nextVille);
+				System.out.println("Entrez la ville dans laquelle vous souhaitez ajouter une Ècole" );
+				try {
+				agg.ajouterEcole(sc.next().charAt(0));
+				} catch(Exception e) {
+					System.out.println(e);
+				}
 				agg.afficheVilleAEcole();
 			case 2:
-				agg.retirerEcole(nextVille);
+				System.out.println("Entrez la ville dans laquelle vous souhaitez retirer une Ècole" );
+				try {
+				agg.retirerEcole(sc.next().charAt(0));
+				} catch(Exception e) {
+					System.out.println(e);
+				}
 				agg.afficheVilleAEcole();
 			case 3:
 				

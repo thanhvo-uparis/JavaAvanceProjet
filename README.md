@@ -12,10 +12,12 @@ JAVA SE.12
 Windows 10 
 
 Protocole d'installation du programme:
+
 Une fois la configuration nécessaire installée, vous devez télécharger le projet.
 Ensuite, ouvrez le projet directement sur eclipse(File > Open projects From File Systeme puis choisissez le projet).
 
 Protocole de lancement du programme:
+
 Le projet étant chargé dans Eclipse, il ne reste plus qu'à le lancer via le bouton Run.
 
 Execution du programme:
@@ -44,7 +46,7 @@ Version: 1.0
 
 Auteurs:
 
-@Baptista anthony
+@Baptista Anthony
 @thanh-vo
 @Trividic Yann 
 

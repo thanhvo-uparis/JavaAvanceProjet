@@ -23,7 +23,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		
 		int nbville=0 ;
-		while(nbville < 1 || nbville > 26){
+		while(nbville < 1  || nbville > 26){
 			System.out.println("Entrez un nombre de villes entre 1 et 26");
 			nbville = sc.nextInt();
 		}
@@ -49,7 +49,7 @@ public class Main {
 		
 		int choice = 0;
 		BufferedReader syl1 = new BufferedReader (new InputStreamReader(System.in));
-		choice = Integer.parseInt(syl1.readLine());
+		choice = sc.nextInt();
 	
 		do {
 			System.out.println("1 - ajouter une route");
@@ -74,7 +74,7 @@ public class Main {
 						System.out.println(e);
 					}
 					try {
-						agg.ajouterRoute(a,b);
+						agg.ajouterRoute('a','b');
 					} catch(Exception e) {
 						System.out.println(e) ;
 					}

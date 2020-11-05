@@ -3,13 +3,17 @@ package constructionEcoles;
 import java.util.Scanner;
 import java.io.*;
 
-/* La classe Main va permettre à l'utilisateur de modéliser son agglomération en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
+/**
+ * La classe Main va permettre à l'utilisateur de modéliser son agglomération en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
  * 1) instancier une agglomération de n villes.
  * 2) relier les villes entre elles à l'aide de routes. L'utilisateur peut relier autant de villes qu'il le souhaite tant que celles-ci ne sont pas reliées toutes reliées deux à deux par une route. Une fois qu'il existe au moins un chemin reliant chaque couple de villes, l'utilisateur peut : 
  * 		a. retirer des écoles tant que ce retrait satisfait la contrainte d'Accessibilité*.
  * 		b. ajouter des écoles si la ville n'en a pas déjà une. (Pour le moment, la contrainte d'économie n'est pas respectée.) 
  * A chaque fois que l'utilisateur retire ou ajoute une école, on affiche la liste des villes contenant des écoles.
  * A la fin du programme, la liste des villes contenant des écoles est affichées, avec la liste des routes les reliant.
+ * @author Anthony Baptista
+ * @author Yann Trividic
+ * @version 1.0
  */
 
 public class Main {

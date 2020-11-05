@@ -1,12 +1,21 @@
 package constructionEcoles ;
-public class Test {
-/*
+
+/**
  * La classe Test permet de tester les différents cas de figure pouvant se présenter à l'exécution du programme. Elle permet de passer en argument le nombre de Ville constituant l'Agglomeration à tester, et le nombre d'opérations "n" à effectuer sur celle-ci.
  * Le programme relie aléatoirement des Ville jusqu'à ce que l'agglomération soit connexe.
  * Puis exécute "n" opérations sur ces villes (ajout d'écoles, retraits d'écoles).
  * Toutes les opérations sont affichées pour permettre de comprendre l'exécution du programme pas à pas.
+ * @author Anthony Baptista
+ * @author Yann Trividic
+ * @version 1.0
  */
+
+public class Test {
 	
+	/**
+	 * @param args	Le premier argument est un int correspondant au nombre de villes que l'on veut générer. Le second est un int correspondant au nombre d'opérations
+	 * à effectuer sur l'agglomération.
+	 */
 	public static void main(String[] args) {
 
 		int nbLettres = Integer.parseInt(args[0]) ; //doit être compris entre 1 et 25 pour mener à bien les tests

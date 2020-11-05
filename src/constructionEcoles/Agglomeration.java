@@ -6,10 +6,6 @@ import constructionEcoles.exceptions.*;
 import java.util.ArrayList; 
 import java.util.LinkedList;
 
-// Contraintes :	faut-il que l'utilisateur soit totalement libre et que les contraintes soient vérifiées à la fin ?
-// 					ou que les contraintes soient respectées en chaque instant du programme
-
-
 /**
  * Classe qui definit une agglomération dans le cadre du projet de construction d'écoles.
  * @author Yann Trividic
@@ -171,9 +167,11 @@ public class Agglomeration {
 		retirerEcole(a.getKey()) ;
 	}
 	
-	/* Surcharge de la méthode retirerEcole(Ville) avec à la place de l'argument Ville un char
+	/**
+	 * Surcharge de la méthode retirerEcole(Ville) avec à la place de l'argument Ville un char
 	 * @param		c						la ville dans laquelle on essaiera de retirer une école
 	 * @see		retirerEcole(Ville)
+	 * @exception	ExceptionAccessibilite	si enlever l'école de la ville casse la contrainte d'Accessibilité
 	 */
 	public void retirerEcole(char c) throws Exception {
 		Ville a = getVille(c) ;

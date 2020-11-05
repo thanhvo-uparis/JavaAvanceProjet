@@ -2,8 +2,7 @@ package constructionEcoles;
 import java.util.ArrayList;
 
 /**
- * Classe qui définit une ville dans le cadre
- ∗ du projet de construction d'écoles.
+ * Classe qui définit une ville dans le cadre du projet de construction d'écoles.
  * @author thanhcongvo
  * @version 1.0
  */
@@ -70,7 +69,7 @@ public class Ville {
 	}
 	
 	
-	/** La méthode hasEcoleVoisins() 
+	/** Methode permettant de savoir si au moins un voisin de la ville instanciée possède une école ou non.
 	 * @return un booléen si l'une des villes voisines possède une école ou non.
 	 */
 	public boolean hasEcoleVoisins() {
@@ -90,7 +89,7 @@ public class Ville {
 		 return nbEcoles;
 	}
 	
-	/** Methode permettant de savoir combien d'écoles sont accessibles depuis cette ville
+	/** Methode permettant de savoir combien d'écoles sont accessibles depuis cette ville.
 	 * @return un int correspondant au nombre 
 	 */
 	public int getNbEcolesAccessibles() {

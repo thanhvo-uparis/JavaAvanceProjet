@@ -19,7 +19,7 @@ Le projet étant chargé dans Eclipse, il ne reste plus qu'à le lancer via le bout
 
 Execution du programme:
 
-Maintenant que le programme est lancé, il ne vous reste plus qu'à l'utiliser correctement.
+Maintenant que le programme est lancé, il ne vous reste plus qu'à l'utiliser correctement. 
 
 Voici un bref descriptif de son fonctionnement:
 

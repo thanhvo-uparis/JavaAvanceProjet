@@ -1,7 +1,7 @@
 package constructionEcoles;
 
 import java.util.Scanner;
-import java.io.*;
+import java.util.InputMismatchException ;
 
 /**
  * La classe Main va permettre à l'utilisateur de modéliser son agglomération en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
@@ -17,76 +17,93 @@ import java.io.*;
  */
 
 public class Main {
-
-	//On demande � l'utilisateur un nombre de villes qui servira � construire l'agglom�ration. Ce nombre doit etre compris entre 1 et 26 auquel cas on affiche une erreur.//
 	public static void main(String[] args) {
+		
 		Scanner sc = new Scanner(System.in);
 		
-		int nbville=0 ;
-		while(nbville < 1  || nbville > 26){
-			System.out.println("Entrez un nombre de villes entre 1 et 26");
-			nbville = sc.nextInt();
+		int nbVilles = 0 ;
+		
+		while(nbVilles < 1  || nbVilles > 26) { //Tant que le nombre n'est pas compris entre 1 et 26, on demande a l'utilisateur de saisir un nombre.
+			System.out.print("Entrez un nombre de villes entre 1 et 26 : ");
+			try {
+				nbVilles = sc.nextInt(); 
+			} catch(InputMismatchException e) {
+				System.out.println("Il faut rentrer un int.") ;
+				sc.next() ;
+				nbVilles = 0 ;
+			}
 		}
 		
-		Agglomeration agg = new Agglomeration(nbville);
+		Agglomeration agg = new Agglomeration(nbVilles);
+		System.out.println("Creee : "+agg.toString()+"\nLes écoles sont dans les villes suivantes : ");
+		agg.afficheVilleAEcole() ;
 		
-		//Tant que le nombre n'est pas compris entre 1 et 26, on demande � l'utilisateur de saisir un nombre.
 		
+	
 		
-		/* On cr�e ici le 1er menu qui va nous afficher les choix suivants : 1/ajouter une route ou 2/fin.
+		/* On cree ici le 1er menu qui va nous afficher les choix suivants : 
+		 * 1/ ajouter une route
+		 * 2/ j'ai rentré toutes mes routes" 
+		 * 3/ fin
 		 
-		   La boucle while permet de verifier que l'agglomeration est connexe, c'est-�-dire qu'elle v�rifie que toute les villes sont r�li�esd par au minimium une route.Tant que ce n'est pas le cas on continue 
-		   de  demander � l'utilisateur d'ajouter des routes.
+		   La boucle while permet de verifier que l'agglomeration est connexe, c'est-a-dire qu'elle verifie que toute les villes sont reliees par au minimum une route.
+		   Tant que ce n'est pas le cas on continue de  demander a l'utilisateur d'ajouter des routes.
 		  
-		   Si on choisit ajouter une route, on utilise la fonction void ajouterRoute en prenant en argument les deux villes rentr�es au clavier.
+		   Si on choisit ajouter une route, on utilise la fonction void ajouterRoute en prenant en argument les deux villes rentrees au clavier.
 		 
-		   Si on choisit fin, une v�rification est faite pour s'assurer que toutes villes sont reli�es. On utilise pour cela la fonction boolean estConnexe.
-		   Si ce n'est pas le cas, on affiche un message d'erreur � l'utilisateur afin qu'il continue. 
-		   
-		   La variable choice 
+		   Si on choisit 2, une verification est faite pour s'assurer que toutes villes sont reliees.
+		   Si ce n'est pas le cas, on affiche un message d'erreur a l'utilisateur afin qu'il continue. 
 		*/
 		
 		
-		int choice = 0;
-		BufferedReader syl1 = new BufferedReader (new InputStreamReader(System.in));
-		choice = sc.nextInt();
-	
+		int choice = 0; 
+		boolean exit ;
+		
 		do {
+			System.out.println("\n  - Menu 1 - ") ;
 			System.out.println("1 - ajouter une route");
 			System.out.println("2 - j'ai rentré toutes mes routes");
-			System.out.println("3 - fin du programme") ;
-			System.out.println("Veuillechoice entrer votre choix");
+			System.out.println("3 - fin du programme\n") ;
+			System.out.print("Veuillez entrer votre choix : ");
+			try {
+				choice = sc.nextInt() ;
+			} catch(InputMismatchException e) {
+				System.out.println("Il faut rentrer un int.") ;
+				sc.next();
+				choice = 4 ;
+			}
 			switch(choice) {
-				case 1:
+				case 1 :
 					//A MODIFIER tant que "Ville a" est null, demander à nouveau une ville
-					System.out.println("Entrez la première ville a relier : ");
 					try {
-					Ville a = agg.getVille(sc.next().charAt(0)) ; //retourne une ville ou retourne null si la ville n'a pas été trouvée
+						System.out.print("Entrez la première ville a relier : ");
+						char a = sc.next().charAt(0) ; //retourne une ville
+						System.out.print("Entrez la deuxieme ville a relier : ");
+						char b = sc.next().charAt(0) ; //retourne une ville
+						System.out.println(a+" "+b) ;
+						agg.ajouterRoute(a, b) ;
+						System.out.println("Liste des routes de l'agglomération :\n"+agg.afficherRoutes()) ;
 					} catch(Exception e) {
 						System.out.println(e);
 					}
-					//Faire de même pour la seconde ville, Ville b ;
-					
-					System.out.println("Entrez la deuxieme ville a relier : ");
-					try {
-					Ville b = agg.getVille(sc.next().charAt(0)) ; //retourne une ville ou retourne null si la ville n'a pas été trouvée
-					} catch(Exception e) {
-						System.out.println(e);
-					}
-					try {
-						agg.ajouterRoute('a','b');
-					} catch(Exception e) {
-						System.out.println(e) ;
-					}
-				case 2:
-				case 3:
+					break ;
+				case 2 :
+					System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"+(agg.estConnexe()?"Oui !\n\n":"Non ! Continuez d'ajouter des routes")) ;
+					System.out.println(choice) ;
+					break ;
+				case 3 :
 					System.out.println("Fin du programme.") ;
 					sc.close();
 					System.exit(0) ;
+					break ;
+				default : 
+					System.out.println("Choix incorrect.") ;
+					break ;
 			}
-		} while (!agg.estConnexe() && (choice != 2)) ; //ce serait bien qu'ici l'utilisateur sache si la ville est connexe ou non.
-		
-		System.out.println("Toutes vos villes sont accessibles.") ;
+			exit = (choice == 2) && agg.estConnexe() ;
+			
+		} while (!exit) ; //tant que la ville n'est pas connexe et que l'utilisateur ne veut pas sortir
+
 		System.out.println(agg.toString()) ;
 		
 		/* On cr�e ici le 2eme menu qui va permettre � l'utilisateur de soit: 1/ajouter une ecole 2/retirer une ecole 3/ fin.
@@ -99,34 +116,36 @@ public class Main {
 		 */
 		
 		while (choice != 3){ 
-			System.out.println("1-ajouter une ecole");
-			System.out.println("2-retirer une ecole");
-			System.out.println("3-fin");	
-			System.out.println("Veuillechoice entrer votre choix");
+			System.out.println("\n  - Menu 2 - ") ;
+			System.out.println("1 - ajouter une ecole");
+			System.out.println("2 - retirer une ecole");
+			System.out.println("3 - fin");	
+			System.out.print("Veuillez entrer votre choix : ");
+			choice = sc.nextInt() ;
 			
-			switch(choice){ // La variable choix permet de stocker le choix de l'utilisateur pour le menu
-			
-			case 1:
-				System.out.println("Entrez la ville dans laquelle vous souhaitez ajouter une �cole" );
-				try {
-				agg.ajouterEcole(sc.next().charAt(0));
-				} catch(Exception e) {
-					System.out.println(e);
-				}
+			switch(choice) {
+				case 1 :
+					System.out.println("Entrez la ville dans laquelle vous souhaitez ajouter une ecole" );
+					try {
+						agg.ajouterEcole(sc.next().charAt(0));
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+					break ;
+				case 2:
+					System.out.println("Entrez la ville dans laquelle vous souhaitez retirer une ecole" );
+					try {
+						agg.retirerEcole(sc.next().charAt(0));
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+					break ;
+				case 3:
 				agg.afficheVilleAEcole();
-			case 2:
-				System.out.println("Entrez la ville dans laquelle vous souhaitez retirer une �cole" );
-				try {
-				agg.retirerEcole(sc.next().charAt(0));
-				} catch(Exception e) {
-					System.out.println(e);
-				}
-				agg.afficheVilleAEcole();
-			case 3:
-				
-				agg.afficheVilleAEcole();
-				System.out.println("fin du programme");
 			}
+			System.out.println("Bilan : \n"+agg.toString()+"\nLes écoles sont dans les villes suivantes : ") ;
+			System.out.println("Liste des routes de l'agglomération :\n"+agg.afficherRoutes()) ;
+			System.out.println("Sortie du programme.") ;
 		}
 		sc.close();
 	}

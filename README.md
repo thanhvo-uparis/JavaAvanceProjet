@@ -2,7 +2,7 @@
 
 Version : 1.0 
 Auteurs : Baptista Anthony, thanh-vo, Trividic Yann 
-Dépôt GitHub du projet : https://github.com/thanhvo-uparis/JavaAvanceProjet
+Dépôt GitHub du projet : ![https://github.com/thanhvo-uparis/JavaAvanceProjet](https://github.com/thanhvo-uparis/JavaAvanceProjet)
 Date de debut : 12/10/2020
 
 
@@ -18,7 +18,8 @@ Pour pouvoir utiliser ce programme, veuillez suivre les instructions suivantes a
 
 **Protocole d'installation du programme** :
 Une fois la configuration necessaire installee, vous devez telecharger le projet. Une fois la configuration necessaire installee, vous devez telecharger le projet. Creez un nouveau Java Project du nom de votre choix (`File > New Project... > Java > Java Project`). Une fois le projet cree, vous devez importer l'archive `JAR` dans celui-ci. Clic droit sur le projet `Import... > General > Archive File` selectionnez l'archive, puis votre projet. Vous pouvez maintenant executer l'un des programmes.
-Si cela ne fonctionne pas, vous pouvez alternativement cloner le depot GitHub depuis Eclipse. Pour se faire, apres avoir cree un nouveau projet, faites `File > Import... Projects from Git (with smart import) > Clone URI` et remplissez le champ avec https://github.com/thanhvo-uparis/JavaAvanceProjet. Le projet s'installe ensuite facilement.
+
+Si cela ne fonctionne pas, vous pouvez alternativement cloner le depot GitHub depuis Eclipse. Pour importer le projet, faites `File > Import... Projects from Git (with smart import) > Clone URI` et remplissez le champ avec ![https://github.com/thanhvo-uparis/JavaAvanceProjet](https://github.com/thanhvo-uparis/JavaAvanceProjet). Le projet s'installe ensuite facilement.
 
 
 **Protocole d'installation du programme :**

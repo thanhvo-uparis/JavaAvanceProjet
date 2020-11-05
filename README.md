@@ -1,70 +1,58 @@
-# JavaAvanceProjet
+# JavaAvanceProjet : Construction d'√©coles
 
-Programme de construction  d'Ècoles :
+Version : 1.0 
+Auteurs : Baptista Anthony, thanh-vo, Trividic Yann 
+GitHub du projet : https://github.com/thanhvo-uparis/JavaAvanceProjet
+Date de d√©but : 12/10/2020
+
+Programme de construction  d'ecoles :
 
 Pour pouvoir utiliser ce programme, veuillez suivre les instructions suivantes afin de le configurer correctement et d'en avoir une utilisation optimale.
 
-Configuration recommandÈe (FabriquÈ avec):
+Configuration recommandee (d√©velopp√© avec) :
+
+	IDE Eclipse 2020-09
+	JAVA SE.12
+	Windows 10 ou Ubuntu 18.04
+
+Protocole d'installation du programme :
+Une fois la configuration necessaire installee, vous devez telecharger le projet.
+Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from File System` puis s√©lectionnez le projet).
+
+Protocole de lancement du programme :
+Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
+
+//ici, pr√©ciser qu'il y a deux mains, expliquer en quoi consiste Test (tu peux copier le texte que j'ai fait dans le diagramme UML) 
+//ensuite il faut expliquer comment param√©trer Eclipse pour que l'un ou l'autre se lance (sachant que Test prend deux arguments)
 
 
-IDE Eclipse 2020-09
-JAVA SE.12
-Windows 10 
+**Execution du programme :**
 
-Protocole d'installation du programme:
-Une fois la configuration nÈcessaire installÈe, vous devez tÈlÈcharger le projet.
-Ensuite, ouvrez le projet directement sur eclipse(File > Open projects From File Systeme puis choisissez le projet).
-
-Protocole de lancement du programme:
-Le projet Ètant chargÈ dans Eclipse, il ne reste plus qu'‡ le lancer via le bouton Run.
-
-Execution du programme:
-
-Maintenant que le programme est lancÈ, il ne vous reste plus qu'‡ l'utiliser correctement. 
+Maintenant que le programme est lance, il ne vous reste plus qu'a l'utiliser correctement. 
 
 Voici un bref descriptif de son fonctionnement:
 
-Dans un premier temps rentrez le nombres de villes dans l'agglomÈration(attention, ce nombre doit Ítre compris entre 1 et 26).
-Une fois le nombre de villes rntrÈes on vous donnera la possibilitÈ de relier les villes via des routes.
+Dans un premier temps rentrez le nombres de villes dans l'agglomeration (attention, ce nombre doit etre compris entre 1 et 26).
+Une fois le nombre de villes rentrees, le programme vous donnera la possibilite de relier les villes via des routes.
 
 Vous avez un menu permettant soit d'ajouter une route soit de terminer l'ajout de routes soit de quitter le programme.
-Vous devrez donc saisir une premiere ville( elle doit etre valide)puis une deuxieme ville (elle doit aussi etre valide).
-Ces deux routes seront alors reliÈes entre elles.
-Pour pouvoir valider que l'ajout de routes est terminÈ, toutes les villes doivent Ítre reliÈes entre elles.
+Vous devrez donc saisir une premiere ville (elle doit etre dans l'agglomeration) puis une deuxieme ville (elle doit aussi etre valide).
 
-Maintenant que toutes les routes ont ÈtÈ ajoutÈes, vous arrivez sur un menu qui vous permet d'ajouter ou retirer une Ècole ou de terminer.
-Si vous ajoutez une ecole, rentrez le nom de la ville dans laquelle rajouter une Ècole, si la ville possËde deja une Ècole elle ne sera pas ajoutÈe.
-Si vous retirez une Ècole, rentrez le nom de l'Ècole dans laquelle retirer une Ècole, si la ville ne possËde pas d'Ècole, elle ne sera pas retirÈe. Si le retrait de cette Ècole ne respecte pas la contrainte d'accessibilitÈ, alors elle ne sera pas retirÈe non plus.
-A la fin de chaque action, les villes possÈdant des Ècoles seront affichÈes.
+Ces deux routes seront alors reliees entre elles.
+Pour pouvoir valider que l'ajout de routes est termine, toutes les villes doivent etre reliees entre elles.
 
-Une fois que vous Ítes satisfait vous n'avez plus qu'a terminer le programme.
+Maintenant que toutes les routes ont ete ajoutees, vous arrivez sur un menu qui vous permet d'ajouter ou retirer une ecole ou de terminer.
+Si vous voulez ajouter une ecole, rentrez le nom de la ville dans laquelle ajouter une ecole, si la ville possede deja une ecole elle ne sera pas ajoutee.
+Si vous voulez retirer une ecole, rentrez le nom de l'ecole dans laquelle retirer une ecole, si la ville ne possede pas d'ecole, elle ne sera pas retiree. Si le retrait de cette ecole ne respecte pas la contrainte d'accessibilite, alors elle ne sera pas retiree non plus.
+A la fin de chaque action, les villes possedant des ecoles seront affichees.
 
-
-Version: 1.0 
-
-Auteurs:
-
-@Baptista anthony
-@thanh-vo
-@Trividic Yann 
-
-GitHub du projet:
-
-https://github.com/thanhvo-uparis/JavaAvanceProjet
- 
+Une fois que vous etes satisfait vous n'avez plus qu'a terminer le programme.
 
 
 
+**Quelques informations contextuelles :**
 
-
-
-
-
-
-
-/*Projet, date d√©but 12/10/2020, Construction d'√©coles 
-
-Probl√®me de th√©orie des graphes.
+Il s'agit d'un probl√®me de th√©orie des graphes.
 Dans le cadre d'une politique ambitieuse concernant l'√©ducation, un √©lu souhaite construire de nouvelles √©coles, modernes, dans la communaut√© d'agglom√©ration dont il est responsable. Durant la campagne √©lectorale, il a promis deux choses :
 
 - Accessibilit√© : Chaque ville doit poss√©der son √©cole, ou √™tre directement reli√©e √† une ville qui poss√®de une √©cole.
@@ -80,8 +68,6 @@ Il nous demande de l'aider en d√©veloppant un logiciel qui permet :
 - Le co√ªt est estim√© en fonction du nombre d'√©coles √† construire.
 
 
-
-
 Ce probl√®me est un probl√®me de th√©orie des graphes. Il s'agit de repr√©senter la communaut√© d'agglom√©ration avec un graphe dont les sommets seraient les villes et les ar√™tes seraient les routes qui relient les villes entre-elles.
 
 Ainsi, le probl√®me peut se traduire de la mani√®re suivante :
@@ -95,4 +81,3 @@ Ainsi, le probl√®me peut se traduire de la mani√®re suivante :
 Les questions auxquelles il faut r√©pondre :
 - Quelle est la meilleure mani√®re de repr√©senter ce graphe ? (matrice d'adjacence, liste d'ar√™tes, liste d'adjacence ?)
 - Quel algorithme appliquer pour pond√©rer de mani√®re optimale le graphe ? Potentiellement ranger les sommets par degr√©s d√©croissants et pond√©rer ainsi ? 
-*/

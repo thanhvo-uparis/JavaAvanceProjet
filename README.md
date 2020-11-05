@@ -37,6 +37,8 @@ Ensuite, ouvrez le projet directement sur eclipse(File > Open projects From File
 Protocole de lancement du programme:
 
 Le projet étant chargé dans Eclipse, il ne reste plus qu'à le lancer via le bouton Run.
+Vous aurez ici le choix entre 2 fonctions main: Test ou Main.
+Vous devez sélectionner la fonction Main.
 
 Execution du programme:
 

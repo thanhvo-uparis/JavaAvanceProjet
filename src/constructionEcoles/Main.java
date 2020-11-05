@@ -9,9 +9,11 @@ public class Main {
 	//On demande � l'utilisateur un nombre de villes qui servira � construire l'agglom�ration. Ce nombre doit etre compris entre 1 et 26 auquel cas on affiche une erreur.//
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Entrechoice un nombre de villes ");
+		System.out.println("Entrez un nombre de villes entre 1 et 26");
+		do {
 		Agglomeration agg = new Agglomeration(sc.nextInt());
-		//Il faut que tu ajoutes ici une sécurité dans le cas où l'utilateur rentre une valeur erronée
+		} while((sc.nextInt()) < 1 || (sc.nextInt()) > 26 );
+		//Tant que le nombre n'est pas compris entre 1 et 26, on demande � l'utilisateur de saisir un nombre.
 		
 		
 		/* On cr�e ici le 1er menu qui va nous afficher les choix suivants : 1/ajouter une route ou 2/fin.
@@ -23,8 +25,10 @@ public class Main {
 		 
 		   Si on choisit fin, une v�rification est faite pour s'assurer que toutes villes sont reli�es. On utilise pour cela la fonction boolean estConnexe.
 		   Si ce n'est pas le cas, on affiche un message d'erreur � l'utilisateur afin qu'il continue. 
+		   
+		   La variable choice 
 		*/
-		break;
+		
 		
 		int choice = 0;
 		BufferedReader syl1 = new BufferedReader (new InputStreamReader(System.in));
@@ -38,13 +42,22 @@ public class Main {
 			switch(choice) {
 				case 1:
 					//A MODIFIER tant que "Ville a" est null, demander à nouveau une ville
-					System.out.println("Entrechoice-la première ville a relier : ");
-					Ville a = agg.hasVille(sc.next().charAt(0)) ; //retourne une ville ou retourne null si la ville n'a pas été trouvée
-					
-					//Faire de même pour la seconde ville, Ville b ;
-					Ville b = agg.hasVille(sc.next().charAt(0)) ; //retourne une ville ou retourne null si la ville n'a pas été trouvée
+					System.out.println("Entrez la première ville a relier : ");
 					try {
-						agg.ajouterRoute(a, b);
+					Ville a = agg.getVille(sc.next().charAt(0)) ; //retourne une ville ou retourne null si la ville n'a pas été trouvée
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+					//Faire de même pour la seconde ville, Ville b ;
+					
+					System.out.println("Entrez la deuxieme ville a relier : ");
+					try {
+					Ville b = agg.getVille(sc.next().charAt(0)) ; //retourne une ville ou retourne null si la ville n'a pas été trouvée
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+					try {
+						agg.ajouterRoute(a,b);
 					} catch(Exception e) {
 						System.out.println(e) ;
 					}
@@ -77,6 +90,7 @@ public class Main {
 			switch(choice){ //Je te laisse t'occuper de calquer ce qui a été dans le premier menu
 			
 			case 1:
+				System.out.println( )
 				agg.ajouterEcole(nextVille);
 				agg.afficheVilleAEcole();
 			case 2:

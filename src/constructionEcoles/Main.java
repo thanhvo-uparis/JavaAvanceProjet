@@ -4,13 +4,13 @@ import java.util.Scanner;
 import java.util.InputMismatchException ;
 
 /**
- * La classe Main va permettre à l'utilisateur de modéliser son agglomération en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
- * 1) instancier une agglomération de n villes.
- * 2) relier les villes entre elles à l'aide de routes. L'utilisateur peut relier autant de villes qu'il le souhaite tant que celles-ci ne sont pas reliées toutes reliées deux à deux par une route. Une fois qu'il existe au moins un chemin reliant chaque couple de villes, l'utilisateur peut : 
- * 		a. retirer des écoles tant que ce retrait satisfait la contrainte d'Accessibilité*.
- * 		b. ajouter des écoles si la ville n'en a pas déjà une. (Pour le moment, la contrainte d'économie n'est pas respectée.) 
- * A chaque fois que l'utilisateur retire ou ajoute une école, on affiche la liste des villes contenant des écoles.
- * A la fin du programme, la liste des villes contenant des écoles est affichées, avec la liste des routes les reliant.
+ * La classe Main va permettre a l'utilisateur de modeliser son agglomeration en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
+ * 1) instancier une agglomeration de n villes.
+ * 2) relier les villes entre elles a l'aide de routes. L'utilisateur peut relier autant de villes qu'il le souhaite tant que celles-ci ne sont pas reliees toutes reliees deux a deux par une route. Une fois qu'il existe au moins un chemin reliant chaque couple de villes, l'utilisateur peut : 
+ * 		a. retirer des ecoles tant que ce retrait satisfait la contrainte d'Accessibilite*.
+ * 		b. ajouter des ecoles si la ville n'en a pas deja une. (Pour le moment, la contrainte d'economie n'est pas respectee.) 
+ * A chaque fois que l'utilisateur retire ou ajoute une ecole, on affiche la liste des villes contenant des ecoles.
+ * A la fin du programme, la liste des villes contenant des ecoles est affichees, avec la liste des routes les reliant.
  * @author Anthony Baptista
  * @author Yann Trividic
  * @version 1.0
@@ -35,15 +35,12 @@ public class Main {
 		}
 		
 		Agglomeration agg = new Agglomeration(nbVilles);
-		System.out.println("Creee : "+agg.toString()+"\nLes écoles sont dans les villes suivantes : ");
+		System.out.println("Creee : "+agg.toString()+"\nLes ecoles sont dans les villes suivantes : ");
 		agg.afficheVilleAEcole() ;
-		
-		
-	
 		
 		/* On cree ici le 1er menu qui va nous afficher les choix suivants : 
 		 * 1/ ajouter une route
-		 * 2/ j'ai rentré toutes mes routes" 
+		 * 2/ j'ai rentre toutes mes routes" 
 		 * 3/ fin
 		 
 		   La boucle while permet de verifier que l'agglomeration est connexe, c'est-a-dire qu'elle verifie que toute les villes sont reliees par au minimum une route.
@@ -55,14 +52,13 @@ public class Main {
 		   Si ce n'est pas le cas, on affiche un message d'erreur a l'utilisateur afin qu'il continue. 
 		*/
 		
-		
 		int choice = 0; 
 		boolean exit ;
 		
 		do {
 			System.out.println("\n  - Menu 1 - ") ;
 			System.out.println("1 - ajouter une route");
-			System.out.println("2 - j'ai rentré toutes mes routes");
+			System.out.println("2 - j'ai rentre toutes mes routes");
 			System.out.println("3 - fin du programme\n") ;
 			System.out.print("Veuillez entrer votre choix : ");
 			try {
@@ -74,22 +70,22 @@ public class Main {
 			}
 			switch(choice) {
 				case 1 :
-					//A MODIFIER tant que "Ville a" est null, demander à nouveau une ville
+					//A MODIFIER tant que "Ville a" est null, demander a nouveau une ville
 					try {
-						System.out.print("Entrez la première ville a relier : ");
+						System.out.print("\nEntrez la cle de la premiere ville a relier : ");
 						char a = sc.next().charAt(0) ; //retourne une ville
-						System.out.print("Entrez la deuxieme ville a relier : ");
+						System.out.print("Entrez la cle de la deuxieme ville a relier : ");
 						char b = sc.next().charAt(0) ; //retourne une ville
 						System.out.println(a+" "+b) ;
 						agg.ajouterRoute(a, b) ;
-						System.out.println("Liste des routes de l'agglomération :\n"+agg.afficherRoutes()) ;
+						System.out.println("Liste des routes de l'agglomeration :\n"+agg.afficherRoutes()) ;
 					} catch(Exception e) {
 						System.out.println(e);
 					}
 					break ;
 				case 2 :
 					System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"+(agg.estConnexe()?"Oui !\n\n":"Non ! Continuez d'ajouter des routes")) ;
-					System.out.println(choice) ;
+					//System.out.println(choice) ;
 					break ;
 				case 3 :
 					System.out.println("Fin du programme.") ;
@@ -121,9 +117,10 @@ public class Main {
 				sc.next();
 				choice = 4 ;
 			}
+			
 			switch(choice) {
 				case 1 :
-					System.out.println("Entrez la ville dans laquelle vous souhaitez ajouter une ecole" );
+					System.out.println("Entrez la cle de la ville dans laquelle vous souhaitez ajouter une ecole" );
 					try {
 						agg.ajouterEcole(sc.next().charAt(0));
 					} catch(Exception e) {
@@ -132,7 +129,7 @@ public class Main {
 					break ;
 					
 				case 2:
-					System.out.println("Entrez la ville dans laquelle vous souhaitez retirer une ecole" );
+					System.out.println("Entrez la cle de la ville dans laquelle vous souhaitez retirer une ecole : " );
 					try {
 						agg.retirerEcole(sc.next().charAt(0));
 					} catch (Exception e) {
@@ -141,16 +138,20 @@ public class Main {
 					break ;
 					
 				case 3:
-					agg.afficheVilleAEcole();
 					break ;
+					
 				default : 
 					System.out.println("Choix incorrect.") ;
 					break ;
 			}
-			System.out.println("Bilan : \n"+agg.toString()+"\nLes écoles sont dans les villes suivantes : ") ;
-			System.out.println("Liste des routes de l'agglomération :\n"+agg.afficherRoutes()) ;
-			System.out.println("Sortie du programme.") ;
+			System.out.println("Les ecoles sont dans les villes suivantes : ") ;
+			agg.afficheVilleAEcole();
 		}
+		System.out.println("\nBilan : \n"+agg.toString()+"\nLes ecoles sont dans les villes suivantes : ") ;
+		agg.afficheVilleAEcole();
+		System.out.print("Liste des routes de l'agglomeration :\n"+agg.afficherRoutes()) ;
+		System.out.println("Contrainte accessibilite respectee ? "+(agg.respecteAccessibilite()?"Oui.":"Non.")) ;
+		System.out.println("Sortie du programme.") ;
 		sc.close();
 	}
 }

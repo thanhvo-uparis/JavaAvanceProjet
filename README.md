@@ -24,15 +24,15 @@ Ensuite, ouvrez le projet directement sur Eclipse (`File > Open Projects from Fi
 
 **Protocole de lancement du programme :**
 Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
-Vous aurez ici le choix entre 2 fonctions main: Test ou Main.
+Vous aurez ici le choix entre deux fonctions programme : `Test` ou `Main`.
 
-La classe `Test` permet de tester les differents cas de figure pouvant se presenter a l'execution du programme. Elle permet de passer en argument `nbVilles` (le nombre de villes constituant l'Agglomeration a tester) et `nbOperations` (le nombre d'opérations ajout ou retraits d'école qui sera effectué).
+* __La classe__  `Test` permet de tester les differents cas de figure pouvant se presenter a l'execution du programme. Elle permet de passer en argument `nbVilles` (le nombre de villes constituant l'Agglomeration a tester) et `nbOperations` (le nombre d'opérations ajout ou retraits d'école qui sera effectué).
 Le programme relie aleatoirement des Ville jusqu'a ce que l'agglomeration soit connexe.
 Puis execute "n" operations sur ces villes (ajout d'ecoles, retraits d'ecoles).
 Toutes les operations sont affichees pour permettre de comprendre l'execution du programme pas a pas.
 Si vous voulez lancer la classe `Test`, il faut parametrer les deux arguments : clic droit sur `Test.java` puis `Run As... > Run Configurations...`. Un menu s'ouvre : aller dans l'onglet `Arguments` et dans le champ `Program arguments` rentrez deux entiers naturels : le premier est `nbVilles` et le second `nbOperations`. Ils doivent être séparés par une espace.
 
-Si vous voulez executer la classe `Main`, cliquez sur `Run As... > Java Application` puis selectionnez ensuite `Main`.
+* __Pour la classe__  `Main`, cliquez sur `Run As... > Java Application` puis selectionnez ensuite `Main`.
 
 
 **Execution du programme**:

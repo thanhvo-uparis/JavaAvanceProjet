@@ -266,17 +266,55 @@ public class Agglomeration {
 		StringBuilder sb = new StringBuilder() ;
 		// TODO Reflechir sur cet algo, qui est celui cense etre celui qui sera plus optimise que ceux proposes dans le pdf
 		
-		//	Premiere idee :
-		//
-		//	Dans un premier temps, placer des ecoles dans toutes les villes qui devront forcement en accueillir.
-		//	Cela concerne toutes les villes voisines de villes de degre 1 (c'est-a-dire les villes accessibles uniquement via une route)
-		//	
-		//	Dans un second temps, tant que la contrainte d'accessibilite n'est pas remplie : 
-		//		On cherche la ville pour laquelle l'ajout d'une ecole permettrait au plus grand nombre de ville d'acceder a une ecole
-		//		Ajout d'une ecole dans la ville trouvee
-		//	
-		//	Question : 	est-ce qu'il existe des cas ou le resultat obtenu ne serait pas optimal ?
-		//				dans le cas ou on a le choix entre x villes a l'etape 2, comment choisir une ville en particulier ?
+		/*
+		
+		Premiere idee (algorithme glouton) :
+		
+				faut-il trier les villes au préalable ? Selon quel critère ? degré ? le bénéfice que l'ajout d'une école impliquerait ?
+
+				Dans un premier temps, parcourir toutes les villes et placer des ecoles dans les villes qui devront forcément en accueillir.
+				Cela concerne toutes les villes voisines de villes de degre 1 (c'est-a-dire les villes accessibles uniquement via une route)
+				ajouter les villes de degré 2 qui n'ont pas d'école dans une liste. les retirer de cette liste si on leur met une école au passage
+				
+				Dans un second temps, tant que la contrainte d'accessibilite n'est pas remplie : 
+				On cherche la ville pour laquelle l'ajout d'une ecole permettrait au plus grand nombre de villes d'acceder a une ecole
+				Ajout d'une ecole dans la ville trouvee, retrait de cette école de la liste
+				
+				Question : 	est-ce qu'il existe des cas ou le resultat obtenu ne serait pas optimal ?
+				dans le cas ou on a le choix entre x villes a l'etape 2, comment choisir une ville en particulier ? Vérifier si ce choix influe empiriquement
+			
+				faire attention à ne pas faire plein de loops pour rien. Faire attention à limiter la complexité
+				rechercher dans des bouquins, optimisation, contraintes 
+				tester la complexité de l'algorithme
+				vérifier si le résultat est optimal
+		
+		
+		Seconde idée :
+		
+				Representer le graphe sous la forme d'une matrice d'adjacence
+				La solution de la répartition des écoles se trouverait en résolvant un système de type MX = (ai) avec a_i * x_i >= 1 et la somme des x_i est minimale
+				avec M la matrice d'adjacence, X un vecteur contenant des 0 ou des 1 (école ou pas école).
+				Le fait que tous les termes de MX soient non nuls signifie que la contrainte d'accessibilité est respectée.
+				Le fait que la somme des ai est minimale signifie que la contrainte d'économie est respectée.
+				
+				Question : comment minimiser X ?
+				
+				
+				Alternativement, utiliser la fonction quadratique associée à M puis résoudre le système obtenu ?
+		
+		
+		Troisieme idée :
+			
+				Travailler avec une forme "minimale" et bipartite du graphe. C'est-à-dire que le graphe serait divisé en deux sous-graphes O et N tels que 
+				O représente l'ensemble des sommets possédant une école et N l'ensemble des sommets ne possédant pas d'écoles.
+				O doit contenir le moins d'éléments possible, et N le plus d'éléments possible : contrainte d'économie
+				le graphe est bipartite : contrainte d'accessibilité
+				
+				Question : comment minimiser le graphe bipartite ? 
+				D'après https://stackoverflow.com/questions/20107645/minimizing-number-of-crossings-in-a-bipartite-graph,
+				ce genre de problème est NP-difficile
+		
+		*/
 		
 		return sb.toString() ;
 	}

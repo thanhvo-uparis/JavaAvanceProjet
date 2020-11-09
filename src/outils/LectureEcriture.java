@@ -7,6 +7,6 @@ public class LectureEcriture {
 		return new Agglomeration() ;
 	}
 	
-	public static void ecritureVersFichier(String chemin) {
+	public static void ecritureVersFichier(String chemin, Agglomeration agg) {
 	}
 }

@@ -81,28 +81,7 @@ public class Agglomeration {
 			System.out.println("La ville "+a.getKey()+" est deja dans l'agglomeration.");
 		}
 	}
-	
-	/**
-	 * Methode implementant l'algorithme principal de la classe permettant une repartition optimisee des 
-	 * ecoles dans l'agglomeration.
-	 * @return	un string contenant la liste des villes dans lesquelles seront construites des ecoles de maniere 
-	 * 		 	a ce que les contraintes economiques et d'accessibilite soient respectees en limitant les couts
-	 */
-	public String placerEcoles() {
-		StringBuilder sb = new StringBuilder() ;
-		//Premiere idee :
-		//
-		//	Dans un premier temps, placer des ecoles dans toutes les villes qui devront forcement en accueillir.
-		//	Cela concerne toutes les villes voisines de villes de degre 1 (c'est-a-dire les villes accessibles uniquement via une route)
-		//	
-		//	Dans un second temps, tant que la contrainte d'accessibilite n'est pas remplie : 
-		//		On cherche la ville pour laquelle l'ajout d'une ecole permettrait au plus grand nombre de ville d'acceder a une ecole
-		//		Ajout d'une ecole dans la ville trouvee
-		//	
-		//	Question : 	est-ce qu'il existe des cas ou le resultat obtenu ne serait pas optimal ?
-		//				dans le cas ou on a le choix entre x villes a l'etape 2, comment choisir une ville en particulier ?
-		return sb.toString() ;
-	}
+
 	
 	/**
 	 * Methode permettant d'ajouter une route entre deux villes dans le cas ou celles-ci ne seraient pas deja reliees
@@ -262,5 +241,41 @@ public class Agglomeration {
 	@Override
 	public String toString() {
 		return("Agglomeration de "+villes.size()+" villes et "+nbEcoles()+" ecoles.") ;
+	}
+	
+	public int algorithmeApproximationNaif() {
+		int nbEcoles = nbEcoles() ;
+		// TODO implementer l'algo du pdf
+		return nbEcoles ;
+	}
+	
+	public int algorithmeApproximationUnPeuMoinsNaif() {
+		int nbEcoles = nbEcoles() ;
+		// TODO implementer l'algo du pdf
+		return nbEcoles ;
+	}
+	
+	
+	/**
+	 * Methode implementant l'algorithme principal de la classe permettant une repartition optimisee des 
+	 * ecoles dans l'agglomeration.
+	 * @return	un string contenant la liste des villes dans lesquelles seront construites des ecoles de maniere 
+	 * 		 	a ce que les contraintes economiques et d'accessibilite soient respectees en limitant les couts
+	 */
+	public String placerEcoles() {
+		StringBuilder sb = new StringBuilder() ;
+		// TODO Reflechir sur cet algo, qui est celui cense etre celui qui sera plus optimise que ceux proposes dans le pdf
+		//Premiere idee :
+		//
+		//	Dans un premier temps, placer des ecoles dans toutes les villes qui devront forcement en accueillir.
+		//	Cela concerne toutes les villes voisines de villes de degre 1 (c'est-a-dire les villes accessibles uniquement via une route)
+		//	
+		//	Dans un second temps, tant que la contrainte d'accessibilite n'est pas remplie : 
+		//		On cherche la ville pour laquelle l'ajout d'une ecole permettrait au plus grand nombre de ville d'acceder a une ecole
+		//		Ajout d'une ecole dans la ville trouvee
+		//	
+		//	Question : 	est-ce qu'il existe des cas ou le resultat obtenu ne serait pas optimal ?
+		//				dans le cas ou on a le choix entre x villes a l'etape 2, comment choisir une ville en particulier ?
+		return sb.toString() ;
 	}
 }

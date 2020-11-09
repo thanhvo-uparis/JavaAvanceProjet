@@ -265,7 +265,8 @@ public class Agglomeration {
 	public String placerEcoles() {
 		StringBuilder sb = new StringBuilder() ;
 		// TODO Reflechir sur cet algo, qui est celui cense etre celui qui sera plus optimise que ceux proposes dans le pdf
-		//Premiere idee :
+		
+		//	Premiere idee :
 		//
 		//	Dans un premier temps, placer des ecoles dans toutes les villes qui devront forcement en accueillir.
 		//	Cela concerne toutes les villes voisines de villes de degre 1 (c'est-a-dire les villes accessibles uniquement via une route)
@@ -276,6 +277,7 @@ public class Agglomeration {
 		//	
 		//	Question : 	est-ce qu'il existe des cas ou le resultat obtenu ne serait pas optimal ?
 		//				dans le cas ou on a le choix entre x villes a l'etape 2, comment choisir une ville en particulier ?
+		
 		return sb.toString() ;
 	}
 }

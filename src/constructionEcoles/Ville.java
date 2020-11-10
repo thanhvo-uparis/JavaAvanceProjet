@@ -114,6 +114,17 @@ public class Ville {
 		return voisins;
 	}
 	
+	public boolean aAccesEcole() {
+		return getHasEcole() || hasEcoleVoisins() ;
+	}
+	
+	public int beneficeSiAjoutEcole() {
+		int score = (aAccesEcole()?1:0) ;
+		for(Ville v : getVoisins()) if(v.aAccesEcole()) score++ ;
+		//score += (Math.random()-0.5)*0.01 ;	// si on veut randomiser, la fonction doit retourner un double
+		return score ;		
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder() ;

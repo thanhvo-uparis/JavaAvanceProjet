@@ -77,19 +77,19 @@ public class Algos {
 	 * Dans un second temps, tant que la contrainte d'Accessibilité n'est pas remplie, on extrait de la file de priorité la ville pour laquelle la 
 	 * construction d'une école bénéficierait le plus à l'agglomération, puis on actualise la file.
 	 * Au sortir de cet étape, le nombre d'écoles de l'agglomération est relativement proche du résultat optimal, voire est le résultat optimal.
-	 * @param agg						l'agglomération dont on cherche à réduire le nombre d'écoles. 
+	 * @param agg						l'agglomération dont on cherche à réduire le nombre d'écoles. Le graphe qui la représente peut-être non-connexe et orienté.
 	 * @param garderEcolesConstruites	booléen permettant de préciser si on souhaite garder ou non les écoles déjà présentes dans l'agglomération
 	 * @return							l'agglomération donnée en argument avec un nombre d'école minimisé
 	 */
 	public static Agglomeration algorithmeFilePriorite(Agglomeration agg, boolean garderEcolesConstruites) {
 		// TODO tester la validité de cet algorithme, sa complexité et vérifier empiriquement s'il permet de trouver le résultat optimal à chaque fois
 		// ^^^^^ à faire dans la classe Tester
-
+		
 		if(!garderEcolesConstruites) agg.clearEcole(); 	// on enlève toutes les écoles présentes. L'algorithme fonctionne si on décide de garder les écoles
 														// déjà construites. Le nombre d'écoles final risque cependant d'être supérieur.
 		
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles();
-		
+				
 		// On utilise une PriorityQueue dont le critère de comparaison est le nombre de villes qui bénéficieraient de l'ajout d'une ville dans la ville courante
 		PriorityQueue<Ville> p = new PriorityQueue<Ville>(villes.size(), Comparator.comparing(Ville::beneficeSiAjoutEcole).reversed());
 		// Pour randomiser les tests, si les algorithmes des PriorityQueue sont totalement déterministes,
@@ -97,22 +97,32 @@ public class Algos {
 		
 		for(Ville v : villes) { 							// cette boucle met une école dans les villes qui devront forcément contenir une école
 			ArrayList<Ville> voisins;
-			if((voisins = v.getVoisins()).size() == 1) { 	// c'est-à-dire les villes qui n'ont qu'un voisin
-				voisins.get(0).setHasEcole(true); 			// on ajoute le voisin des villes ayant un seul voisin dans une arraylist
-			} else {
+			if((voisins = v.getVoisins()).size() == 1) { 	// c'est-à-dire les villes qui n'ont qu'un voisin et qui n'ont pas déjà d'école construite
+				if(!v.getHasEcole()) voisins.get(0).setHasEcole(true);		// le 2e if sert dans le cas d'une agglomération de deux villes 
+			} else {														// ou qu'on a choisi de garder les écoles déjà construites
 				p.add(v); 									// si elles ont plus d'un voisin, on les ajoute dans la file de priorité
 			}
 		}
 		
-		p.removeIf((v) -> v.getHasEcole()); 				// une fois que c'est fait, on enlève de la file de priorité toutes les villes 
-															// auxquelles on a déjà ajouté une école. Ce n'est, je crois, pas possible de faire autrement
+		// Arrivés à ce point, soit on décide d'enlever toutes les villes ayant déjà des écoles construites avec cette ligne :
+		// p.removeIf((v) -> v.getHasEcole());
+		// soit on décide de garder les villes avec des écoles construites dans la file. La file aura donc plus d'éléments
+		// et les opérations pour réévaluer les ordres de priorité seront plus couteuses.
+		// Selon la forme du graphe, les deux choix peuvent être valides. S'il y a beaucoup de villes de degré 1,
+		// alors cela vaudrait le coup de retirer toutes les villes à écoles, sinon, cela ne vaut pas le coup.
+		// Pour l'instant, on va supposer que le nombre de villes de degré 1 est négligeable par rapport au nombre de villes total de l'agglo.
+		// On pourrait potentiellement améliorer la complexité en calculant le ratio nbVillesDeg1/nbVilles marquant la limite entre l'efficacite de
+		// la première méthode et l'efficacité de la seconde.
 		
-		while(!p.isEmpty() && !agg.respecteAccessibilite()) {	// tant que la file n'est pas vide et que la contrainte d'accessibilité n'est pas respectée
-			p.poll().setHasEcole(true);							// on défile et on ajoute une école dans la ville défilée.
-			if(!p.isEmpty()) p.add(p.remove()); 				// Ici, cela permet d'actualiser la file de priorité selon les nouveaux résultats du comparateur, 
-		}														// c'est çe qui est vraiment coûteux en temps de calcul dans l'algorithme.
-		 														// la complexité est apparemment améliorable avec un tas de Fibonacci
-		return agg;												// voir https://stackoverflow.com/questions/1871253/updating-java-priorityqueue-when-its-elements-change-priority
+		while(!agg.respecteAccessibilite()) {		// La file ne sera jamais vide alors que la contrainte d'accessibilité n'est pas respectée ;
+			Ville v = p.poll();						// tant que la contrainte d'accessibilité n'est pas respectée ...
+			if(!v.getHasEcole()) {					// ... on défile et on ajoute une école dans la ville défilée si elle n'en a pas déjà une. Sinon, on ne fait rien.
+				v.setHasEcole(true);
+				if(!p.isEmpty()) p.add(p.remove());	// permet d'actualiser la file de priorité selon les nouveaux résultats du comparateur, 
+			} 										// c'est çe qui est vraiment coûteux en temps de calcul dans l'algorithme donc on le fait uniquement quand la file doit
+		}											// être actualisée. La complexité est apparemment améliorable avec un tas de Fibonacci
+													// voir https://stackoverflow.com/questions/1871253/updating-java-priorityqueue-when-its-elements-change-priority
+		return agg;									
 	}
 	
 		/*

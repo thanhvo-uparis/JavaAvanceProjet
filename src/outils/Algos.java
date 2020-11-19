@@ -1,14 +1,23 @@
-package constructionEcoles;
+package outils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+
+import constructionEcoles.Agglomeration;
+import constructionEcoles.Ville;
+
+
+
 
 /**
  * Classe donnant l'accès à plusieurs algorithmes permettant de minimiser plus ou moins bien le nombre d'écoles d'une agglomération.
  * @author Yann Trividic
  * @version 1.0
  */
+
+// TODO On en arrive au point où le manque de visualisation commence à se faire sentir, 
+// pour installer JavaFX, voir https://www.eclipse.org/forums/index.php/t/1097505/
 
 // TODO Etant donné que fractionner la classe Agglo en deux implique de changer la visibilité de certaines méthodes
 // peut-être qu'il serait mieux que la classe Main soit dans un package complètement à part (afin que les protected ait du sens).

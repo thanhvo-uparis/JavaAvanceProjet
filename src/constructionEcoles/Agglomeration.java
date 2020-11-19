@@ -78,7 +78,7 @@ public class Agglomeration{
 		}
 	}
 
-	protected List<Ville> getVilles() {
+	public List<Ville> getVilles() {
 		return villes;
 	}
 	
@@ -162,7 +162,7 @@ public class Agglomeration{
 	
 	
 	//permet de supprimer toutes les ecoles de l'agglomeration
-	protected void clearEcole() {
+	public void clearEcole() {
 		for(Ville a : villes) a.setHasEcole(false);
 	}
 
@@ -205,7 +205,7 @@ public class Agglomeration{
 	
 
 	//retourne le nombre d'ecoles de l'agglomeration
-	protected int nbEcoles() {
+	public int nbEcoles() {
 		int c = 0;
 		for(Ville a : villes) {
 			if(a.getHasEcole()) c++;

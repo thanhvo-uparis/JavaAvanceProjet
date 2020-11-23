@@ -1,6 +1,9 @@
 package constructionEcoles;
 
 import java.util.Scanner;
+
+import outils.LectureEcriture;
+
 import java.util.InputMismatchException ;
 
 /**
@@ -19,6 +22,21 @@ import java.util.InputMismatchException ;
 public class Main {
 	public static void main(String[] args) {
 		
+		// Charger une agglomération
+		//		a) charger manuellement
+		//		b) charger à partir d'un fichier (LectureEcriture.lectureDepuisFichier("string") ;)
+		
+		// Autre menu :
+		// 1) résoudre manuellement
+		// 2) résoudre automatiquement 
+		//		a) laisser le choix de l'algorithme
+		//		b) appliquer l'algorithme par défaut
+		// 3) sauvegarder
+		// 4) tester la complexité des algorithmes avec la méthode Tester.compareAlgorithmes(Agglomeration agg)
+		// 5) fin
+		
+		//Mettre l'ancien main dans une méthode statique à part 
+		
 		Scanner sc = new Scanner(System.in);
 		
 		int nbVilles = 0 ;
@@ -28,7 +46,7 @@ public class Main {
 			try {
 				nbVilles = sc.nextInt(); 
 			} catch(InputMismatchException e) {
-				System.out.println("Il faut rentrer un int.") ;
+				System.err.println("Il faut rentrer un int.") ;
 				sc.next() ;
 				nbVilles = 0 ;
 			}
@@ -64,7 +82,7 @@ public class Main {
 			try {
 				choice = sc.nextInt() ;
 			} catch(InputMismatchException e) {
-				System.out.println("Il faut rentrer un int.") ;
+				System.err.println("Il faut rentrer un int.") ;
 				sc.next();
 				choice = 4 ;
 			}
@@ -80,7 +98,7 @@ public class Main {
 						agg.ajouterRoute(a, b) ;
 						System.out.println("Liste des routes de l'agglomeration :\n"+agg.afficherRoutes()) ;
 					} catch(Exception e) {
-						System.out.println(e);
+						System.err.println(e);
 					}
 					break ;
 				case 2 :
@@ -113,7 +131,7 @@ public class Main {
 			try {
 				choice = sc.nextInt() ;
 			} catch(InputMismatchException e) {
-				System.out.println("Il faut rentrer un int.") ;
+				System.err.println("Il faut rentrer un int.") ;
 				sc.next();
 				choice = 4 ;
 			}
@@ -124,7 +142,7 @@ public class Main {
 					try {
 						agg.ajouterEcole(sc.next().charAt(0));
 					} catch(Exception e) {
-						System.out.println(e);
+						System.err.println(e);
 					}
 					break ;
 					
@@ -133,7 +151,7 @@ public class Main {
 					try {
 						agg.retirerEcole(sc.next().charAt(0));
 					} catch (Exception e) {
-						System.out.println(e);
+						System.err.println(e);
 					}
 					break ;
 					
@@ -141,7 +159,7 @@ public class Main {
 					break ;
 					
 				default : 
-					System.out.println("Choix incorrect.") ;
+					System.err.println("Choix incorrect.") ;
 					break ;
 			}
 			System.out.println("Les ecoles sont dans les villes suivantes : ") ;

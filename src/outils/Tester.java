@@ -7,10 +7,34 @@ import constructionEcoles.Ville;
 public class Tester {
 	// cette classe va contenir les méthodes qui permettront de tester les algos. Il faut y mettre le contenu de la classe Test
 	
-	public static Agglomeration randomOperationsSurAgglo(int nbVilles, int nbOperations) {
+	private static final int k = 100 ;	// il s'agit du k de l'énoncé
+	
+	// liste des noms des méthodes, si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence.
+	private static final String [] algos = { "algorithmeApproximationNaif", 
+											 "algorithmeApproximationUnPeuMoinsNaif", 
+											 "algorithmeFilePriorite",
+											 "algorithmeParSoustraction" } ;
+	
+	private static void switchAlgo(int algo, Agglomeration agg) {
+		switch(algo) {
+		case 0 :
+			Algos.algorithmeApproximationNaif(k, agg) ;
+			break;
+		case 1 :
+			Algos.algorithmeApproximationUnPeuMoinsNaif(k, agg) ;
+			break;
+		case 2 :
+			Algos.algorithmeFilePriorite(agg, false) ;
+			break ;
+		case 3 :
+			Algos.algorithmeParSoustraction(agg) ;
+			break;
+		}
+	}
+	
+	private static Agglomeration randomOperationsSurAgglo(Agglomeration agg, int nbOperations) {
 				
-		Agglomeration agg = RandomAggloConnexeGenerateur(nbVilles) ;
-		String s = alphabetGen(nbVilles) ;
+		String s = alphabetGen(agg.getVilles().size()) ;
 		
 		System.out.println("L'agglomeration est connexe.") ;
 		
@@ -18,7 +42,7 @@ public class Tester {
 		for(int i = 0 ; i < nbOperations ; i++) {
 			try {
 				char c ;
-				c = s.charAt((int) Math.round(Math.random()*nbVilles)) ; //extrait un caractere aleatoire du string s
+				c = s.charAt((int) Math.round(Math.random()*agg.getVilles().size())) ; //extrait un caractere aleatoire du string s
 				System.out.println("\nChar : "+c) ;
 				Ville v = agg.getVille(c) ;
 				System.out.println("Ville : " +v.toString()) ;
@@ -38,7 +62,11 @@ public class Tester {
 		return agg ;
 	}
 	
-	public static Agglomeration RandomAggloConnexeGenerateur(int nbVilles) {
+	private static Agglomeration randomAggloConnexeGenerateur(int nbVilles) {
+		return randomAggloConnexeGenerateur(nbVilles, 0) ;
+	}
+	
+	private static Agglomeration randomAggloConnexeGenerateur(int nbVilles, int nbOperations) {
 		Agglomeration agg = new Agglomeration(nbVilles) ;
 				
 		System.out.println("Creation d'une agglomeration de "+nbVilles+" villes : " + agg.toString());
@@ -63,40 +91,31 @@ public class Tester {
 			}
 			System.out.println(agg.afficherRoutes()) ;
 		} while(!agg.estConnexe()) ;
+		
+		if(nbOperations > 0) agg = randomOperationsSurAgglo(agg, nbOperations) ;
+		
 		return agg ;
 	}
 	
 	//pour tester la complexité d'un algo en particulier
 	// voir https://www.techiedelight.com/measure-elapsed-time-execution-time-java/
-	public static ArrayList<Test> testComplexiteTousAlgos(int nbVillesMax) {
+	private static ArrayList<Test> testComplexiteTousAlgos(int nbVillesMax) {
 		
-		int nbAlgos = 3 ;
 		ArrayList<Test> tests = new ArrayList<Test>() ;
 				
-		for(int i = 0 ; i < nbAlgos ; i++) tests.add(testComplexiteAlgo(nbVillesMax, i)) ;
+		for(int i = 0 ; i < algos.length ; i++) tests.add(testComplexiteAlgo(nbVillesMax, i)) ;
 		return tests ;
 	}
 
-	public static Test testComplexiteAlgo(int nbVillesMax, int algo) {
+	private static Test testComplexiteAlgo(int nbVillesMax, int algo) {
 
-		int k = 100 ;
 		Test t = new Test() ;
 		
 		for(int j = 2 ; j < nbVillesMax ; j++) {
-			Agglomeration agg = RandomAggloConnexeGenerateur(j) ;
+			Agglomeration agg = randomAggloConnexeGenerateur(j) ;
 			long startTime = System.nanoTime();
 						
-			switch(algo) {
-			case 0 :
-				Algos.algorithmeApproximationNaif(k, agg) ;
-				break;
-			case 1 :
-				Algos.algorithmeApproximationUnPeuMoinsNaif(k, agg) ;
-				break;
-			case 2 :
-				Algos.algorithmeFilePriorite(agg, false) ;
-				break;
-			}
+			switchAlgo(algo, agg) ;
 	
 			long endTime = System.nanoTime();
 	
@@ -110,8 +129,25 @@ public class Tester {
 		}
 		return t ;
 	}
+	
+	private static Test testComplexiteAlgo(Agglomeration agg, int algo) {
+
+		Test t = new Test() ;
 		
-	public static String alphabetGen(int n) {
+		long startTime = System.nanoTime();
+			
+		switchAlgo(algo, agg) ;
+		
+		long endTime = System.nanoTime();
+		// get difference of two nanoTime values
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds  : " + timeElapsed);
+		System.out.println("Execution time in milliseconds : " + timeElapsed / 1000000);
+		
+		return t ;
+	}
+		
+	private static String alphabetGen(int n) {
 		StringBuilder sb = new StringBuilder() ;
 		for(char c = 'a'; c < 'a'+n; c++) sb.append(c) ; //le "+1" sert a ajouter une lettre qui ne sera pas dans les villes, pour forcer les erreurs
 		return sb.toString() ;
@@ -124,7 +160,7 @@ public class Tester {
 		for(int i = 2 ; i < nbVillesMax ; i++) {
 			System.out.println("\nnbVille = "+i+"+ : ");
 			for(Test t : tests) {
-				System.out.println("Algo "+c+" : "+t.toString(i)) ;
+				System.out.println("Algo "+algos[i]+" : "+t.toString(i)) ;
 				c++ ;
 			}
 		}
@@ -133,6 +169,13 @@ public class Tester {
 		for(Test t : tests) {
 			System.out.println("Algo "+c+" : getEcolePerVilles() = "+t.getEcolePerVilles()+", getAvgTime() = "+t.getAvgTime()) ;
 			c++ ;
+		}
+	}
+	
+	public static void compareAlgorithmes(Agglomeration agg) {
+		for(int i = 0 ; i < algos.length ; i++) {
+			Test t = testComplexiteAlgo(agg, i) ;
+			System.out.println("Algo "+algos[i]+" : "+t.toString(i)) ;
 		}
 	}
 }

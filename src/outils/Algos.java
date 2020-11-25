@@ -2,7 +2,9 @@ package outils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import constructionEcoles.Agglomeration;
 import constructionEcoles.Ville;
@@ -137,9 +139,9 @@ public class Algos {
 		/*
 		Seconde idée d'algo :
 		
-				Representer le graphe sous la forme d'une matrice d'adjacence
+				Representer le graphe sous la forme d'une liste d'adjacence
 				La solution de la répartition des écoles se trouverait en résolvant un système de type MX = (ai) avec a_i * x_i >= 1 et la somme des x_i est minimale
-				avec M la matrice d'adjacence, X un vecteur contenant des 0 ou des 1 (école ou pas école).
+				avec M la liste d'adjacence, X un vecteur contenant des 0 ou des 1 (école ou pas école).
 				Le fait que tous les termes de MX soient non nuls signifie que la contrainte d'accessibilité est respectée.
 				Le fait que la somme des a_i est minimale signifie que la contrainte d'économie est respectée.
 				
@@ -160,4 +162,91 @@ public class Algos {
 				ce genre de problème est NP-difficile
 		*/
 		
+	
+	
+	public static Agglomeration algorithmeParSoustraction(Agglomeration agg) {
+		
+			/* Structure générale de l'algorithme :
+			 * 
+			 * Agg une agglomération
+			 * Soit M la liste d'adjacence de l'agglomération
+			 * Soit F une file vide
+			 * 
+			 * Tant que la liste d'adjacence n'est pas totalement constituée de 0
+			 * 		Tant qu'il y a des sommets de degré 1 dans M
+			 * 			Ajouter toutes les villes de degré 1 dans F avec leurs voisins
+			 * 			Ajouter une école à tous les voisins des villes de degré 1	
+			 * 		 
+			 *		 	Tant que F n'est pas vide
+			 *				défiler F dans V
+			 *				pour chaque colonne de M mettre la Veme ligne à 0
+			 *
+			 *			Ajouter une école dans chaque ville de degré 0
+			 * 
+			 * 		Si la contrainte n'est pas totalement respectée dans Agg
+			 * 			Soit u la ville de plus haut degré
+			 * 			Ajouter une école dans u
+			 * 			pour chaque colonne de M mettre la Ueme ligne à 0
+			 */
+		
+		agg.clearEcole(); // la limitation de cette algorithme est qu'il ne fonctionne 
+						  // que dans le cas où il n'y a aucune école dans l'agglomération au départ
+		
+		// La liste d'adjacence est une shallow copy de l'objet villes. 
+		// Elle permet aussi d'optimiser la complexité de l'algo et d'en améliorer sa clarté.
+		ListeAdjacence la = new ListeAdjacence(agg.getVilles()) ;		
+		Queue<Character> file = new LinkedList<Character>() ;			// la file permet de stocker les villes en attendant
+																		// de les supprimer de la liste. Si on les supprimait directement,
+		while(!la.isEmpty()) {											// alors en résulterait potentiellement des villes de degré 0
+			
+			// On regarde dans un premier temps quelles sont les villes on est 
+			// sûrs de nécessiter une école, à savoir les villes n'ayant qu'un seul voisin.
+			Character [] degreUn = new Character[2] ;
+			// degreUn|0] correspond à la ville de degré 1
+			// degreUn|1] correspond à son voisin
+			while((degreUn = la.degreUnEtVoisin()) != null) {
+				try {
+					agg.getVille(degreUn[1]).setHasEcole(true);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				file.add(degreUn[0]) ;
+				if(!file.contains(degreUn[1])) file.add(degreUn[1]) ; 
+				
+				while(!file.isEmpty()) { 	// maintenant que toutes les écoles ont bien été ajoutées, 
+					Character c = file.poll();
+					la.removeVille(c); 		// on peut vider la HashMap proprement
+				}
+			}
+			
+			// Cette partie n'est pas foncièrement nécessaire mais elle permet de gagner en temps de calcul
+			// Si on la commente, le résultat serait identique mais on ferait globalement plus de tests pour
+			// finir l'exécution de l'algorithme avec des plusHautDegre égaux à 0.
+			Character degreZero = null ;
+			while((degreZero = la.degreZero()) != null) {
+				try {
+					agg.getVille(degreZero).setHasEcole(true);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				la.remove(degreZero); // on vide la HashMap
+			}
+			
+			// Dans le cas où il n'y a aucune ville de degré 1, il faut trouver une ville qui permettrait de débloquer
+			// la situation tout en répondant à la contrainte d'économie. La ville qui répond à ces exigences est 
+			// la ville de plus haut degré
+			if(!la.isEmpty()) {
+				Character u = la.plusHautDegre() ;
+				try {
+					agg.getVille(u).setHasEcole(true);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+				}
+				la.removeVille(u) ; // on vide la HashMap
+			}
+		}
+		return agg ;
+	}
 }

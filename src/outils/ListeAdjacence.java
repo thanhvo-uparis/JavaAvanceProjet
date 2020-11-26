@@ -2,15 +2,17 @@ package outils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import constructionEcoles.Ville;
 
 public class ListeAdjacence extends HashMap<Character, ArrayList<Character>> {
 	
 	private static final long serialVersionUID = 1L;
 
-	public ListeAdjacence(List<Ville> villes) {
+	protected ListeAdjacence(List<Ville> villes) {
 		super(villes.size()) ;
 		for(Ville v : villes) {
 			ArrayList<Character> voisins = new ArrayList<Character>(v.getVoisins().size()) ;
@@ -19,39 +21,31 @@ public class ListeAdjacence extends HashMap<Character, ArrayList<Character>> {
 		}
 	}
 	
-	public void removeVille(char key) {
-		this.remove(key);
+	protected void removeVilleEtVoisins(char key) {
+		for(ArrayList<Character> ville : this.values()) {
+			ville.remove(key) ;
+			for(Character voisin : this.get(key)) ville.remove(voisin) ;
+		}
+		this.remove(key) ;
+	}
+	
+	protected void degreZero(LinkedList<Character> file) {
 		Iterator<Map.Entry<Character, ArrayList<Character>>> it = this.entrySet().iterator();
 		while(it.hasNext()) {
 			Map.Entry<Character, ArrayList<Character>> pair = it.next() ;
-			pair.getValue().remove(key) ;
+			if(pair.getValue().isEmpty()) file.add(pair.getKey()) ;
 		}
 	}
-	
-	public boolean isEmpty() {
-		if(this.size() == 0) return true ;
-		return false ;
-	}
-	
-	public Character degreZero() {
+
+	protected void voisinsDegreUn(LinkedList<Character> file) {
 		Iterator<Map.Entry<Character, ArrayList<Character>>> it = this.entrySet().iterator();
 		while(it.hasNext()) {
 			Map.Entry<Character, ArrayList<Character>> pair = it.next() ;
-			if(pair.getValue().size() == 0) return pair.getKey() ;
-		}
-		return null ;
+			if(pair.getValue().size() == 1 && (!file.contains(pair.getValue().get(0)))) file.add(pair.getValue().get(0)) ;
+		}										// la deuxième condition permet d'éviter les doublons
 	}
-	
-	public Character[] degreUnEtVoisin() {
-		Iterator<Map.Entry<Character, ArrayList<Character>>> it = this.entrySet().iterator();
-		while(it.hasNext()) {
-			Map.Entry<Character, ArrayList<Character>> pair = it.next() ;
-			if(pair.getValue().size() == 1) return new Character [] {pair.getKey(), pair.getValue().get(0)} ;
-		}
-		return null ;
-	}
-	
-	public Character plusHautDegre() {
+
+	protected Character plusHautDegre() {
 		int max = 0 ;
 		Character maxC = null;
 		Iterator<Map.Entry<Character, ArrayList<Character>>> it = this.entrySet().iterator();
@@ -63,5 +57,19 @@ public class ListeAdjacence extends HashMap<Character, ArrayList<Character>> {
 			}
 		}
 		return maxC ;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder() ;
+		sb.append("Liste d'adjacence : "+this.size()+" villes\n") ;
+		Iterator<Map.Entry<Character, ArrayList<Character>>> it = this.entrySet().iterator();
+		while(it.hasNext()) {
+			Map.Entry<Character, ArrayList<Character>> pair = it.next() ;
+			sb.append(pair.getKey()+" : ") ;
+			for(Character v : pair.getValue()) sb.append(" "+v) ;
+			sb.append("\n") ;
+		}	
+		return sb.toString();
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import constructionEcoles.Agglomeration;
 import constructionEcoles.Ville;
+import constructionEcoles.exceptions.ExceptionVille;
 
 
 
@@ -136,103 +137,72 @@ public class Algos {
 		return agg;									
 	}
 	
-		/*
-		Seconde idée d'algo :
-		
-				Representer le graphe sous la forme d'une liste d'adjacence
-				La solution de la répartition des écoles se trouverait en résolvant un système de type MX = (ai) avec a_i * x_i >= 1 et la somme des x_i est minimale
-				avec M la liste d'adjacence, X un vecteur contenant des 0 ou des 1 (école ou pas école).
-				Le fait que tous les termes de MX soient non nuls signifie que la contrainte d'accessibilité est respectée.
-				Le fait que la somme des a_i est minimale signifie que la contrainte d'économie est respectée.
-				
-				Question : comment minimiser X ?
-				
-				Alternativement, utiliser la fonction quadratique associée à M puis résoudre le système obtenu ?
-		
-		
-		Troisieme idée d'algo :
-			
-				Travailler avec une forme "minimale" et bipartite du graphe. C'est-à-dire que le graphe serait divisé en deux sous-graphes O et N tels que 
-				O représente l'ensemble des sommets possédant une école et N l'ensemble des sommets ne possédant pas d'écoles.
-				O doit contenir le moins d'éléments possible, et N le plus d'éléments possible : contrainte d'économie
-				le graphe est bipartite : contrainte d'accessibilité
-				
-				Question : comment minimiser le graphe bipartite ? 
-				D'après https://stackoverflow.com/questions/20107645/minimizing-number-of-crossings-in-a-bipartite-graph,
-				ce genre de problème est NP-difficile
-		*/
-		
-	
-	
 	public static Agglomeration algorithmeParSoustraction(Agglomeration agg) {
 		
 			/* Structure générale de l'algorithme :
 			 * 
 			 * Agg une agglomération
-			 * Soit M la liste d'adjacence de l'agglomération
+			 * Soit L la liste d'adjacence de l'agglomération
 			 * Soit F une file vide
 			 * 
 			 * Tant que la liste d'adjacence n'est pas totalement constituée de 0
-			 * 		Tant qu'il y a des sommets de degré 1 dans M
+			 * 		Tant qu'il y a des sommets de degré 1 dans L
 			 * 			Ajouter toutes les villes de degré 1 dans F avec leurs voisins
 			 * 			Ajouter une école à tous les voisins des villes de degré 1	
 			 * 		 
 			 *		 	Tant que F n'est pas vide
 			 *				défiler F dans V
-			 *				pour chaque colonne de M mettre la Veme ligne à 0
+			 *				pour chaque entrée de L, retirer V et ses voisins de l'entrée
+			 *				retirer V de L
 			 *
 			 *			Ajouter une école dans chaque ville de degré 0
 			 * 
 			 * 		Si la contrainte n'est pas totalement respectée dans Agg
 			 * 			Soit u la ville de plus haut degré
 			 * 			Ajouter une école dans u
-			 * 			pour chaque colonne de M mettre la Ueme ligne à 0
+			 * 			pour chaque colonne de L mettre la u-ième ligne à 0
 			 */
 		
 		agg.clearEcole(); // la limitation de cette algorithme est qu'il ne fonctionne 
 						  // que dans le cas où il n'y a aucune école dans l'agglomération au départ
 		
 		// La liste d'adjacence est une shallow copy de l'objet villes. 
-		// Elle permet aussi d'optimiser la complexité de l'algo et d'en améliorer sa clarté.
+		// Elle sert à ne pas s'encombrer des villes ayant déjà accès à des écoles au fur et à mesure qu'on en ajoute
+		// Elle permet d'optimiser la complexité de l'algo et d'en améliorer sa clarté.
 		ListeAdjacence la = new ListeAdjacence(agg.getVilles()) ;		
-		Queue<Character> file = new LinkedList<Character>() ;			// la file permet de stocker les villes en attendant
-																		// de les supprimer de la liste. Si on les supprimait directement,
-		while(!la.isEmpty()) {											// alors en résulterait potentiellement des villes de degré 0
+		System.out.println("Initialisation : "+la.toString()) ;
+																		
+		while(!la.isEmpty()) {											
+			// Cette file servira dans un premier temps à stocker les villes voisines des ville de degré 1
+			// puis elle accueillera les villes de degré 0
+			LinkedList<Character> file = new LinkedList<Character>() ;
+			la.voisinsDegreUn(file) ; // enfile tous les voisins des villes de degré 1
 			
-			// On regarde dans un premier temps quelles sont les villes on est 
-			// sûrs de nécessiter une école, à savoir les villes n'ayant qu'un seul voisin.
-			Character [] degreUn = new Character[2] ;
-			// degreUn|0] correspond à la ville de degré 1
-			// degreUn|1] correspond à son voisin
-			while((degreUn = la.degreUnEtVoisin()) != null) {
+			for(int i = 0 ; i < file.size() ; i++) {
 				try {
-					agg.getVille(degreUn[1]).setHasEcole(true);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				file.add(degreUn[0]) ;
-				if(!file.contains(degreUn[1])) file.add(degreUn[1]) ; 
-				
-				while(!file.isEmpty()) { 	// maintenant que toutes les écoles ont bien été ajoutées, 
-					Character c = file.poll();
-					la.removeVille(c); 		// on peut vider la HashMap proprement
+					agg.getVille(file.get(i)).setHasEcole(true);
+				} catch (ExceptionVille e) {
+					System.err.println("La ville "+file.get(i)+" n'a pas pu être accédée.") ;
 				}
 			}
+			
+			while(!file.isEmpty()) la.removeVilleEtVoisins(file.poll()); 	// maintenant que toutes les écoles ont bien été ajoutées
+																			// on peut vider la HashMap proprement
 			
 			// Cette partie n'est pas foncièrement nécessaire mais elle permet de gagner en temps de calcul
 			// Si on la commente, le résultat serait identique mais on ferait globalement plus de tests pour
-			// finir l'exécution de l'algorithme avec des plusHautDegre égaux à 0.
-			Character degreZero = null ;
-			while((degreZero = la.degreZero()) != null) {
+			// finir l'exécution de l'algorithme avec des plusHautDegre finissant par retourner des villes de degré 0.
+			la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
+			while(!file.isEmpty()) {
+				Character degreZero = file.poll() ;
 				try {
 					agg.getVille(degreZero).setHasEcole(true);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (ExceptionVille e) {
+					System.err.println("La ville "+degreZero+" n'a pas pu être accédée.") ;
 				}
-				la.remove(degreZero); // on vide la HashMap
+				la.remove(degreZero); // on vide la HashMap des villes isolées
 			}
+			System.out.println(la.toString()) ; // Après un premier nettoyage
 			
 			// Dans le cas où il n'y a aucune ville de degré 1, il faut trouver une ville qui permettrait de débloquer
 			// la situation tout en répondant à la contrainte d'économie. La ville qui répond à ces exigences est 
@@ -241,12 +211,43 @@ public class Algos {
 				Character u = la.plusHautDegre() ;
 				try {
 					agg.getVille(u).setHasEcole(true);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
+				} catch (ExceptionVille e) {
+					System.err.println("La ville "+u+" n'a pas pu être accédée.") ;
 				}
-				la.removeVille(u) ; // on vide la HashMap
+				la.removeVilleEtVoisins(u) ;
 			}
+			System.out.println("Fin itération while : "+la.toString()) ; // Après avoir potentiellement retiré 
 		}
 		return agg ;
 	}
 }
+
+
+/*
+
+Autre idées d'algos :
+
+Résoudre un système d'équations linéaires sous contrainte :
+
+		Representer le graphe sous la forme d'une liste d'adjacence
+		La solution de la répartition des écoles se trouverait en résolvant un système de type MX = (ai) avec a_i * x_i >= 1 et la somme des x_i est minimale
+		avec M la liste d'adjacence, X un vecteur contenant des 0 ou des 1 (école ou pas école).
+		Le fait que tous les termes de MX soient non nuls signifie que la contrainte d'accessibilité est respectée.
+		Le fait que la somme des a_i est minimale signifie que la contrainte d'économie est respectée.
+		
+		Question : comment minimiser X ?
+		
+		Alternativement, utiliser la fonction quadratique associée à M puis résoudre le système obtenu ?
+
+
+Travailler avec une forme "minimale" et bipartite du graphe :
+	
+		C'est-à-dire que le graphe serait divisé en deux sous-graphes O et N tels que 
+		O représente l'ensemble des sommets possédant une école et N l'ensemble des sommets ne possédant pas d'écoles.
+		O doit contenir le moins d'éléments possible, et N le plus d'éléments possible : contrainte d'économie
+		le graphe est bipartite : contrainte d'accessibilité
+		
+		Question : comment minimiser le graphe bipartite ? 
+		D'après https://stackoverflow.com/questions/20107645/minimizing-number-of-crossings-in-a-bipartite-graph,
+		ce genre de problème est NP-difficile
+*/

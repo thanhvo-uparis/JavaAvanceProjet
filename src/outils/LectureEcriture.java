@@ -76,6 +76,8 @@ public class LectureEcriture {
             for (Ville v : agg.getVilles()) {
                 fileWriter.append("ville(" + v.getKey() + ").");
             }
+		
+		
             //écrit une liste des routes au fichier
             Set<Route> routes = new HashSet<>(); //crée une liste des routes
             for (Ville v : agg.getVilles()) {
@@ -86,6 +88,8 @@ public class LectureEcriture {
             for (Route r : routes) {
                 fileWriter.append("route(" + r.getVille()[0] + "," + r.getVille()[1] + ")."); //parcourt la liste des routes pour écrire au fichier
             }
+		
+		
             //écrit une liste des ecoles au fichier
             for (Ville v : agg.getVilles()) {
                 if (v.getHasEcole()) {
@@ -111,6 +115,7 @@ public class LectureEcriture {
         return ville.replace("ville(", "").replace(").", "").trim().toCharArray()[0]; //supprime les éléments autour character et prend character
     }
 
+	
     /**
      * Methode effectue le filtrage des données des routes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
      *
@@ -122,6 +127,7 @@ public class LectureEcriture {
         return new Character[]{arr[0].toCharArray()[0], arr[1].toCharArray()[0]}; //obtient un tableau de 2 éléments
     }
 
+	
     /**
      * Method effectue le filtrage des données des ecoles lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
      *

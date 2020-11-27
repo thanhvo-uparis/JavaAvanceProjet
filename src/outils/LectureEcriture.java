@@ -1,98 +1,141 @@
-package outils;
-
 package constructionEcoles.outils;
+
 import constructionEcoles.Agglomeration;
+import constructionEcoles.Route;
 import constructionEcoles.Ville;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+/**
+ *Cette classe manipule un fichier avec un objet Agglomération, écrit un objet dans un fichier avec un chemin spécifié,
+ *synchronise le fichier selon le chemin spécifié vers un objet Agglomération.
+ *
+ * @author thanhcongvo
+ * @version 1.0
+ */
+
 
 public class LectureEcriture {
-
+    /**
+     * Méthode statique permet de lire pour créer un objet d'agglomération à partir du fichier avec le chemin spécifié
+     *
+     * @param chemin chemin du file
+     * @return objet Agglomeration si la lecture et la synchronisation du fichier sur l'objet sont réussies
+     * null si la lecture et la synchronisation du fichier sur l'objet rencontre une exception
+     */
     public static Agglomeration lectureDepuisFichier(String chemin) {
-        try (BufferedReader br = new BufferedReader(new FileReader(chemin))) { // Lire un fichier
-            String line;                    //  Lecture par ligne
-		
-            List<Character> villes = new ArrayList<>(); // List stocke les villes lue au fichier
-            List<Character[]> routes = new ArrayList<>(); // List stocke les routes lue au fichier
-            List<Character> ecoles = new ArrayList<>();  // List stocke les ecoles lue au fichier 
-		
-            while ((line = br.readLine()) != null) { // La boucle lit ligne par ligne jusqu'à ce que le fichier soit terminé		     
+        try (BufferedReader br = new BufferedReader(new FileReader(chemin))) { //un objet reader
+            String line; //lit ligne par ligne
+            List<Character> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
+            List<Character[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
+            List<Character> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
+            while ((line = br.readLine()) != null) { //lit le fichier à la boucle de ligne par ligne, lire jusqu'à ce que le fichier soit terminé
                 if (line.startsWith("ville("))
-                    villes.add(parseVille(line)); // si la chaîne de caractère commence par ville( puis coupe le caractère dans cette chaîne et ajoute-le à la liste des villes)
-                
-		if (line.startsWith("ecole("))
-                    ecoles.add(parseEcole(line));// si la chaîne de caractère commence par école( puis coupe le caractère dans cette chaîne et ajoute-le à la liste des ecoles)
-		    
+                    villes.add(parseVille(line)); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
+                if (line.startsWith("ecole("))
+                    ecoles.add(parseEcole(line));//si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
                 if (line.startsWith("routes("))
-                    routes.add(parseRoute(line));// si la chaîne de caractère commence par route( puis coupe le caractère dans cette chaîne et ajoute-le à la liste des routes)
+                    routes.add(parseRoute(line));// Si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
             }
 		
-            Agglomeration agg = new Agglomeration(villes.size()); //  Déclaration 1 agg avec la taille qui est la taille de la liste villes lue au fichier
-		
-            for (char v : villes) { //Liste les villes si les key ne sont pas dans la liste des écoles, alors set ville de cette key n'a pas d'école
+            Agglomeration agg = new Agglomeration(villes.size()); //Initialise l'objet Agglomération à partir des informations lisibles dans le fichier
+            for (char v : villes) { // parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 if (!ecoles.contains(v)) agg.getVille(v).setHasEcole(false);
             }
-		
-            for (Character[] chars : routes) {//Liste la liste des routes pour ajouter routes à agg
+            for (Character[] chars : routes) {// parcourt les routes à ajouter
                 agg.ajouterRoute(chars[0], chars[1]);
             }
             return agg;
-		
         } catch (FileNotFoundException e) {
-            //TODO exception si le chemin est incorrect
+            //TODO traite exception si le fichier est introuvable après le chemin
             System.err.println("N'existence pas d'un fichier avec chemin: " + chemin);
-		
         } catch (IOException e) {
-            //TODO exception de lecture et d'écriture de fichier
+            //TODO traite exception s'il y a une erreur Input Output Exception lors de la lecture du fichier
             e.printStackTrace();
-		
         } catch (Exception e) {
-            //TODO exception est à la ligne 28 - agg.getVille(v)
+            //TODO exception requise est à la ligne 42 - agg.getVille (v)
             e.printStackTrace();
         }
-        return null; // Si une exception est rencontrée, rerourne: un objet nul
+        return null; // retourne null si rencontre une exception
     }
 
-	
+		
+    /**
+     * Méthode statique permet d'écrire depuis l'objet Agglomération dans un fichier
+     *
+     * @param chemin le chemin du fichier
+     * @param agg    L'objet est écrit dans le fichier
+     */
     public static void ecritureVersFichier(String chemin, Agglomeration agg) {
-	    
         try (FileWriter fileWriter = new FileWriter(chemin)) {
-            //écriture une liste des villes
+            // écrit une liste des villes au fichier
             for (Ville v : agg.getVilles()) {
                 fileWriter.append("ville(" + v.getKey() + ").");
             }
 		
-            //TODO écriture des routes
-
-            //ecriture des écoles
+		
+            //écrit une liste des routes au fichier
+            Set<Route> routes = new HashSet<>(); //crée une liste des routes
+            for (Ville v : agg.getVilles()) {
+                for (Ville v2 : v.getVoisins()) {
+                    routes.add(new Route(v, v2)); // parcourt les villes et les voisins pour créer une route et add à la liste des routes
+                }
+            }
+            for (Route r : routes) {
+                fileWriter.append("route(" + r.getVille()[0] + "," + r.getVille()[1] + ")."); //parcourt la liste des routes pour écrire au fichier
+            }
+		
+		
+            //écrit une liste des ecoles au fichier
             for (Ville v : agg.getVilles()) {
                 if (v.getHasEcole()) {
                     fileWriter.append("ecole(" + v.getKey() + ").");
                 }
             }
         } catch (FileNotFoundException e) {
-            //TODO exception si le chemin est incorrect
+            //TODO traite une exception si le fichier est introuvable après le chemin
             System.err.println("N'existence pas d'un fichier avec chemin: " + chemin);
-		
         } catch (IOException e) {
-            //TODO exception de lecture et d'écriture de fichier
+            //TODO traite exception s'il y a une erreur Input Output Exception lors de la lecture du fichier
             e.printStackTrace();
         }
     }
 
+    /**
+     * Methode effectue le filtrage des données des villes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
+     *
+     * @param ville  une chaîne contient ville và key sous la forme "ville(x)"
+     * @return  key dans la chaîne ville sous la forme "x "
+     */
     private static Character parseVille(String ville) {
-        return ville.replace("ville(", "").replace(").", "").trim().toCharArray()[0]; // parese série de ville(a). pour récupérer le key par la façon de replace
+        return ville.replace("ville(", "").replace(").", "").trim().toCharArray()[0]; //supprime les éléments autour character et prend character
     }
 
+	
+    /**
+     * Methode effectue le filtrage des données des routes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
+     *
+     * @param route une chaîne contient route và 2 key sous la forme "route(x,y)"
+     * @return  un tableau contient 2 key dans une chaîne route sous la forme ['x','y']
+     */
     private static Character[] parseRoute(String route) {
-        String[] arr = route.replace("route(", "").replace(").", "").trim().split(",");  // parese série de route(a). pour récupérer le key par la façon de replace
-        return new Character[]{arr[0].toCharArray()[0], arr[1].toCharArray()[0]};
+        String[] arr = route.replace("route(", "").replace(").", "").trim().split(",");  //supprime les éléments autour
+        return new Character[]{arr[0].toCharArray()[0], arr[1].toCharArray()[0]}; //obtient un tableau de 2 éléments
     }
 
+	
+    /**
+     * Method effectue le filtrage des données des ecoles lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
+     *
+     * @param ecole une chaîne contient ecole và key sous la forme "ecoles(x)"
+     * @return  key dans une chaîne ville sous la forme "x"
+     */
     private static Character parseEcole(String ecole) {
-        return ecole.replace("ecole(", "").replace(").", "").trim().toCharArray()[0]; // parese série de ecole(a,b). pour récuperer un tableau de 2 key par la façon de replace (obtention string a,b), puis divise la chaîne string par caractère, sort le tableau [a, b]
+        return ecole.replace("ecole(", "").replace(").", "").trim().toCharArray()[0]; //supprime les éléments autour character et prend character
     }
 
 }

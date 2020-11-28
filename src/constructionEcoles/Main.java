@@ -2,6 +2,7 @@ package constructionEcoles;
 
 import java.util.Scanner;
 
+import outils.Algos;
 import outils.LectureEcriture;
 
 import java.util.InputMismatchException ;
@@ -24,39 +25,104 @@ import java.util.InputMismatchException ;
 public class Main {
 	public static void main(String[] args) {
 		
-		// Charger une agglomÃ©ration
-		//		a) charger manuellement
-		//		b) charger Ã  partir d'un fichier (LectureEcriture.lectureDepuisFichier("string") ;)
-		
-		// Autre menu :
-		// 1) rÃ©soudre manuellement
-		// 2) rÃ©soudre automatiquement 
-		//		a) laisser le choix de l'algorithme
-		//		b) appliquer l'algorithme par dÃ©faut
-		// 3) sauvegarder
-		// 4) tester la complexitÃ© des algorithmes avec la mÃ©thode Tester.compareAlgorithmes(Agglomeration agg)
-		// 5) fin
-		
-		//Mettre l'ancien main dans une mÃ©thode statique Ã  part 
+		// Charger une agglomération
+//		a) charger manuellement
+//		b) charger à  partir d'un fichier (LectureEcriture.lectureDepuisFichier("string") ;)
 		
 		Scanner sc = new Scanner(System.in);
+		int choice = 0; 
+		boolean exit ;
 		
-		int nbVilles = 0 ;
-		
-		while(nbVilles < 1  || nbVilles > 26) { //Tant que le nombre n'est pas compris entre 1 et 26, on demande a l'utilisateur de saisir un nombre.
-			System.out.print("Entrez un nombre de villes entre 1 et 26 : ");
-			try {
-				nbVilles = sc.nextInt(); 
-			} catch(InputMismatchException e) {
-				System.err.println("Il faut rentrer un int.") ;
-				sc.next() ;
-				nbVilles = 0 ;
-			}
+		do {
+			System.out.println("\n  - Charger une agglomération - ") ;
+			System.out.println("1 - Charger manuellement");
+			System.out.println("2 - Charger depuis un fichier");
+			System.out.print("Veuillez entrer votre choix : ");
+			
+			switch (choice) {
+			case 1 :
+				aggloManuelle();
+				sc.close();
+			break ;
+			case 2 :
+				System.out.println("Rentrez le chemin vers le fichier nécessaire à la création de l'agglomération");
+				LectureEcriture.lectureDepuisFichier(sc.nextLine()) ;
+				sc.close();
+				break ;
+			default :
+				System.out.println("choix incorrect") ;
+				break ;
 		}
+		exit = (choice == 1) || (choice == 2);		
+		} while (!exit);
+}
 		
-		Agglomeration agg = new Agglomeration(nbVilles);
-		System.out.println("Creee : "+agg.toString()+"\nLes ecoles sont dans les villes suivantes : ");
-		agg.afficheVilleAEcole() ;
+		
+		
+		// Autre menu :
+	
+		int choice = 0;
+		Scanner sc = new Scanner(System.in);
+		boolean exit ;
+		do {
+			System.out.println("\n  - Menu principal - ") ;
+			System.out.println("1 - Résoudre manuellement");
+			System.out.println("2 - Résoudre automatiquement");
+			System.out.println("3 - sauvegarder") ;
+			System.out.println("4 - tester la complexité des algorithmes") ;
+			System.out.println("5 - fin") ;
+			System.out.print("Veuillez entrer votre choix : ");
+		
+		switch(choice) {
+			case 1 :
+				// Résoud manuellement le probleme en faisant appel à la méthode resoudManuelle
+				resoudManuelle(agg);
+				
+				//je ne sais plus faire l'appel de la méthode pour moi c'etait resoudManuelle(agg); (basique mais je bloque)
+				break ;
+			case 2 :
+				// Résoud automatiquement le probleme en faisant appel à la méthode resoudAuto
+				resoudAuto(agg);
+			
+				break ;
+			case 3 : 
+				//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture.
+				System.out.println("veuillez entrer le chemin où sauvegarder le fichier");
+				LectureEcriture.ecritureVersFichier(sc.nextLine(), agg);
+				break;
+			case 4 : 
+				//Complexité des algorithmes 
+				break;
+			case 5 : 
+				
+				// Fermeture du programme
+				System.out.println("Fin du programme.");
+				sc.close();
+				break ;
+			default :
+				System.out.println("Choix incorrect.");
+				break ;
+		}
+		exit = (choice != 5) ;
+		
+}while (!exit);
+		//termine la boucle quand l'utilisateur choisit de fermer le programme (choix 5).
+		
+		
+		
+		
+		
+		// 1) résoudre manuellement
+		// 2) résoudre automatiquement 
+		//		a) laisser le choix de l'algorithme
+		//		b) appliquer l'algorithme par défaut
+		// 3) sauvegarder
+		// 4) tester la complexité des algorithmes avec la méthode Tester.compareAlgorithmes(Agglomeration agg)
+		// 5) fin
+		
+		//Mettre l'ancien main dans une méthode statique à  part 
+		
+		
 		
 		/* On cree ici le 1er menu qui va nous afficher les choix suivants : 
 		 * 1/ ajouter une route
@@ -72,57 +138,81 @@ public class Main {
 		   Si ce n'est pas le cas, on affiche un message d'erreur a l'utilisateur afin qu'il continue. 
 		*/
 		
-		int choice = 0; 
-		boolean exit ;
-		
-		do {
-			System.out.println("\n  - Menu 1 - ") ;
-			System.out.println("1 - ajouter une route");
-			System.out.println("2 - j'ai rentre toutes mes routes");
-			System.out.println("3 - fin du programme\n") ;
-			System.out.print("Veuillez entrer votre choix : ");
-			try {
-				choice = sc.nextInt() ;
-			} catch(InputMismatchException e) {
-				System.err.println("Il faut rentrer un int.") ;
-				sc.next();
-				choice = 4 ;
-			}
-			switch(choice) {
-				case 1 :
-					//A MODIFIER tant que "Ville a" est null, demander a nouveau une ville
-					try {
-						System.out.print("\nEntrez la cle de la premiere ville a relier : ");
-						char a = sc.next().charAt(0) ; //retourne une ville
-						System.out.print("Entrez la cle de la deuxieme ville a relier : ");
-						char b = sc.next().charAt(0) ; //retourne une ville
-						System.out.println(a+" "+b) ;
-						agg.ajouterRoute(a, b) ;
-						System.out.println("Liste des routes de l'agglomeration :\n"+agg.afficherRoutes()) ;
-					} catch(Exception e) {
-						System.err.println(e);
-					}
-					break ;
-				case 2 :
-					System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"+(agg.estConnexe()?"Oui !\n":"Non ! Continuez d'ajouter des routes")) ;
-					break ;
-				case 3 :
-					System.out.println("Fin du programme.") ;
-					sc.close();
-					System.exit(0) ;
-					break ;
-				default : 
-					System.out.println("Choix incorrect.") ;
-					break ;
-			}
-			exit = (choice == 2) && agg.estConnexe() ;
+		private static  aggloManuelle(){// je ne sais pas quel type de retopur il faut utiliser 
+			Scanner sc = new Scanner(System.in);
 			
-		} while (!exit) ; //tant que la ville n'est pas connexe et que l'utilisateur ne veut pas sortir
+			int nbVilles = 0 ;
+			
+			while(nbVilles < 1  || nbVilles > 26) { //Tant que le nombre n'est pas compris entre 1 et 26, on demande a l'utilisateur de saisir un nombre.
+				System.out.print("Entrez un nombre de villes entre 1 et 26 : ");
+				try {
+					nbVilles = sc.nextInt(); 
+				} catch(InputMismatchException e) {
+					System.err.println("Il faut rentrer un int.") ;
+					sc.next() ;
+					nbVilles = 0 ;
+				}
+			}
+			
+			Agglomeration agg = new Agglomeration(nbVilles);
+			System.out.println("Creee : "+agg.toString()+"\nLes ecoles sont dans les villes suivantes : ");
+			agg.afficheVilleAEcole() ;
+			int choice = 0; 
+			boolean exit ;
+			
+			do {
+				System.out.println("\n  - Menu 1 - ") ;
+				System.out.println("1 - ajouter une route");
+				System.out.println("2 - j'ai rentre toutes mes routes");
+				System.out.println("3 - fin du programme\n") ;
+				System.out.print("Veuillez entrer votre choix : ");
+				try {
+					choice = sc.nextInt() ;
+				} catch(InputMismatchException e) {
+					System.err.println("Il faut rentrer un int.") ;
+					sc.next();
+					choice = 4 ;
+				}
+				switch(choice) {
+					case 1 :
+						//A MODIFIER tant que "Ville a" est null, demander a nouveau une ville
+						try {
+							System.out.print("\nEntrez la cle de la premiere ville a relier : ");
+							char a = sc.next().charAt(0) ; //retourne une ville
+							System.out.print("Entrez la cle de la deuxieme ville a relier : ");
+							char b = sc.next().charAt(0) ; //retourne une ville
+							System.out.println(a+" "+b) ;
+							agg.ajouterRoute(a, b) ;
+							System.out.println("Liste des routes de l'agglomeration :\n"+agg.afficherRoutes()) ;
+						} catch(Exception e) {
+							System.err.println(e);
+						}
+						break ;
+					case 2 :
+						System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"+(agg.estConnexe()?"Oui !\n":"Non ! Continuez d'ajouter des routes")) ;
+						break ;
+					case 3 :
+						System.out.println("Fin du programme.") ;
+						sc.close();
+						System.exit(0) ;
+						break ;
+					default : 
+						System.out.println("Choix incorrect.") ;
+						break ;
+				}
+				exit = (choice == 2) && agg.estConnexe() ;
+				
+			} while (!exit) ; //tant que la ville n'est pas connexe et que l'utilisateur ne veut pas sortir
 
-		System.out.println("Fin de la premiere etape. Bilan :\n") ;
-		System.out.println(agg.toString()+"Les routes sont les suivantes \n"+agg.afficherRoutes()) ;
+			System.out.println("Fin de la premiere etape. Bilan :\n") ;
+			System.out.println(agg.toString()+"Les routes sont les suivantes \n"+agg.afficherRoutes()) ;
+		}
+		
+
 		
 		// On cree ici le 2eme menu qui va permettre a l'utilisateur de soit: 1/ajouter une ecole 2/retirer une ecole 3/fin.
+		
+		private   resoudManuelle(Agglomeration agg) {//pareil je ne sais pas quel type utiliser et si l'argument est bon
 		while (choice != 3){ 
 			System.out.println("\n  - Menu 2 - ") ;
 			System.out.println("1 - ajouter une ecole");
@@ -174,4 +264,46 @@ public class Main {
 		System.out.println("Sortie du programme.") ;
 		sc.close();
 	}
-}
+		private  void resoudAuto(Agglomeration agg) {// quel type également ici et les arguments
+			
+		int choice = 0;
+		boolean exit;
+		do {
+			System.out.println("\n Choix de l'algorithme");
+			System.out.println("1- Algortihme naif");
+			System.out.println("2- Algorithme 2 ");
+			System.out.println("3- Algorithme optimal");
+			System.out.println("Veuillez entrer votre choix");
+			try {
+				choice = sc.nextInt() ;
+			} catch(InputMismatchException e) {
+				System.err.println("Il faut rentrer un int.") ;
+				sc.next();
+				choice = 4 ;
+			}
+			switch(choice) {
+			case 1 :
+				System.out.println("nombre d'itérations?");
+				Algos.algorithmeApproximationNaif(sc.nextInt(), agg);// je ne sais pas si l'appel est bon au niveau des arguments.
+				break;
+			case 2 : 
+				System.out.println("nombre de répétitions ? ");
+				Algos.algorithmeApproximationUnPeuMoinsNaif(sc.nextInt(), agg);// je ne sais pas si l'appel est bon au niveau des arguments.
+				break ;
+			case 3 : 
+				System.out.println("Garder les écoles déja construites? true or false");
+				boolean garderEcolesConstruites;
+				if (sc.nextLine() == "true") {
+					garderEcolesConstruites = true;
+				}	else garderEcolesConstruites = false;
+				
+				
+				Algos.algorithmeFilePriorite(agg, garderEcolesConstruites);// je ne sais pas si l'appel est bon au niveau des arguments.
+			}
+			exit = (choice>0 )&& (choice< 4);
+				
+			}while (!exit);
+		}
+		}
+
+//Me manque encore a gérer les exceptions que je vais avancer et la complexité des algorithmes.

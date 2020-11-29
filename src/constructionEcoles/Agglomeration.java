@@ -51,7 +51,7 @@ public class Agglomeration{
 	 * @return		v	la ville trouvee dans l'agglomeration si elle a ete trouvee
 	 * @see getVille(Ville)
 	 */
-	public Ville getVille(char a) throws Exception {
+	public Ville getVille(char a) throws ExceptionVille {
 		for (Ville v : villes) if (v.getKey() == a) return v;
 		throw new ExceptionVille("La ville "+a+" n'existe pas dans l'agglomeration");
 	}

@@ -27,7 +27,7 @@ public class Tester {
 			Algos.algorithmeFilePriorite(agg, false) ;
 			break ;
 		case 3 :
-			Algos.algorithmeParSoustraction(agg) ;
+			Algos.algorithmeParSoustraction(agg, true) ;
 			break;
 		}
 	}

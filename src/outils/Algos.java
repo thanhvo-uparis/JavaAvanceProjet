@@ -1,6 +1,7 @@
 package outils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -24,6 +25,13 @@ import constructionEcoles.exceptions.ExceptionVille;
 // TODO Etant donné que fractionner la classe Agglo en deux implique de changer la visibilité de certaines méthodes
 // peut-être qu'il serait mieux que la classe Main soit dans un package complètement à part (afin que les protected ait du sens).
 // ou alors mettre la classe Algos dans le package outils et mettre toutes les méthodes d'Agglo en public
+
+// TODO Changer le franglais
+
+// TODO alléger les commentaires quand il y en a trop, ajouter quand il y en a pas assez
+
+// TODO tester la complexité des différents algos
+// TODO proposer à l'utilisateur les meilleures combinaisons possibles
 
 public class Algos {
 	
@@ -136,8 +144,13 @@ public class Algos {
 		return agg;									
 	}
 	
-	public static Agglomeration algorithmeParSoustraction(Agglomeration agg) {
-		
+	
+	public static Agglomeration algorithmeParSoustraction(Agglomeration agg, boolean estDynamique) {
+		return algorithmeParSoustraction(agg, estDynamique, 0, null) ;
+	}
+	
+	private static Agglomeration algorithmeParSoustraction(Agglomeration agg, boolean estDynamique, int strateRecursivite, ListeAdjacence recursion) {
+				
 			/* Structure générale de l'algorithme :
 			 * 
 			 * Agg une agglomération
@@ -161,14 +174,20 @@ public class Algos {
 			 * 			Ajouter une école dans u
 			 * 			pour chaque colonne de L mettre la u-ième ligne à 0
 			 */
-		
-		agg.clearEcole(); // la limitation de cette algorithme est qu'il ne fonctionne 
-						  // que dans le cas où il n'y a aucune école dans l'agglomération au départ
-		
+
 		// La liste d'adjacence est une shallow copy de l'objet villes. 
 		// Elle sert à ne pas s'encombrer des villes ayant déjà accès à des écoles au fur et à mesure qu'on en ajoute
 		// Elle permet d'optimiser la complexité de l'algo et d'en améliorer sa clarté.
-		ListeAdjacence la = new ListeAdjacence(agg.getVilles()) ;		
+		ListeAdjacence la ;
+		
+		if(strateRecursivite == 0) {
+			agg.clearEcole() ; 	// la limitation de cette algorithme est qu'il ne fonctionne 
+								// que dans le cas où il n'y a aucune école dans l'agglomération au départ
+			la = new ListeAdjacence(agg.getVilles()) ;		
+		} else {
+			la = new ListeAdjacence(recursion) ; // Shallow copy de la liste d'adjacence passée en argument
+		}
+		
 		System.out.println("Initialisation : "+la.toString()) ;
 																		
 		while(!la.isEmpty()) {											
@@ -191,15 +210,16 @@ public class Algos {
 			// Cette partie n'est pas foncièrement nécessaire mais elle permet de gagner en temps de calcul
 			// Si on la commente, le résultat serait identique mais on ferait globalement plus de tests pour
 			// finir l'exécution de l'algorithme avec des plusHautDegre finissant par retourner des villes de degré 0.
+			// TODO Cette partie peut être sous-optimale dans certains cas.
 			la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
 			while(!file.isEmpty()) {
-				Character degreZero = file.poll() ;
+				Character cDegreZero = file.poll() ;
 				try {
-					agg.getVille(degreZero).setHasEcole(true);
+					agg.getVille(cDegreZero).setHasEcole(true);
 				} catch (ExceptionVille e) {
-					System.err.println("La ville "+degreZero+" n'a pas pu être accédée.") ;
+					System.err.println("La ville "+cDegreZero+" n'a pas pu être accédée.") ;
 				}
-				la.remove(degreZero); // on vide la HashMap des villes isolées
+				la.remove(cDegreZero); // on vide la HashMap des villes isolées
 			}
 			System.out.println(la.toString()) ; // Après un premier nettoyage
 			
@@ -207,19 +227,65 @@ public class Algos {
 			// la situation tout en répondant à la contrainte d'économie. La ville qui répond à ces exigences est 
 			// la ville de plus haut degré
 			if(!la.isEmpty()) {
-				Character u = la.plusHautDegre() ;
-				try {
-					agg.getVille(u).setHasEcole(true);
-				} catch (ExceptionVille e) {
-					System.err.println("La ville "+u+" n'a pas pu être accédée.") ;
+				if(estDynamique) {
+					// meilleuresRepartitions va 
+					ArrayList<ArrayList<Character>> meilleuresRepartitions = new ArrayList<ArrayList<Character>>() ;
+					ArrayList<Character> villesAEcoles = agg.getVillesAEcole() ;
+					
+					for(Character c : la.plusHautsDegres()) {
+						try {
+							agg.getVille(c).setHasEcole(true);
+							
+						} catch (ExceptionVille e) {
+							System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
+						}		
+						la.removeVilleEtVoisins(c) ;
+						algorithmeParSoustraction(agg, true, strateRecursivite+1, la) ;
+						meilleuresRepartitions.add(agg.getVillesAEcole());
+						agg.clearEcole(villesAEcoles);
+					}
+					
+					meilleuresRepartitions.sort(Comparator.comparing(ArrayList<Character>::size).reversed()); //on trie les répartitions
+					
+					// Dans le cas où 
+					if(strateRecursivite == 1) {
+						// Affichage de toutes les combinaisons optimales possibles par ordre alphabétique
+						int numPossibilite = 1 ;
+						for(ArrayList<Character> villesEnPlus : meilleuresRepartitions) {
+							villesAEcoles.addAll(villesEnPlus) ;
+							Collections.sort(villesAEcoles);
+							System.out.println("Possibilité #"+numPossibilite+" : ") ;
+							for(Character c : villesAEcoles) {
+								System.out.print(c+" ");
+							}
+							System.out.println("\n") ;
+						}
+						
+						// Ajout final de la meilleure combinaison à agg
+						try {
+							agg.ajouterEcole(meilleuresRepartitions.get(0));
+						} catch (Exception e) {
+							System.err.println("L'une des villes n'a pas pu être accédée dans l'ajout d'écoles final.") ;
+						}	
+					}
+					
+				} else {
+					Character u = la.plusHautDegre() ;
+					try {
+						agg.getVille(u).setHasEcole(true);
+					} catch (ExceptionVille e) {
+						System.err.println("La ville "+u+" n'a pas pu être accédée.") ;
+					}
+					la.removeVilleEtVoisins(u) ;
 				}
-				la.removeVilleEtVoisins(u) ;
 			}
 			System.out.println("Fin itération while : "+la.toString()) ; // Après avoir potentiellement retiré 
 		}
 		return agg ;
 	}
 }
+
+//proposer des contraintes 
 
 
 /*

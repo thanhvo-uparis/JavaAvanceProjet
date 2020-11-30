@@ -1,4 +1,4 @@
-package constructionEcoles.outils;
+package outils;
 
 import constructionEcoles.Agglomeration;
 import constructionEcoles.Route;
@@ -18,6 +18,9 @@ import java.util.Set;
  * @version 1.0
  */
 
+
+//TODO Gérer les différentes exceptions (fichier invalide, chemin invalide, etc, voir slides données en TD)
+//TODO faire en sorte que seuls des fichiers .CA puisse être lus, sinon on throw une exception (Il faut créer une exception en plus pour ça)
 
 public class LectureEcriture {
     /**

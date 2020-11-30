@@ -134,6 +134,11 @@ public class Agglomeration{
 	}
 	
 	
+	public void ajouterEcole(ArrayList<Character> keys) throws Exception {
+		for(Character key : keys) ajouterEcole(key) ;
+	}
+	
+	
 	/**
 	 * Methode permettant de retirer une ecole a une ville en faisant passer son attribut hasEcole de true a false 
 	 * dans le cas ou cet ajout ne brise pas la contrainte d'Accessibilite
@@ -162,8 +167,12 @@ public class Agglomeration{
 	
 	
 	//permet de supprimer toutes les ecoles de l'agglomeration
+	public void clearEcole(ArrayList<Character> conserverEcoles) {
+		if(conserverEcoles != null) for(Ville v : villes) if(!conserverEcoles.contains(v.getKey())) v.setHasEcole(false);
+	}
+	
 	public void clearEcole() {
-		for(Ville a : villes) a.setHasEcole(false);
+		clearEcole(null);
 	}
 
 	/**
@@ -203,6 +212,13 @@ public class Agglomeration{
 		System.out.println(sb);
 	}
 	
+	public ArrayList<Character> getVillesAEcole() {
+		ArrayList<Character> villesAEcole = new ArrayList<Character>(0) ;
+		for(Ville a : villes) {
+			if(a.getHasEcole()) villesAEcole.add(a.getKey()) ;
+		}
+		return villesAEcole ;
+	}
 
 	//retourne le nombre d'ecoles de l'agglomeration
 	public int nbEcoles() {

@@ -20,6 +20,15 @@ public class ListeAdjacence extends HashMap<Character, ArrayList<Character>> {
 			put(v.getKey(), voisins) ;
 		}
 	}
+		
+	protected ListeAdjacence(ListeAdjacence la) {
+		super(la.size()) ;
+		Iterator<Map.Entry<Character, ArrayList<Character>>> it = la.entrySet().iterator();
+		while(it.hasNext()) {
+			Map.Entry<Character, ArrayList<Character>> pair = it.next() ;
+			put(pair.getKey(), pair.getValue()) ;
+		}
+	}	
 	
 	protected void removeVilleEtVoisins(char key) {
 		for(ArrayList<Character> ville : this.values()) {
@@ -57,6 +66,18 @@ public class ListeAdjacence extends HashMap<Character, ArrayList<Character>> {
 			}
 		}
 		return maxC ;
+	}
+	
+	protected ArrayList<Character> plusHautsDegres() {
+		ArrayList<Character> al = new ArrayList<Character>(0) ;
+		int max = this.get(plusHautDegre()).size() ;
+		
+		Iterator<Map.Entry<Character, ArrayList<Character>>> it = this.entrySet().iterator();
+		while(it.hasNext()) {
+			Map.Entry<Character, ArrayList<Character>> pair = it.next() ;
+			if(pair.getValue().size() == max) al.add(pair.getKey()) ;
+		}
+		return al ;
 	}
 	
 	@Override

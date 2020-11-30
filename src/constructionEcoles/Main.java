@@ -22,6 +22,18 @@ import java.util.InputMismatchException ;
 
 //TEST COMMIT PAZRTIE 2///
 
+//TODO 	faire un Main concis et faire une classe UtilMain.java avec tout le nécessaire, mettre le moins de code possible
+//		il existe des architectures java pour lesquelles le main tient en une seule ligne (voir 
+//TODO reprendre les nommages, supprimer le franglais, utiliser des noms parlant
+//TODO compléter la Javadoc
+//TODO revoir l'architecture globale du programme et l'emboîtement des packages, faire en sorte que le JAR soit exécutable
+//TODO donner à l'utilisateur la possibilité de nommer les villes (utiliser pour ça le constructeur Agglomeration(Ville...villes)
+//TODO rendre le code robuste à une agglomération de plus de 26 villes (viser 100 villes)
+
+//TODO une fois que tout ça est fait, penser à l'utilisateur, le prof va tester différents scénarios et on doit fournir un truc robuste
+//TODO vérifier que tout le code s'exécute bien en testant différentes toutes les erreurs possibles (fichier inexistant, mauvais input au clavier...)
+
+
 public class Main {
 	public static void main(String[] args) {
 
@@ -39,7 +51,7 @@ public class Main {
 			System.out.println("2 - Charger depuis un fichier");
 			System.out.print("Veuillez entrer votre choix : ");
 
-			switch (choice) {
+			switch (choice) {getEcolePerVilles
 			case 1 :
 				aggloManuelle();
 				sc.close();
@@ -140,6 +152,7 @@ public class Main {
 		int nbVilles = 0 ;
 	
 		while(nbVilles < 1  || nbVilles > 26) { //Tant que le nombre n'est pas compris entre 1 et 26, on demande a l'utilisateur de saisir un nombre.
+			//TODO faire en sorte que la contrainte entre 1 et 26 saute
 			System.out.print("Entrez un nombre de villes entre 1 et 26 : ");
 			try {
 				nbVilles = sc.nextInt(); 
@@ -300,7 +313,7 @@ public class Main {
 	
 				Algos.algorithmeFilePriorite(agg, garderEcolesConstruites);// je ne sais pas si l'appel est bon au niveau des arguments.
 			}
-			exit = (choice>0 )&& (choice< 4);
+			exit = (choice>0 ) && (choice< 4);
 	
 		}while (!exit);
 	}

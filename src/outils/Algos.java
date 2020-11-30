@@ -46,15 +46,21 @@ public class Algos {
 	public static Agglomeration algorithmeApproximationNaif(int k, Agglomeration agg) {
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles() ;
 		for(int i = 0 ; i < k ; i++) {
-			Ville v = villes.get((int) Math.random()*villes.size()) ;
+			Ville v = villes.get((int) (Math.random()*villes.size())) ;
 			try {
 				if(v.getHasEcole()) {
 					agg.retirerEcole(v);
-				} else agg.ajouterEcole(v) ;
+					//System.out.println("Retrait") ;
+				} else {
+					agg.ajouterEcole(v) ;
+					//System.out.println("Ajout") ;
+				}
 			} catch(Exception e) {
 				System.out.println(e) ;
 			}
 		} 
+		System.out.println("Bilan au sortir de algorithmeApproximationNaif() : ");
+		agg.afficheBilan() ;
 		return agg;
 	}
 	
@@ -70,7 +76,7 @@ public class Algos {
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles() ;
 		int scoreCourant = agg.nbEcoles();
 		for(int i = 0 ; i < k ; i++) {
-			Ville v = villes.get((int) Math.random()*villes.size()) ;
+			Ville v = villes.get((int) (Math.random()*villes.size())) ;
 			try {
 				if(v.getHasEcole()) {
 					agg.retirerEcole(v);
@@ -83,6 +89,9 @@ public class Algos {
 				scoreCourant = agg.nbEcoles() ;
 			}
 		} 
+
+		System.out.println("Bilan au sortir de algorithmeApproximationUnPeuMoinsNaif() : ");
+		agg.afficheBilan() ;
 		return agg;
 	}
 
@@ -105,7 +114,7 @@ public class Algos {
 		// ^^^^^ à faire dans la classe Tester
 		
 		if(!garderEcolesConstruites) agg.clearEcole(); 	// on enlève toutes les écoles présentes. L'algorithme fonctionne si on décide de garder les écoles
-														// déjà construites. Le nombre d'écoles final risque cependant d'être supérieur.
+		//System.out.println(agg.nbEcoles()) ;			// déjà construites. Le nombre d'écoles final risque cependant d'être supérieur.
 		
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles();
 				
@@ -122,6 +131,8 @@ public class Algos {
 				p.add(v); 									// si elles ont plus d'un voisin, on les ajoute dans la file de priorité
 			}
 		}
+		//agg.afficheBilan();
+		//System.out.println(p.size()) ;
 		
 		// Arrivés à ce point, soit on décide d'enlever toutes les villes ayant déjà des écoles construites avec cette ligne :
 		// p.removeIf((v) -> v.getHasEcole());
@@ -141,9 +152,12 @@ public class Algos {
 			} 										// c'est çe qui est vraiment coûteux en temps de calcul dans l'algorithme donc on le fait uniquement quand la file doit
 		}											// être actualisée. La complexité est apparemment améliorable avec un tas de Fibonacci
 													// voir https://stackoverflow.com/questions/1871253/updating-java-priorityqueue-when-its-elements-change-priority
-		return agg;									
-	}
-	
+		
+
+		System.out.println("Bilan au sortir de algorithmeFilePriorite() : ");
+		agg.afficheBilan() ;
+		return agg;							
+	}	
 	
 	public static Agglomeration algorithmeParSoustraction(Agglomeration agg, boolean estDynamique) {
 		return algorithmeParSoustraction(agg, estDynamique, 0, null) ;
@@ -193,27 +207,35 @@ public class Algos {
 		while(!la.isEmpty()) {											
 			// Cette file servira dans un premier temps à stocker les villes voisines des ville de degré 1
 			// puis elle accueillera les villes de degré 0
-			LinkedList<Character> file = new LinkedList<Character>() ;
+			LinkedList<String> file = new LinkedList<String>() ;
 			la.voisinsDegreUn(file) ; // enfile tous les voisins des villes de degré 1
 			
-			for(int i = 0 ; i < file.size() ; i++) {
-				try {
-					agg.getVille(file.get(i)).setHasEcole(true);
-				} catch (ExceptionVille e) {
-					System.err.println("La ville "+file.get(i)+" n'a pas pu être accédée.") ;
+			
+			while(!file.isEmpty()) {
+				for(int i = 0 ; i < file.size() ; i++) {
+					try {
+						agg.getVille(file.get(i)).setHasEcole(true);
+					} catch (ExceptionVille e) {
+						System.err.println("La ville "+file.get(i)+" n'a pas pu être accédée.") ;
+					}
+				}
+				//TODO il y a de la marge pour optimiser ça 
+				String c = file.poll() ;
+				if(la.containsKey(c)) {
+					System.out.println("Entrée removeVilleEtVoisins pour "+c);
+					la.removeVilleEtVoisins(c); 
+					System.out.println(la.toString()) ;
 				}
 			}
-			
-			while(!file.isEmpty()) la.removeVilleEtVoisins(file.poll()); 	// maintenant que toutes les écoles ont bien été ajoutées
-																			// on peut vider la HashMap proprement
+			System.out.println("Sortie du while de la première file") ;
 			
 			// Cette partie n'est pas foncièrement nécessaire mais elle permet de gagner en temps de calcul
 			// Si on la commente, le résultat serait identique mais on ferait globalement plus de tests pour
 			// finir l'exécution de l'algorithme avec des plusHautDegre finissant par retourner des villes de degré 0.
-			// TODO Cette partie peut être sous-optimale dans certains cas.
+			// TODO Est-ce que cette partie va être rencontrée ?
 			la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
 			while(!file.isEmpty()) {
-				Character cDegreZero = file.poll() ;
+				String cDegreZero = file.poll() ;
 				try {
 					agg.getVille(cDegreZero).setHasEcole(true);
 				} catch (ExceptionVille e) {
@@ -229,10 +251,10 @@ public class Algos {
 			if(!la.isEmpty()) {
 				if(estDynamique) {
 					// meilleuresRepartitions va 
-					ArrayList<ArrayList<Character>> meilleuresRepartitions = new ArrayList<ArrayList<Character>>() ;
-					ArrayList<Character> villesAEcoles = agg.getVillesAEcole() ;
+					ArrayList<ArrayList<String>> meilleuresRepartitions = new ArrayList<ArrayList<String>>() ;
+					ArrayList<String> villesAEcoles = agg.getVillesAEcole() ;
 					
-					for(Character c : la.plusHautsDegres()) {
+					for(String c : la.plusHautsDegres()) {
 						try {
 							agg.getVille(c).setHasEcole(true);
 							
@@ -245,17 +267,17 @@ public class Algos {
 						agg.clearEcole(villesAEcoles);
 					}
 					
-					meilleuresRepartitions.sort(Comparator.comparing(ArrayList<Character>::size).reversed()); //on trie les répartitions
+					meilleuresRepartitions.sort(Comparator.comparing(ArrayList<String>::size).reversed()); //on trie les répartitions
 					
 					// Dans le cas où 
 					if(strateRecursivite == 1) {
 						// Affichage de toutes les combinaisons optimales possibles par ordre alphabétique
 						int numPossibilite = 1 ;
-						for(ArrayList<Character> villesEnPlus : meilleuresRepartitions) {
+						for(ArrayList<String> villesEnPlus : meilleuresRepartitions) {
 							villesAEcoles.addAll(villesEnPlus) ;
 							Collections.sort(villesAEcoles);
 							System.out.println("Possibilité #"+numPossibilite+" : ") ;
-							for(Character c : villesAEcoles) {
+							for(String c : villesAEcoles) {
 								System.out.print(c+" ");
 							}
 							System.out.println("\n") ;
@@ -270,7 +292,7 @@ public class Algos {
 					}
 					
 				} else {
-					Character u = la.plusHautDegre() ;
+					String u = la.plusHautDegre() ;
 					try {
 						agg.getVille(u).setHasEcole(true);
 					} catch (ExceptionVille e) {
@@ -281,6 +303,9 @@ public class Algos {
 			}
 			System.out.println("Fin itération while : "+la.toString()) ; // Après avoir potentiellement retiré 
 		}
+	
+		System.out.println("Bilan au sortir de algorithmeParSoustraction() : ");
+		agg.afficheBilan() ;
 		return agg ;
 	}
 }

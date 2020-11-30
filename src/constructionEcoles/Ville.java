@@ -16,7 +16,7 @@ public class Ville {
 	 */
 	private Boolean hasEcole;
 	private ArrayList<Ville> voisins;
-	private char key; 
+	private String key; 
 	
 	
 	//Constructeur
@@ -28,7 +28,7 @@ public class Ville {
 	public Ville(Boolean hasEcole, ArrayList<Ville> voisins, char key){
 		this.hasEcole = hasEcole;	//pour l'instant, toutes les villes doivent avoir des ecoles à l'initialisation. 
 		this.voisins = voisins;		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
-		this.key= key;				//On veut que la cle soit une lettre entre A et Z, il faut s'assurer de ca
+		this.key= key+"";				//On veut que la cle soit une lettre entre A et Z, il faut s'assurer de ca
 	}
 	
 	/** Un constructeur de la classe Ville permettant d'initialiser une Ville avec sa key
@@ -37,7 +37,13 @@ public class Ville {
 	public Ville(char key){
 		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des ecoles a l'initialisation. 
 		this.voisins = new ArrayList<Ville>(0);		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
-		this.key= key;				//On veut que la cle soit une lettre entre A et Z, il faut s'assurer de ca
+		this.key = key+"";				//On veut que la cle soit une lettre entre A et Z, il faut s'assurer de ca
+	}
+	
+	public Ville(String key) {
+		this.hasEcole = true;	//pour l'instant, toutes les villes doivent avoir des ecoles a l'initialisation. 
+		this.voisins = new ArrayList<Ville>(0);		//on ne doit pas avoir de constructeurs qui puissent permettre autre chose
+		this.key = key ;
 	}
 	
 	
@@ -47,7 +53,7 @@ public class Ville {
 	 *  @return	hasEcole
 	 */
 	public boolean getHasEcole() {
-		  return hasEcole;
+		return hasEcole;
 	}
 	
 	
@@ -56,7 +62,7 @@ public class Ville {
 	 *  @param	hasEcole	true pour si on veut ajouter une ecole, false si on veut en retirer une
 	 */
 	public void setHasEcole(boolean hasEcole) {
-		 this.hasEcole = hasEcole;
+		this.hasEcole = hasEcole;
 	}
 	
 	
@@ -64,7 +70,7 @@ public class Ville {
 	 *  d'instance privee key.
 	 *  @return	key			un identifiant unique de chaque ville.
 	 */
-	public char getKey() {
+	public String getKey() {
 		return key;
 	}
 	

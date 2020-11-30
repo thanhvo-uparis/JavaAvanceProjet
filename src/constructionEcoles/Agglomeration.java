@@ -40,8 +40,16 @@ public class Agglomeration{
 	 */
 	public Agglomeration(int nbVilles) {
 		this.villes = new ArrayList<Ville>(nbVilles);
-		char c;
-		for(c = 'a'; c < 'a'+nbVilles; c++) this.villes.add(new Ville(c));
+		char c = 'A';
+		if(nbVilles > 2 && nbVilles < 26) {
+			for(c = 'A'; c < 'A'+nbVilles; c++) this.villes.add(new Ville(c));
+		} else if(nbVilles < 26*10) {
+			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+""+String.format("%01d", i/26)));
+		} else if(nbVilles < 26*100) { 
+			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+String.format("%02d", i/26)));
+		} else if(nbVilles < 26*1000) { 
+			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+String.format("%03d", i/26)));
+		}
 	}
 	
 	/**
@@ -51,8 +59,8 @@ public class Agglomeration{
 	 * @return		v	la ville trouvee dans l'agglomeration si elle a ete trouvee
 	 * @see getVille(Ville)
 	 */
-	public Ville getVille(char a) throws ExceptionVille {
-		for (Ville v : villes) if (v.getKey() == a) return v;
+	public Ville getVille(String a) throws ExceptionVille {
+		for (Ville v : villes) if (v.getKey().equals(a)) return v;
 		throw new ExceptionVille("La ville "+a+" n'existe pas dans l'agglomeration");
 	}
 	
@@ -104,7 +112,7 @@ public class Agglomeration{
 	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
 	 * @param		b	seconde ville du couple de villes a relier par une route
 	 */
-	public void ajouterRoute(char a, char b) throws Exception {
+	public void ajouterRoute(String a, String b) throws Exception {
 		ajouterRoute(getVille(a), getVille(b));
 	}
 	
@@ -117,7 +125,6 @@ public class Agglomeration{
 	 */
 	public void ajouterEcole(Ville a) throws Exception {
 		ajouterEcole(a.getKey());
-
 	}
 	
 	/**
@@ -126,7 +133,7 @@ public class Agglomeration{
 	 * @exception	ExceptionEconomie 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
 	 * @see		ajouterEcole(Ville)
 	 */
-	public void ajouterEcole(char c) throws Exception {
+	public void ajouterEcole(String c) throws Exception {
 		Ville a = getVille(c);
 		if(a.getHasEcole()) throw new ExceptionEconomie("La ville a deja une ecole.");
 		//if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est deja proche d'une ecole."); //	decommenter cette ligne pour que la contrainte d'Economie
@@ -134,8 +141,8 @@ public class Agglomeration{
 	}
 	
 	
-	public void ajouterEcole(ArrayList<Character> keys) throws Exception {
-		for(Character key : keys) ajouterEcole(key) ;
+	public void ajouterEcole(ArrayList<String> keys) throws Exception {
+		for(String key : keys) ajouterEcole(key) ;
 	}
 	
 	
@@ -156,7 +163,7 @@ public class Agglomeration{
 	 * @see		retirerEcole(Ville)
 	 * @exception	ExceptionAccessibilite	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
 	 */
-	public void retirerEcole(char c) throws Exception {
+	public void retirerEcole(String c) throws Exception {
 		Ville a = getVille(c);
 		boolean accessibiliteVoisins = true;
 		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new ExceptionAccessibilite("La ville "+a.getKey()+" ne serait plus assez proche une ecole.");
@@ -167,8 +174,12 @@ public class Agglomeration{
 	
 	
 	//permet de supprimer toutes les ecoles de l'agglomeration
-	public void clearEcole(ArrayList<Character> conserverEcoles) {
-		if(conserverEcoles != null) for(Ville v : villes) if(!conserverEcoles.contains(v.getKey())) v.setHasEcole(false);
+	public void clearEcole(ArrayList<String> conserverEcoles) {
+		if(conserverEcoles != null) {
+			for(Ville v : villes) if(!conserverEcoles.contains(v.getKey())) v.setHasEcole(false);
+		} else {
+			for(Ville v : villes) v.setHasEcole(false);
+		}
 	}
 	
 	public void clearEcole() {
@@ -182,7 +193,7 @@ public class Agglomeration{
 	 */
 	public boolean estConnexe() {
 		LinkedList<Ville> file = new LinkedList<Ville>();	//file qui servira a stocker les villes restant a parcourir
-		ArrayList<Character> marques = new ArrayList<Character>(0); //villes deja parcourues, contiendra les identifiants de chaque villes
+		ArrayList<String> marques = new ArrayList<String>(0); //villes deja parcourues, contiendra les identifiants de chaque villes
 		
 		file.add(villes.get(0)); //enfile le premier element de villes dans la file
 		marques.add(villes.get(0).getKey()); //la premiere ville est visitee
@@ -205,15 +216,17 @@ public class Agglomeration{
 	 * Methode permettant d'afficher la liste des villes possedant des ecoles dans l'agglomeration.
 	 */
 	public void afficheVilleAEcole() {
-		StringBuilder sb = new StringBuilder();
-		for(Ville a : villes) {
-			if(a.getHasEcole()) sb.append(a.getKey()+" ");
-		}
-		System.out.println(sb);
+		for(Ville a : villes) if(a.getHasEcole()) System.out.print(a.getKey()+" ");
+		System.out.print("\n");
 	}
 	
-	public ArrayList<Character> getVillesAEcole() {
-		ArrayList<Character> villesAEcole = new ArrayList<Character>(0) ;
+	public void afficheVilles() {
+		for(Ville a : villes) System.out.print(a.getKey()+" ");
+		System.out.print("\n");
+	}
+	
+	public ArrayList<String> getVillesAEcole() {
+		ArrayList<String> villesAEcole = new ArrayList<String>(0) ;
 		for(Ville a : villes) {
 			if(a.getHasEcole()) villesAEcole.add(a.getKey()) ;
 		}
@@ -222,11 +235,11 @@ public class Agglomeration{
 
 	//retourne le nombre d'ecoles de l'agglomeration
 	public int nbEcoles() {
-		int c = 0;
+		int compteur = 0;
 		for(Ville a : villes) {
-			if(a.getHasEcole()) c++;
+			if(a.getHasEcole()) compteur++;
 		}
-		return c;
+		return compteur;
 	}
 	
 	/**
@@ -234,14 +247,27 @@ public class Agglomeration{
 	 * Par exemple, si [a, b] apparait, alors [b, a] n'apparaitra pas.
 	 * @return	un string compose d'autant de lignes qu'il y a de routes.
 	 */
-	public String afficherRoutes() {
-		StringBuilder sb = new StringBuilder();
+	public void afficheRoutes() {
 		for(Ville ville : villes) {
 			for(Ville voisin : ville.getVoisins()) {
-				if(voisin.getKey()>ville.getKey()) sb.append("["+ville.getKey()+", "+voisin.getKey()+"]\n");
+				if(voisin.getKey().compareTo(ville.getKey()) > 0) System.out.print("["+ville.getKey()+", "+voisin.getKey()+"] ");
 			}
 		}
-		return sb.toString();
+		System.out.print("\n");
+	}
+	
+	public void afficheBilan() {
+		System.out.print("Agglomération "+(estConnexe()?"":"non")+ "connexe de "+villes.size()+" et "+nbEcoles());
+		System.out.println(" ecoles ("+String.format("%.2f", (double) (nbEcoles())/villes.size()*100)+" %)");
+		System.out.print("Villes : ") ;
+		afficheVilles() ;
+		System.out.print("Routes : ");
+		afficheRoutes() ;
+		System.out.print("Ecoles : ") ;
+		afficheVilleAEcole() ;
+		System.out.println("Contrainte d'accessibilité : "+(respecteAccessibilite()?"Respectée":"Non respectée")) ;
+		System.out.print("\n");
+		
 	}
 	
 	/**

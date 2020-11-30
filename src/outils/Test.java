@@ -38,4 +38,8 @@ public class Test extends HashMap<Integer, BilanIterationAlgo> {
 	public String toString(int key) {
 		return this.get(key).toString() ;
 	}
+	
+	public String toString() {
+		return "EcolePerVilles = "+getEcolePerVilles()+", AvgTime = "+getAvgTime() ;
+	}
 }

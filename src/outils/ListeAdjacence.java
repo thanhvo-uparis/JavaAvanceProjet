@@ -26,14 +26,16 @@ public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 		Iterator<Map.Entry<String, ArrayList<String>>> it = la.entrySet().iterator();
 		while(it.hasNext()) {
 			Map.Entry<String, ArrayList<String>> pair = it.next() ;
-			put(pair.getKey(), pair.getValue()) ;
+			ArrayList<String> voisins = new ArrayList<String>(pair.getValue().size()) ;
+			for(String s : pair.getValue()) voisins.add(s) ; //shallow copying
+			put(pair.getKey(), voisins) ;
 		}
 	}	
 	
 	protected void removeVilleEtVoisins(String key) {
 		ArrayList<String> voisinsVilleARemove = new ArrayList<String>(0) ; //shallow copy
 		for(String voisin : this.get(key)) {
-			System.out.println(voisin) ;
+			//System.out.println(voisin) ;
 			voisinsVilleARemove.add(voisin) ;
 		} //on crée une shallow copy de la ville qu'on veut enlever de la liste d'adjacence, avec ses voisins
 		voisinsVilleARemove.add(key) ;
@@ -58,15 +60,15 @@ public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 
 	protected void voisinsDegreUn(LinkedList<String> file) {
 		Iterator<Map.Entry<String, ArrayList<String>>> it = this.entrySet().iterator();
-		System.out.print("Voisins de degré 1 : ");
+		//System.out.print("Voisins de degré 1 : ");
 		while(it.hasNext()) {
 			Map.Entry<String, ArrayList<String>> pair = it.next() ;
 			if(pair.getValue().size() == 1 && (!file.contains(pair.getValue().get(0)))) {
 				file.add(pair.getValue().get(0)) ;
-				System.out.print(pair.getValue().get(0)+ " ");
+				//System.out.print(pair.getValue().get(0)+ " ");
 			}
 		}										// la deuxième condition permet d'éviter les doublons
-		System.out.print("\n");
+		//System.out.print("\n");
 	}
 
 	protected String plusHautDegre() {

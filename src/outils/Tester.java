@@ -9,8 +9,8 @@ public class Tester {
 	
 	private static final int k = 100 ;	// il s'agit du k de l'énoncé
 	private static final int nbOperations = 0 ; // pour générer des écoles aléatoirements
-	private static final boolean affichageExtendedLogs = true ; //affichage ou non de tous les logs
-	private static final boolean affichageExceptions = true ; 
+	private static final boolean affichageExtendedLogs = false ; //affichage ou non de tous les logs
+	private static final boolean affichageExceptions = false ; 
 
 	
 	// liste des noms des méthodes, si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence.
@@ -31,7 +31,7 @@ public class Tester {
 			Algos.algorithmeFilePriorite(agg, false) ;
 			break ;
 		case 3 :
-			Algos.algorithmeParSoustraction(agg, false) ;
+			Algos.algorithmeParSoustraction(agg, true) ;
 			break;
 		}
 	}
@@ -45,7 +45,7 @@ public class Tester {
 			try {
 				String c = agg.getVilles().get((int) Math.round(Math.random()*(agg.getVilles().size()-1))).getKey() ;
 				System.out.println(c) ;
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 				if(affichageExtendedLogs) System.out.println("\nChar : "+c) ;
 				Ville v = agg.getVille(c) ;
 				if(affichageExtendedLogs) System.out.println("Ville : " +v.toString()) ;
@@ -76,12 +76,10 @@ public class Tester {
 	private static Agglomeration randomAggloConnexeGenerateur(int nbVilles, int nbOperations) {
 		Agglomeration agg = new Agglomeration(nbVilles) ;
 		agg.afficheBilan();
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		/*
+		 * try { Thread.sleep(5000); } catch (InterruptedException e1) { // TODO
+		 * Auto-generated catch block e1.printStackTrace(); }
+		 */
 		
 		
 		if(affichageExtendedLogs) System.out.println("Creation d'une agglomeration de "+nbVilles+" villes : " + agg.toString());
@@ -126,12 +124,18 @@ public class Tester {
 	}
 
 	public static Test testComplexiteAlgo(int nbVilles, int algo) {
+		return  testComplexiteAlgo(nbVilles, algo, null) ;
+	}
+	
+	public static Test testComplexiteAlgo(int nbVilles, int algo, Agglomeration agg) {
 
 		Test t = new Test() ;
 
-		Agglomeration agg = randomAggloConnexeGenerateur(nbVilles) ;
-		System.out.println("Agglomération générée : ") ;
-		agg.afficheBilan() ;
+		if(agg == null) {
+			agg = randomAggloConnexeGenerateur(nbVilles) ;
+			System.out.println("Agglomération générée : ") ;
+			agg.afficheBilan() ;
+		}
 		//agg.afficheVilleAEcole();
 		long startTime = System.nanoTime();
 					

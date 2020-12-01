@@ -33,8 +33,10 @@ import constructionEcoles.exceptions.ExceptionVille;
 // TODO tester la complexité des différents algos
 // TODO proposer à l'utilisateur les meilleures combinaisons possibles
 
+
 public class Algos {
-	
+
+	private static final boolean affichageDebug = true ; 
 	/**
 	 * Méthode statique permettant de retirer un certain nombre d'écoles à l'agglomération passée en argument.
 	 * Cet algorithme est très naïf et très améliorable.
@@ -187,6 +189,52 @@ public class Algos {
 			 * 			Soit u la ville de plus haut degré
 			 * 			Ajouter une école dans u
 			 * 			pour chaque colonne de L mettre la u-ième ligne à 0
+			 * 
+			 * 
+			 * 
+			 * Structure générale de l'algorithme algoPS() :
+			 * 
+			 * Paramètres :
+			 * 		Strate : la profondeur de l'algorithme initialisé à 0 
+			 * 		L : une liste d'adjacence qui évoluera au fur et à mesure de l'algorithme
+			 * 		agg : une agglomération sans école
+			 * 
+			 * Variables :
+			 * 		Soit F une file vide
+			 * 		Soit Configs une liste vide
+			 * 
+			 * Initialisation : 
+			 * 		on appelle algoPS(strate = 0, L = vide)
+			 * 
+			 * Déroulement de l'algorithme :
+			 * 
+			 * Si strate = 0 
+			 * 		L est construite à partir d'agg
+			 * 			  
+			 * Tant que la liste d'adjacence n'est pas vide
+			 * 		Tant qu'il y a des sommets de degré 1 dans L
+			 * 			Ajouter toutes les villes de degré 1 dans F avec leurs voisins
+			 * 			Ajouter une école à tous les voisins des villes de degré 1 sauf si leur voisin a déjà une école
+			 * 		 
+			 *		 	Tant que F n'est pas vide
+			 *				défiler F dans V
+			 *				pour chaque entrée de L, retirer V et ses voisins de l'entrée
+			 *				retirer V de L
+			 *
+			 *		Ajouter une école dans chaque ville de degré 0
+			 *		Retirer toutes les écoles de degré 0 de L
+			 * 
+			 * 		Si la contrainte d'accessibilité n'est pas respectée dans Agg
+			 * 			enfiler tous les sommets de plus haut degré dans FplusHaut
+			 * 			listeEcoles = liste des écoles d'agg
+			 * 			Copier l'état courant de L dans une shallowCopy
+			 * 			Tant que FplusHaut n'est pas vide
+			 * 				défiler FplusHaut dans u	
+			 * 				enlever U et tous ses voisins de la shallowCopy
+			 * 				algoPS(strate+1, shallowCopy)
+			 * 				enfiler les écoles d'agg dans Configs
+			 * 				retirer toutes les écoles d'agg qui ne sont pas dans listeEcoles
+			 * 			
 			 */
 
 		// La liste d'adjacence est une shallow copy de l'objet villes. 
@@ -204,73 +252,114 @@ public class Algos {
 		
 		System.out.println("Initialisation : "+la.toString()) ;
 																		
-		while(!la.isEmpty()) {											
+		while(!la.isEmpty() && !agg.respecteAccessibilite()) {											
 			// Cette file servira dans un premier temps à stocker les villes voisines des ville de degré 1
 			// puis elle accueillera les villes de degré 0
 			LinkedList<String> file = new LinkedList<String>() ;
 			la.voisinsDegreUn(file) ; // enfile tous les voisins des villes de degré 1
 			
-			
-			while(!file.isEmpty()) {
-				for(int i = 0 ; i < file.size() ; i++) {
-					try {
-						agg.getVille(file.get(i)).setHasEcole(true);
-					} catch (ExceptionVille e) {
-						System.err.println("La ville "+file.get(i)+" n'a pas pu être accédée.") ;
-					}
-				}
-				//TODO il y a de la marge pour optimiser ça 
+			if(affichageDebug) System.out.println("Entrée dans le while des voisins de degré 1") ;
+			while(!agg.respecteAccessibilite() && !file.isEmpty()) {
 				String c = file.poll() ;
+				try {
+					try { //si la ville ville voisine n'a pas d'école, alors on en met une, sinon non
+						boolean voisinDegreUnAEcole = agg.getVille(la.get(c).get(0)).getHasEcole() ;
+						if(!voisinDegreUnAEcole) agg.getVille(c).setHasEcole(true);
+					} catch (IndexOutOfBoundsException e) { //cette exception est levée uniquement dans le cas où la ville n'aurait plus de voisin
+						agg.getVille(c).setHasEcole(true); //si la ville n'a plus aucun voisin, alors on lui ajoute une école
+					}
+				} catch(ExceptionVille e) {
+					System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
+				} catch (NullPointerException e) {
+					if(affichageDebug) System.out.println("La ville que vous essayez d'accéder n'est plus dans la liste d'adjacence");
+				} 
+				
+				//TODO il y a de la marge pour optimiser ça 
 				if(la.containsKey(c)) {
-					System.out.println("Entrée removeVilleEtVoisins pour "+c);
+					if(affichageDebug) System.out.println("Entrée removeVilleEtVoisins pour "+c);
 					la.removeVilleEtVoisins(c); 
-					System.out.println(la.toString()) ;
+					if(affichageDebug) System.out.println(la.toString()) ;
 				}
 			}
-			System.out.println("Sortie du while de la première file") ;
+			if(affichageDebug) {
+				System.out.println("Affichage de l'état de la file après sortie du while des voisins de degré 1 (strate = "+strateRecursivite+") : ") ;
+				System.out.println(la.toString()) ; // Après un premier nettoyage
+			}
 			
 			// Cette partie n'est pas foncièrement nécessaire mais elle permet de gagner en temps de calcul
 			// Si on la commente, le résultat serait identique mais on ferait globalement plus de tests pour
 			// finir l'exécution de l'algorithme avec des plusHautDegre finissant par retourner des villes de degré 0.
 			// TODO Est-ce que cette partie va être rencontrée ?
 			la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
-			while(!file.isEmpty()) {
+			if(affichageDebug) System.out.println("Sortie du while while des voisins de degré 0") ;
+			while(!agg.respecteAccessibilite() && !file.isEmpty()) {
 				String cDegreZero = file.poll() ;
 				try {
 					agg.getVille(cDegreZero).setHasEcole(true);
 				} catch (ExceptionVille e) {
-					System.err.println("La ville "+cDegreZero+" n'a pas pu être accédée.") ;
+					if(affichageDebug) System.err.println("La ville "+cDegreZero+" n'a pas pu être accédée.") ;
 				}
 				la.remove(cDegreZero); // on vide la HashMap des villes isolées
 			}
-			System.out.println(la.toString()) ; // Après un premier nettoyage
+			if(affichageDebug) {
+				System.out.println("Affichage de l'état de la file après sortie du while des voisins de degré 0 (strate = "+strateRecursivite+") :") ;
+				System.out.println(la.toString()) ; // Après un premier nettoyage
+			}
+			
 			
 			// Dans le cas où il n'y a aucune ville de degré 1, il faut trouver une ville qui permettrait de débloquer
 			// la situation tout en répondant à la contrainte d'économie. La ville qui répond à ces exigences est 
 			// la ville de plus haut degré
-			if(!la.isEmpty()) {
+			if(!agg.respecteAccessibilite() && !la.isEmpty()) {
 				if(estDynamique) {
+					if(affichageDebug) {
+						System.out.println("Entrée condition estDynamique : strateRecursivite = "+strateRecursivite) ;
+						System.out.println("Ecoles lors de l'entrée :") ;
+						agg.afficheVilleAEcole();
+					}
 					// meilleuresRepartitions va 
 					ArrayList<ArrayList<String>> meilleuresRepartitions = new ArrayList<ArrayList<String>>() ;
 					ArrayList<String> villesAEcoles = agg.getVillesAEcole() ;
 					
 					for(String c : la.plusHautsDegres()) {
 						try {
+							if(affichageDebug) System.out.println("Ajout d'école dans la ville "+c) ;
 							agg.getVille(c).setHasEcole(true);
 							
 						} catch (ExceptionVille e) {
-							System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
+							if(affichageDebug) System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
 						}		
-						la.removeVilleEtVoisins(c) ;
-						algorithmeParSoustraction(agg, true, strateRecursivite+1, la) ;
-						meilleuresRepartitions.add(agg.getVillesAEcole());
-						agg.clearEcole(villesAEcoles);
+						if(affichageDebug) System.out.println("Entrée dans algorithmeParSoustraction de strate "+(strateRecursivite+1)) ;
+						ListeAdjacence recursionLA = new ListeAdjacence(la) ;
+						//if(affichageDebug) System.out.println("recursionLA == la ? "+(recursionLA==la?"Oui":"Non")) ; // objets identiques ou non (même adresse)
+						//if(affichageDebug) System.out.println("recursionLA.equals(la) ? "+(recursionLA.equals(la)?"Oui":"Non")) ; //valeurs égales ou non
+						
+						recursionLA.removeVilleEtVoisins(c);
+						algorithmeParSoustraction(agg, true, strateRecursivite+1, recursionLA) ; // point d'entrée de la récursivité
+						meilleuresRepartitions.add(agg.getVillesAEcole()); // on ajoute la composition trouvée dans meilleuresRepartitions
+						
+						if(affichageDebug) { //ce bloc sert à afficher l'état de meilleures répartitions
+							int compteur = 1 ;
+							System.out.println("Meilleures répartitions :") ;
+							for(ArrayList<String> repart : meilleuresRepartitions) {
+								System.out.print("#"+compteur+" :");
+								for(String r : repart) System.out.print(" "+r);
+								compteur++ ;
+								System.out.print("\n") ;
+							}
+						}
+						
+						agg.clearEcole(villesAEcoles); // on enleve toutes les écoles sauf celles dans villesAEcoles
+						if(affichageDebug) {
+							System.out.println("Villes à écoles après avoir clearEcoles() :") ;
+							agg.afficheVilleAEcole();
+						}
 					}
 					
 					meilleuresRepartitions.sort(Comparator.comparing(ArrayList<String>::size).reversed()); //on trie les répartitions
 					
-					// Dans le cas où 
-					if(strateRecursivite == 1) {
+					// Dans le cas où on a remonté toutes les strates
+					if(strateRecursivite == 0) {
 						// Affichage de toutes les combinaisons optimales possibles par ordre alphabétique
 						int numPossibilite = 1 ;
 						for(ArrayList<String> villesEnPlus : meilleuresRepartitions) {
@@ -287,25 +376,30 @@ public class Algos {
 						try {
 							agg.ajouterEcole(meilleuresRepartitions.get(0));
 						} catch (Exception e) {
-							System.err.println("L'une des villes n'a pas pu être accédée dans l'ajout d'écoles final.") ;
+							if(affichageDebug) System.err.println("L'une des villes n'a pas pu être accédée dans l'ajout d'écoles final.") ;
 						}	
 					}
 					
 				} else {
 					String u = la.plusHautDegre() ;
+					if(affichageDebug) System.out.println("Ville de plus haut degré : "+u);
 					try {
 						agg.getVille(u).setHasEcole(true);
 					} catch (ExceptionVille e) {
-						System.err.println("La ville "+u+" n'a pas pu être accédée.") ;
+						if(affichageDebug) System.err.println("La ville "+u+" n'a pas pu être accédée.") ;
 					}
 					la.removeVilleEtVoisins(u) ;
 				}
 			}
-			System.out.println("Fin itération while : "+la.toString()) ; // Après avoir potentiellement retiré 
+			if(affichageDebug) {
+				System.out.println("Fin de l'itération du while externe\nAffichage de la à ce stade du programme :\n"+la.toString()) ; // Après avoir potentiellement retiré 
+				System.out.println("Strate = "+strateRecursivite) ;
+			}
 		}
 	
 		System.out.println("Bilan au sortir de algorithmeParSoustraction() : ");
 		agg.afficheBilan() ;
+		System.out.println("\t\t\t\t\t\t\t\t\ton remonte d'une strate (strate -> "+strateRecursivite+"-1)") ;
 		return agg ;
 	}
 }

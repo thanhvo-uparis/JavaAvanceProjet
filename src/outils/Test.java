@@ -29,6 +29,7 @@ public class Test extends HashMap<Integer, BilanIterationAlgo> {
 		Iterator<Map.Entry<Integer, BilanIterationAlgo>> it = this.entrySet().iterator();
 		while(it.hasNext()) {
 			Map.Entry<Integer, BilanIterationAlgo> pair = it.next() ;
+			
 			ecoles += pair.getValue().getScore() ;
 			villes += pair.getKey() ;
 		}

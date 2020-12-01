@@ -34,15 +34,18 @@ public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 		ArrayList<String> voisinsVilleARemove = new ArrayList<String>(0) ; //shallow copy
 		for(String voisin : this.get(key)) {
 			System.out.println(voisin) ;
-			voisinsVilleARemove.add(new String(voisin)) ;
-		}
-		voisinsVilleARemove.add(new String(key));
-		//permet de ne pas lever de ConcurrentModificationException
+			voisinsVilleARemove.add(voisin) ;
+		} //on crée une shallow copy de la ville qu'on veut enlever de la liste d'adjacence, avec ses voisins
+		voisinsVilleARemove.add(key) ;
 		
 		for(ArrayList<String> entreeListeAdjacence : this.values()) {
 			for(String voisin : voisinsVilleARemove) entreeListeAdjacence.remove(voisin) ;
-		}
-		for(String voisin : voisinsVilleARemove) this.remove(voisin) ;
+			entreeListeAdjacence.remove(key) ;
+		} //pour chacune des entrées de la liste d'adjacence, on enlève de leurs valeurs tous les éléments contenus dans entreeListeAdjacence
+		
+		for(String voisin : voisinsVilleARemove) {
+			this.remove(voisin) ;
+		} //on enlève les éléments de la liste voisinsVilleARemove de la liste d'adjacence
 	}
 	
 	protected void degreZero(LinkedList<String> file) {
@@ -99,7 +102,7 @@ public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 		Iterator<Map.Entry<String, ArrayList<String>>> it = this.entrySet().iterator();
 		while(it.hasNext()) {
 			Map.Entry<String, ArrayList<String>> pair = it.next() ;
-			sb.append(pair.getKey()+" : ") ;
+			sb.append(pair.getKey()+" :") ;
 			for(String v : pair.getValue()) sb.append(" "+v) ;
 			sb.append("\n") ;
 		}	

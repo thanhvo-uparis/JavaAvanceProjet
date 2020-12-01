@@ -41,13 +41,13 @@ public class Agglomeration{
 	public Agglomeration(int nbVilles) {
 		this.villes = new ArrayList<Ville>(nbVilles);
 		char c = 'A';
-		if(nbVilles > 2 && nbVilles < 26) {
+		if(nbVilles > 2 && nbVilles < 27) {
 			for(c = 'A'; c < 'A'+nbVilles; c++) this.villes.add(new Ville(c));
-		} else if(nbVilles < 26*10) {
+		} else if(nbVilles <= 26*10) {
 			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+""+String.format("%01d", i/26)));
-		} else if(nbVilles < 26*100) { 
+		} else if(nbVilles <= 26*100) { 
 			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+String.format("%02d", i/26)));
-		} else if(nbVilles < 26*1000) { 
+		} else if(nbVilles <= 26*1000) { 
 			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+String.format("%03d", i/26)));
 		}
 	}
@@ -116,7 +116,10 @@ public class Agglomeration{
 		ajouterRoute(getVille(a), getVille(b));
 	}
 	
-	
+	public void ajouterRoute(String a, String...s) throws Exception {
+		for(String ville : s) ajouterRoute(getVille(a), getVille(ville));
+	}
+		
 	/**
 	 * Methode permettant d'ajouter une ecole dans une ville n'en ayant pas deja et dans le cas ou l'ajout ne briserait pas la contrainte d'Economie.
 	 * @param		a					la ville dans laquelle on veut ajouter une ecole
@@ -215,13 +218,64 @@ public class Agglomeration{
 	/**
 	 * Methode permettant d'afficher la liste des villes possedant des ecoles dans l'agglomeration.
 	 */
-	public void afficheVilleAEcole() {
-		for(Ville a : villes) if(a.getHasEcole()) System.out.print(a.getKey()+" ");
+	public void afficheVilleAEcole(boolean vueEtendue, int tailleLigne) {
+
+		int compteur = 0 ;
+		int size = villes.get(0).getKey().length() ;
+		if(vueEtendue) {
+			int tmp = 0 ;
+			while(compteur < villes.size()) {
+				for(tmp = compteur ; tmp%tailleLigne != tailleLigne-1 && tmp%tailleLigne+compteur < villes.size() ; tmp++) {
+					//System.out.print(villes.size()) ;
+					System.out.print(villes.get(tmp).getKey()+" ");
+				}
+				if(tmp < villes.size()) System.out.print(villes.get(tmp).getKey()+" ");
+				//System.out.println(compteur) ;
+				System.out.print("\n");
+				for(tmp = compteur ; tmp%tailleLigne != tailleLigne-1 && tmp%tailleLigne+compteur < villes.size() ; tmp++) {
+					if(villes.get(tmp).getHasEcole()) {
+						System.out.print(new String(new char[size]).replace("\0", "E")+" ");
+					} else {
+						System.out.print(new String(new char[size]).replace("\0", "-")+" ");
+					}
+				}
+				if(tmp < villes.size()) {
+					if(villes.get(tmp-1).getHasEcole()) {
+						System.out.print(new String(new char[size]).replace("\0", "E")+" ");
+					} else {
+						System.out.print(new String(new char[size]).replace("\0", "-")+" ");
+					}
+				}
+				System.out.println("\n");
+				compteur += tmp%tailleLigne+1 ;
+				//System.out.println(compteur) ;
+			}
+				
+		} else {
+			for(Ville a : villes) {
+			if (!vueEtendue) if(a.getHasEcole()) System.out.print(a.getKey()+" ");
+			compteur++ ;
+			if(compteur%tailleLigne-1 == 0) System.out.print("\n") ;
+			}
+		}
 		System.out.print("\n");
 	}
 	
-	public void afficheVilles() {
-		for(Ville a : villes) System.out.print(a.getKey()+" ");
+	public void afficheVilleAEcole() {
+		if(nbEcoles() != 0) {
+			afficheVilleAEcole(true, 50) ;
+		} else {
+			System.out.println("Aucune école construite.") ;
+		}		
+	}
+	
+	public void afficheVilles(int tailleLigne) {
+		int compteur = 0 ;
+		for(Ville a : villes) {
+			System.out.print(a.getKey()+" ");
+			compteur++ ;
+			if(compteur%tailleLigne == 0) System.out.print("\n");
+		}
 		System.out.print("\n");
 	}
 	
@@ -247,27 +301,33 @@ public class Agglomeration{
 	 * Par exemple, si [a, b] apparait, alors [b, a] n'apparaitra pas.
 	 * @return	un string compose d'autant de lignes qu'il y a de routes.
 	 */
-	public void afficheRoutes() {
+	public void afficheRoutes(boolean enListe) {
 		for(Ville ville : villes) {
+			if(!enListe) System.out.print(ville.getKey()+" : ");
 			for(Ville voisin : ville.getVoisins()) {
-				if(voisin.getKey().compareTo(ville.getKey()) > 0) System.out.print("["+ville.getKey()+", "+voisin.getKey()+"] ");
+				if(enListe)	if(voisin.getKey().compareTo(ville.getKey()) > 0) System.out.print("["+ville.getKey()+", "+voisin.getKey()+"] ");
+				if(!enListe) System.out.print(voisin.getKey()+" ");
 			}
+			System.out.print("\n");	
 		}
-		System.out.print("\n");
 	}
+	
+	public void afficheRoutes() {
+		afficheRoutes(false) ;
+	}
+	
 	
 	public void afficheBilan() {
 		System.out.print("Agglomération "+(estConnexe()?"":"non")+ "connexe de "+villes.size()+" et "+nbEcoles());
 		System.out.println(" ecoles ("+String.format("%.2f", (double) (nbEcoles())/villes.size()*100)+" %)");
-		System.out.print("Villes : ") ;
-		afficheVilles() ;
-		System.out.print("Routes : ");
+		System.out.println("\nVilles : ") ;
+		afficheVilles(50) ;
+		System.out.println("\nVoisins : ");
 		afficheRoutes() ;
-		System.out.print("Ecoles : ") ;
+		System.out.println("\nEcoles : ") ;
 		afficheVilleAEcole() ;
 		System.out.println("Contrainte d'accessibilité : "+(respecteAccessibilite()?"Respectée":"Non respectée")) ;
 		System.out.print("\n");
-		
 	}
 	
 	/**

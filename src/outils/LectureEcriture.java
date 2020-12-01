@@ -32,7 +32,7 @@ public class LectureEcriture {
     public static Agglomeration lectureDepuisFichier(String chemin) {
         try (BufferedReader br = new BufferedReader(new FileReader(chemin))) { //un objet reader
             String line; //lit ligne par ligne
-            List<Character> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
+            List<String> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
             List<Character[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
             List<Character> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
             while ((line = br.readLine()) != null) { //lit le fichier à la boucle de ligne par ligne, lire jusqu'à ce que le fichier soit terminé
@@ -45,7 +45,7 @@ public class LectureEcriture {
             }
 		
             Agglomeration agg = new Agglomeration(villes.size());  //Initialise l'objet Agglomération à partir des informations lisibles dans le fichier
-            for (Character v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
+            for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
             }
             for (Character[] chars : routes) {  //parcourt les routes à ajouter

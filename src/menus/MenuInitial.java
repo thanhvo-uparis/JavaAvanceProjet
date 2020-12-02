@@ -11,7 +11,7 @@ public class MenuInitial {
 	
 	public static void lancement() {
 		MenuInitial.menuCreationAgglo();
-		MenuInitial.menuPrincipal();
+		MenuInitial.menuPrincipal(); //
 	}
 		
 	public static Agglomeration menuCreationAgglo() {

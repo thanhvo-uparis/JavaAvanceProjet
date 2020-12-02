@@ -85,6 +85,7 @@ public class GenerateurAgglomeration {
 	}	
 	
 	@Deprecated
+	@SuppressWarnings("unused")
 	private static String alphabetGen(int n) {
 		StringBuilder sb = new StringBuilder() ;
 		for(char c = 'a'; c < 'a'+n; c++) sb.append(c) ; //le "+1" sert a ajouter une lettre qui ne sera pas dans les villes, pour forcer les erreurs

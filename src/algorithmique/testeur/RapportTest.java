@@ -1,7 +1,5 @@
 package algorithmique.testeur;
 
-import constructionEcoles.Agglomeration;
-
 public class RapportTest {
 	
 	/**

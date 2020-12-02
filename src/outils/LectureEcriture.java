@@ -20,6 +20,7 @@ import java.util.Set;
 
 //TODO Gérer les différentes exceptions (fichier invalide, chemin invalide, etc, voir slides données en TD)
 //TODO Faire en sorte que seuls des fichiers .CA puisse être lus, sinon on throw une exception (Il faut créer une exception en plus pour ça)
+//TODO ajouter une méthode EcritureCSV pour les RapportTest des algos ?
 
 public class LectureEcriture {
 	/**

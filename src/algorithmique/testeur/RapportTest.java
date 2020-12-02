@@ -1,5 +1,7 @@
 package algorithmique.testeur;
 
+import constructionEcoles.Agglomeration;
+
 public class RapportTest {
 	
 	/**
@@ -10,35 +12,41 @@ public class RapportTest {
 	private Boolean dynamique ;
 	
 	private int nbVilles, nbEcoles ;
+	private boolean contrainteAccessibilite ;
 	
 	private double temps ;
 	
-	public RapportTest(String nomAlgo, Integer k, Boolean dynamique, int nbVilles, int nbEcoles, double temps) {
+	protected RapportTest(String nomAlgo, Integer k, Boolean dynamique, Agglomeration agg, double temps) {
 		this.nomAlgo = nomAlgo ;
-		this.k = k ;
-		this.dynamique = dynamique ;
-		this.nbVilles = nbVilles ;
-		this.nbEcoles = nbEcoles ;
+		try { this.k = k.intValue() ; } catch(NullPointerException e) { this.k = null ;}
+		try { this.dynamique = dynamique.booleanValue() ; } catch(NullPointerException e) { this.dynamique = null ;}
+		this.nbVilles = agg.getVilles().size() ;
+		this.nbEcoles = agg.nbEcoles() ;
+		this.contrainteAccessibilite = agg.respecteAccessibilite() ;
 		this.temps = temps ;
 	}
 	
-	public String getNomAlgo() {
+	protected String getNomAlgo() {
 		return nomAlgo;
 	}
 
-	public double getTemps() {
+	protected double getTemps() {
 		return temps;
 	}
 
-	public double getScore() {
+	protected double getScore() {
 		return (double) nbEcoles/nbVilles ;
 	}
 
-	public String formatCSV() {
-		return "\""+nomAlgo+"\","+k+","+dynamique+","+String.format("%.3f", getScore())+","+String.format("%.3f", temps)+","+nbVilles;
+	protected String formatCSV() {
+		return "\""+nomAlgo+"\","+k+","+dynamique+","+String.format("%.3f", getScore())+","+String.format("%.3f", temps)+","+nbVilles+","+"\""+contrainteAccessibilite+"\"";
+	}
+	
+	protected static String enteteCSV() {
+		return "\"nomAlgo\",\"k\",\"dynamique\",\"score\",\"temps\",\"nbVilles\",\"contrainteAccessibilite\"" ;
 	}
 	
 	public String toString() {
-		return "[algo="+nomAlgo+", score="+String.format("%.3f", getScore())+", temps="+String.format("%.3f", temps)+"ms]" ;
+		return "[algo="+nomAlgo+", score="+String.format("%.3f", getScore())+", temps="+String.format("%.3f", temps)+"ms, respecteAccessibilite="+contrainteAccessibilite+"]" ;
 	}
 }

@@ -48,7 +48,7 @@ public class GenerateurAgglomeration {
 		Agglomeration agg = new Agglomeration(nbVilles) ;
 		//agg.afficheBilan();
 		/*
-		 * try { Thread.sleep(5000); } catch (InterruptedException e1) { // TODO
+		 * try { Thread.sleep(5000); } catch (InterruptedException e1) {
 		 * Auto-generated catch block e1.printStackTrace(); }
 		 */
 		

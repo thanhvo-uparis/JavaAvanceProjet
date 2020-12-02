@@ -40,19 +40,70 @@ public class Testeur {
 	
 	//pour tester la complexité d'un algo en particulier
 	// voir https://www.techiedelight.com/measure-elapsed-time-execution-time-java/
-	public static ArrayList<RapportTest> testComplexiteTousAlgos(Agglomeration agg) {
+	public static ArrayList<RapportTest> getTestComplexiteTousAlgos(Agglomeration agg) {
 		ArrayList<RapportTest> tests = new ArrayList<RapportTest>(algos.length) ;
 		for(int i = 0 ; i < algos.length ; i++) tests.add(getTestSurAlgo(agg, i)) ;
 		return tests ;
 	}
 	
 	public static RapportTest getTestAlgoSurAgglomerationAleatoire(int nbVilles, int algo) throws InputMismatchException {
+		return getTestAlgoSurAgglomerationAleatoire(nbVilles, algo, true) ;
+	}
+	
+	private static RapportTest getTestAlgoSurAgglomerationAleatoire(int nbVilles, int algo, boolean affichage) throws InputMismatchException {
 		if(nbVilles < 2) throw new InputMismatchException("Le nombre de villes minimum pour une agglomération est 2.") ;
-		System.out.println("Résultat de l'algorithme "+algos[algo]+" sur une agglomération aléatoire de "+nbVilles+" villes.");
-		return getTestSurAlgo(GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles), algo) ;
+		if(algo < 0 || algo > algos.length-1) throw new InputMismatchException("Algorithme invalide") ;
+		if(affichage) System.out.println("Résultat de l'algorithme "+algos[algo]+" sur une agglomération aléatoire de "+nbVilles+" villes.");
+		return getTestSurAlgo(GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles), algo, affichage) ;
+	}
+	
+	public static ArrayList<RapportTest> getTestsAlgosSurAgglomerationAleatoire(int nbVillesMin, int nbVillesMax) {
+		return getTestsAlgosSurAgglomerationAleatoire(nbVillesMin, nbVillesMax, null) ; //permet d'appliquer le calcul sur tous les algorithmes
+	}
+	
+	public static ArrayList<RapportTest> getTestsAlgosSurAgglomerationAleatoire(int nbVillesMin, int nbVillesMax, Integer algo) throws InputMismatchException {
+		if(nbVillesMin > nbVillesMax) { // dans le cas où on aurait inversé les arguments
+			int tmp = nbVillesMin ;
+			nbVillesMin = nbVillesMax ;
+			nbVillesMax = tmp ;
+			System.out.println("Vos arguments étaient dans le mauvais ordre, on a réparé ça pour vous.") ;
+		}
+		
+		if(nbVillesMax-nbVillesMin > 1000) throw new InputMismatchException("Cette méthode accepte au maximum une amplitude de 1000 villes de différence.") ;
+		if(nbVillesMin < 2) throw new InputMismatchException("On ne peut pas avoir d'agglomération avec moins de 2 villes.") ;
+		if(nbVillesMin > 26000) throw new InputMismatchException("Le programme ne supporte pas d'agglomération de plus de 26 000 villes.") ;
+		
+		ArrayList<RapportTest> rapports = new ArrayList<RapportTest>((nbVillesMax-nbVillesMin)*algos.length) ;
+		
+		int affichageAvancement = 0 ;
+		
+		for(int nbVilles = nbVillesMin ; nbVilles <= nbVillesMax ; nbVilles++) {
+			double avancement = (double) (nbVilles-nbVillesMin)/(nbVillesMax-nbVillesMin) * 100 ;
+			if(avancement >= affichageAvancement) {
+				System.out.println("Génération des résultats en cours... "+String.format("%.2f", avancement)+" %") ;
+				affichageAvancement+=2 ;
+			}
+			if(algo == null) {
+				for(int i = 0; i < algos.length ; i++) rapports.add(getTestAlgoSurAgglomerationAleatoire(nbVilles, i, false)) ;
+			} else {
+				rapports.add(getTestAlgoSurAgglomerationAleatoire(nbVilles, algo, false)) ;
+			}
+		}
+		System.out.println("Calcul terminé avec succès.\n") ;
+		return rapports ;
+	}
+	
+	public static ArrayList<RapportTest> getTestSurAlgo(int algo, Agglomeration...aggs) {
+		ArrayList<RapportTest> tests = new ArrayList<RapportTest>() ;
+		for(Agglomeration agg : aggs) tests.add(getTestSurAlgo(agg, algo)) ;
+		return tests ;
 	}
 	
 	public static RapportTest getTestSurAlgo(Agglomeration agg, int algo) {
+		 return getTestSurAlgo(agg, algo, true) ;
+	}
+	
+	private static RapportTest getTestSurAlgo(Agglomeration agg, int algo, boolean affichage) {
 		long tempsDebut = System.nanoTime();
 		switchAlgo(algo, agg) ;
 		long tempsFin = System.nanoTime();
@@ -61,15 +112,15 @@ public class Testeur {
 		//System.out.println("Temps d'exécution en nanosecondes :  " + tempsEcoule);
 		//System.out.println("Temps d'exécution en millisecondes : " + tempsEcoule / 1000000);
 		
-		affichageBilanAlgo(agg, algo) ;
-		return new RapportTest(algos[algo], (algo==0||algo==1)?k:null, (algo==3)?estDynamique:null, agg.getVilles().size(), agg.nbEcoles(), tempsEcoule/1000000) ;
+		if(affichage) affichageBilanAlgo(agg, algo) ;
+		return new RapportTest(algos[algo], (algo==0||algo==1)?k:null, (algo==3)?estDynamique:null, agg, tempsEcoule/1000000) ;
 	}
 		
 	
 	public static ArrayList<RapportTest> compareAlgorithmes(Agglomeration agg) {
 		
 		System.out.println("\t **** Comparatif des résultats obtenus par nos algorithmes **** \n") ;
-		ArrayList<RapportTest> tests = testComplexiteTousAlgos(agg) ;
+		ArrayList<RapportTest> tests = getTestComplexiteTousAlgos(agg) ;
 		
 		String nomAlgoMeilleurTemps = "";
 		double meilleurTemps = Double.MAX_VALUE ;
@@ -165,9 +216,27 @@ public class Testeur {
 		//agg.ajouterRoute("V") ;
 		//agg.ajouterRoute(V) ;
 		//System.out.println("Entrée dans le Tester : ") 
-		Testeur.compareAlgorithmes(agg1) ;
+		
+		
+		/*
+		compareAlgorithmes(agg1) ;
 		System.out.println(Testeur.getTestAlgoSurAgglomerationAleatoire(45, 2)) ;
+		*/
+		
+		/*
+		ArrayList<RapportTest> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(100, 150, 2) ;
+		System.out.println("\n-----------------------------------------------\n\nVotre fichier CSV :\n\n"+RapportTest.enteteCSV()) ;
+		for(RapportTest t : testsAleatoiresSurAlgos) System.out.println(t.formatCSV()) ;
+		*/
+		
+		
+		System.out.println("\n-----------------------------------------------\n\n\n\t\t****** Tests sur algorithmeFilePriorite avec agglomérations connues ******\n\n") ;
+		ArrayList<RapportTest> testsSurAlgoAvecAggloDefinie = getTestSurAlgo(2, agg1, agg2, agg3) ;
+		System.out.println("\n-----------------------------------------------\n\nVotre fichier CSV :\n\n"+RapportTest.enteteCSV()) ;
+		for(RapportTest t : testsSurAlgoAvecAggloDefinie) System.out.println(t.formatCSV()) ;
 		//System.out.println(Tester.testComplexiteTousAlgos(500).toString()) ;
 		//Tester.testComplexiteTousAlgos(25) ;
+		
+		
 	}
 }

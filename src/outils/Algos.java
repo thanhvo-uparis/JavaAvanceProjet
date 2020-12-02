@@ -36,7 +36,7 @@ import constructionEcoles.exceptions.ExceptionVille;
 
 public class Algos {
 
-	private static final boolean affichageDebug = true ; 
+	private static final boolean affichageDebug = false ; 
 	/**
 	 * Méthode statique permettant de retirer un certain nombre d'écoles à l'agglomération passée en argument.
 	 * Cet algorithme est très naïf et très améliorable.
@@ -240,6 +240,7 @@ public class Algos {
 		// La liste d'adjacence est une shallow copy de l'objet villes. 
 		// Elle sert à ne pas s'encombrer des villes ayant déjà accès à des écoles au fur et à mesure qu'on en ajoute
 		// Elle permet d'optimiser la complexité de l'algo et d'en améliorer sa clarté.
+		if(affichageDebug) System.out.println("\n\n\n-----------------------------------------------------------------------------------------------\n\n\n") ;
 		ListeAdjacence la ;
 		
 		if(strateRecursivite == 0) {
@@ -250,7 +251,8 @@ public class Algos {
 			la = new ListeAdjacence(recursion) ; // Shallow copy de la liste d'adjacence passée en argument
 		}
 		
-		System.out.println("Initialisation : "+la.toString()) ;
+
+		if(affichageDebug) System.out.println("Initialisation : "+la.toString()) ;
 																		
 		while(!la.isEmpty() && !agg.respecteAccessibilite()) {											
 			// Cette file servira dans un premier temps à stocker les villes voisines des ville de degré 1
@@ -291,7 +293,7 @@ public class Algos {
 			// finir l'exécution de l'algorithme avec des plusHautDegre finissant par retourner des villes de degré 0.
 			// TODO Est-ce que cette partie va être rencontrée ?
 			la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
-			if(affichageDebug) System.out.println("Sortie du while while des voisins de degré 0") ;
+			if(affichageDebug) System.out.println("Sortie du while des voisins de degré 0") ;
 			while(!agg.respecteAccessibilite() && !file.isEmpty()) {
 				String cDegreZero = file.poll() ;
 				try {
@@ -320,8 +322,15 @@ public class Algos {
 					// meilleuresRepartitions va 
 					ArrayList<ArrayList<String>> meilleuresRepartitions = new ArrayList<ArrayList<String>>() ;
 					ArrayList<String> villesAEcoles = agg.getVillesAEcole() ;
+					ArrayList<String> listePlusHautsDegres = la.plusHautsDegres() ;
 					
-					for(String c : la.plusHautsDegres()) {
+					//il y a un bug à cet endroit : on ne peut pas sortir du loop car il reprend à chaque fois à 0 lorsqu'il remonte de la récursivité
+					for(String c : listePlusHautsDegres) {
+						if(affichageDebug) {
+							System.out.print("listePlusHautsDegres : ") ;
+							for(String s : listePlusHautsDegres) System.out.print(s+" ") ;
+							System.out.print("\n");
+						}
 						try {
 							if(affichageDebug) System.out.println("Ajout d'école dans la ville "+c) ;
 							agg.getVille(c).setHasEcole(true);
@@ -329,14 +338,23 @@ public class Algos {
 						} catch (ExceptionVille e) {
 							if(affichageDebug) System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
 						}		
-						if(affichageDebug) System.out.println("Entrée dans algorithmeParSoustraction de strate "+(strateRecursivite+1)) ;
 						ListeAdjacence recursionLA = new ListeAdjacence(la) ;
 						//if(affichageDebug) System.out.println("recursionLA == la ? "+(recursionLA==la?"Oui":"Non")) ; // objets identiques ou non (même adresse)
 						//if(affichageDebug) System.out.println("recursionLA.equals(la) ? "+(recursionLA.equals(la)?"Oui":"Non")) ; //valeurs égales ou non
+
+						if(affichageDebug) {
+							System.out.println("Affichage de recursionLA avant removeVilleEtVoisins("+c+") : \n"+recursionLA.toString()) ;
+							//System.out.println("Affichage de la avant removeVilleEtVoisins("+c+") : \n"+la.toString()) ;
+						}
 						
-						recursionLA.removeVilleEtVoisins(c);
+						recursionLA.removeVilleEtVoisins(c) ; //le c est une copie ?
+						if(affichageDebug) {
+							//System.out.println("Affichage de recursionLA avant récursivité : \n"+recursionLA.toString()) ;
+							//System.out.println("Affichage de la avant récursivité  : \n"+la.toString()) ;
+							System.out.println("Entrée dans algorithmeParSoustraction de strate "+(strateRecursivite+1)) ;
+						}
 						algorithmeParSoustraction(agg, true, strateRecursivite+1, recursionLA) ; // point d'entrée de la récursivité
-						meilleuresRepartitions.add(agg.getVillesAEcole()); // on ajoute la composition trouvée dans meilleuresRepartitions
+						if(!meilleuresRepartitions.contains(agg.getVillesAEcole())) meilleuresRepartitions.add(agg.getVillesAEcole()); // on ajoute la composition trouvée dans meilleuresRepartitions sans les doublons
 						
 						if(affichageDebug) { //ce bloc sert à afficher l'état de meilleures répartitions
 							int compteur = 1 ;
@@ -353,7 +371,10 @@ public class Algos {
 						if(affichageDebug) {
 							System.out.println("Villes à écoles après avoir clearEcoles() :") ;
 							agg.afficheVilleAEcole();
+							System.out.println("Affichage de la à la fin d'une itération de la boucle for des plus hauts degrés : "+la.toString()) ;
 						}
+						
+						
 					}
 					
 					meilleuresRepartitions.sort(Comparator.comparing(ArrayList<String>::size).reversed()); //on trie les répartitions
@@ -400,6 +421,10 @@ public class Algos {
 		System.out.println("Bilan au sortir de algorithmeParSoustraction() : ");
 		agg.afficheBilan() ;
 		System.out.println("\t\t\t\t\t\t\t\t\ton remonte d'une strate (strate -> "+strateRecursivite+"-1)") ;
+		/*
+		 * try { Thread.sleep(5000); } catch (InterruptedException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
 		return agg ;
 	}
 }

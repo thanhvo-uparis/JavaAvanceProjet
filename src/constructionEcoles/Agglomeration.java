@@ -263,7 +263,7 @@ public class Agglomeration{
 	
 	public void afficheVilleAEcole() {
 		if(nbEcoles() != 0) {
-			afficheVilleAEcole(true, 50) ;
+			afficheVilleAEcole(true, 40) ;
 		} else {
 			System.out.println("Aucune école construite.") ;
 		}		
@@ -318,10 +318,10 @@ public class Agglomeration{
 	
 	
 	public void afficheBilan() {
-		System.out.print("Agglomération "+(estConnexe()?"":"non")+ "connexe de "+villes.size()+" et "+nbEcoles());
+		System.out.print("Agglomération "+(estConnexe()?"":"non ")+ "connexe de "+villes.size()+" et "+nbEcoles());
 		System.out.println(" ecoles ("+String.format("%.2f", (double) (nbEcoles())/villes.size()*100)+" %)");
 		System.out.println("\nVilles : ") ;
-		afficheVilles(50) ;
+		afficheVilles(40) ;
 		System.out.println("\nVoisins : ");
 		afficheRoutes() ;
 		System.out.println("\nEcoles : ") ;

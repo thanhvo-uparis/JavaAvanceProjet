@@ -1,6 +1,6 @@
 package constructionEcoles;
 import java.util.*;
-import constructionEcoles.exceptions.*;
+import exceptions.*;
 
 /**
  * Classe qui definit une agglomeration dans le cadre du projet de construction d'ecoles.
@@ -55,25 +55,25 @@ public class Agglomeration{
 	/**
 	 * Methode permettant de verifier si une ville est deja dans l'agglomeration
 	 * @param		a	Char correspondant a l'attribut key de la ville a verifier
-	 * @exception	ExceptionVille dans le cas ou la ville n'existe pas.
+	 * @exception	VilleException dans le cas ou la ville n'existe pas.
 	 * @return		v	la ville trouvee dans l'agglomeration si elle a ete trouvee
 	 * @see getVille(Ville)
 	 */
-	public Ville getVille(String a) throws ExceptionVille {
+	public Ville getVille(String a) throws VilleException {
 		for (Ville v : villes) if (v.getKey().equals(a)) return v;
-		throw new ExceptionVille("La ville "+a+" n'existe pas dans l'agglomeration");
+		throw new VilleException("La ville "+a+" n'existe pas dans l'agglomeration");
 	}
 	
 	/**
 	 * Methode permettant de verifier si une ville est deja dans l'agglo
 	 * @param	a	ville a chercher dans l'agglomeration
 	 * @return	v	la ville trouvee dans l'agglomeration si elle a ete trouvee
-	 * @exception	ExceptionVille	lance une exception si la ville n'est pas dans l'agglomeration
+	 * @exception	VilleException	lance une exception si la ville n'est pas dans l'agglomeration
 	 * @see getVille(char)
 	 */
 	public Ville getVille(Ville a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a.getKey()) return v;
-		throw new ExceptionVille("La ville "+a.getKey()+" n'existe pas dans l'agglomeration");
+		throw new VilleException("La ville "+a.getKey()+" n'existe pas dans l'agglomeration");
 	}
 	
 
@@ -94,13 +94,13 @@ public class Agglomeration{
 	 * Methode permettant d'ajouter une route entre deux villes dans le cas ou celles-ci ne seraient pas deja reliees
 	 * @param		a	premiere ville du couple de villes a relier par une route
 	 * @param		b	seconde ville du couple de villes a relier par une route
-	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
+	 * @exception	VilleException dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
 	 * @see			ajouterRoute(char, char)
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
-		if(a.equals(b)) throw new ExceptionVille("Les deux villes sont identiques"); // equals ne marche pas ?
-		if(getVille(a) == null || getVille(b) == null) throw new ExceptionVille("L'une des villes n'existe pas");
-		if(a.getVoisins().contains(b)) throw new ExceptionUnicite("Les deux villes sont deja reliees");
+		if(a.equals(b)) throw new VilleException("Les deux villes sont identiques"); // equals ne marche pas ?
+		if(getVille(a) == null || getVille(b) == null) throw new VilleException("L'une des villes n'existe pas");
+		if(a.getVoisins().contains(b)) throw new UniciteException("Les deux villes sont deja reliees");
 		a.getVoisins().add(b);
 		b.getVoisins().add(a);
 	}
@@ -109,7 +109,7 @@ public class Agglomeration{
 	 * Surcharge de la methode ajouterRoute(Ville, Ville) avec a la place des arguments Ville deux char
 	 * @see		ajouterRoute(Ville, Ville)
 	 * @param		a	premiere ville du couple de villes a relier par une route
-	 * @exception	ExceptionVille dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
+	 * @exception	VilleException dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
 	 * @param		b	seconde ville du couple de villes a relier par une route
 	 */
 	public void ajouterRoute(String a, String b) throws Exception {
@@ -123,7 +123,7 @@ public class Agglomeration{
 	/**
 	 * Methode permettant d'ajouter une ecole dans une ville n'en ayant pas deja et dans le cas ou l'ajout ne briserait pas la contrainte d'Economie.
 	 * @param		a					la ville dans laquelle on veut ajouter une ecole
-	 * @exception	ExceptionEconomie 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
+	 * @exception	EconomieException 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
 	 * @see			ajouterRoute(Ville, Ville)
 	 */
 	public void ajouterEcole(Ville a) throws Exception {
@@ -133,12 +133,12 @@ public class Agglomeration{
 	/**
 	 * Surcharge de la methode ajouterEcole(Ville) avec a la place de l'argument Ville un char
 	 * @param		c					la ville dans laquelle on veut ajouter une ecole
-	 * @exception	ExceptionEconomie 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
+	 * @exception	EconomieException 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
 	 * @see		ajouterEcole(Ville)
 	 */
 	public void ajouterEcole(String c) throws Exception {
 		Ville a = getVille(c);
-		if(a.getHasEcole()) throw new ExceptionEconomie("La ville a deja une ecole.");
+		if(a.getHasEcole()) throw new EconomieException("La ville a deja une ecole.");
 		//if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est deja proche d'une ecole."); //	decommenter cette ligne pour que la contrainte d'Economie
 		a.setHasEcole(true);																			//	soit satisfaite en chaque instant de l'execution du programme
 	}
@@ -153,7 +153,7 @@ public class Agglomeration{
 	 * Methode permettant de retirer une ecole a une ville en faisant passer son attribut hasEcole de true a false 
 	 * dans le cas ou cet ajout ne brise pas la contrainte d'Accessibilite
 	 * @param		a						la ville dans laquelle on essaiera de retirer une ecole
-	 * @exception	ExceptionAccessibilite	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
+	 * @exception	AccessibiliteException	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
 	 * @see			retirerEcole(char)
 	 */
 	public void retirerEcole(Ville a) throws Exception {
@@ -164,14 +164,14 @@ public class Agglomeration{
 	 * Surcharge de la methode retirerEcole(Ville) avec a la place de l'argument Ville un char
 	 * @param		c						la ville dans laquelle on essaiera de retirer une ecole
 	 * @see		retirerEcole(Ville)
-	 * @exception	ExceptionAccessibilite	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
+	 * @exception	AccessibiliteException	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
 	 */
 	public void retirerEcole(String c) throws Exception {
 		Ville a = getVille(c);
 		boolean accessibiliteVoisins = true;
-		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new ExceptionAccessibilite("La ville "+a.getKey()+" ne serait plus assez proche une ecole.");
+		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new AccessibiliteException("La ville "+a.getKey()+" ne serait plus assez proche une ecole.");
 		for(Ville voisin : a.getVoisins()) if(voisin.getNbEcolesAccessibles() == 1 && !voisin.getHasEcole()) accessibiliteVoisins = false;
-		if(!accessibiliteVoisins) throw new ExceptionAccessibilite("L'ecole de la ville "+a.getKey()+" est l'unique ecole accessible pour au moins une de ses villes voisines.");
+		if(!accessibiliteVoisins) throw new AccessibiliteException("L'ecole de la ville "+a.getKey()+" est l'unique ecole accessible pour au moins une de ses villes voisines.");
 		a.setHasEcole(false);
 	}
 	
@@ -318,15 +318,30 @@ public class Agglomeration{
 	
 	
 	public void afficheBilan() {
+		afficheBilan(true) ;
+	}
+	
+	public void afficheBilan(boolean condense) {
 		System.out.print("Agglomération "+(estConnexe()?"":"non ")+ "connexe de "+villes.size()+" et "+nbEcoles());
-		System.out.println(" ecoles ("+String.format("%.2f", (double) (nbEcoles())/villes.size()*100)+" %)");
-		System.out.println("\nVilles : ") ;
-		afficheVilles(40) ;
-		System.out.println("\nVoisins : ");
-		afficheRoutes() ;
-		System.out.println("\nEcoles : ") ;
-		afficheVilleAEcole() ;
+		System.out.println(" écoles ("+String.format("%.2f", (double) (nbEcoles())/villes.size()*100)+" %)");
 		System.out.println("Contrainte d'accessibilité : "+(respecteAccessibilite()?"Respectée":"Non respectée")) ;
+		if(condense) {
+			System.out.println("Représentation du graphe (Ecole [\"*\":oui, \" \":non] - Ville : Voisins) :") ;
+			for(Ville v : villes) {
+				System.out.print(v.getHasEcole()?" * ":"   ") ;
+				System.out.print(v.getKey()+" : ") ;
+				Collections.sort(v.getVoisins(), Comparator.comparing(Ville::getKey)) ;
+				for(Ville voisin : v.getVoisins()) System.out.print(voisin.getKey()+" ");
+				System.out.print("\n");
+			}
+		} else {
+			System.out.println("\nVilles : ") ;
+			afficheVilles(40) ;
+			System.out.println("\nVoisins : ");
+			afficheRoutes() ;
+			System.out.println("\nEcoles : ") ;
+			afficheVilleAEcole() ;
+		}
 		System.out.print("\n");
 	}
 	

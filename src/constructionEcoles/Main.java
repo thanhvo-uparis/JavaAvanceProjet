@@ -2,7 +2,7 @@ package constructionEcoles;
 
 
 
-import outils.UtilMain;
+import menus.MenuInitial;
 
 
 
@@ -35,7 +35,7 @@ import outils.UtilMain;
 
 public class Main {
 	public static void main(String[] args) {
-		UtilMain.lancement();
+		MenuInitial.lancement();
 	}
 
 }	

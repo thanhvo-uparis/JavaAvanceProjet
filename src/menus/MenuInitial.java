@@ -1,21 +1,20 @@
-package outils;
+package menus;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import algorithmique.Algos;
 import constructionEcoles.Agglomeration;
+import outils.LectureEcriture;
 
-public class UtilMain {
+public class MenuInitial {
 	
-	public void lancement() {
-		UtilMain.menuCreationAgglo();
-		UtilMain.menuPrincipal();
-		
-		
+	public static void lancement() {
+		MenuInitial.menuCreationAgglo();
+		MenuInitial.menuPrincipal();
 	}
 		
-	
-	public  Agglomeration menuCreationAgglo() {
+	public static Agglomeration menuCreationAgglo() {
 		// Charger une agglomération
 				//		a) charger manuellement
 				//		b) charger é partir d'un fichier (LectureEcriture.lectureDepuisFichier("string") ;)
@@ -70,7 +69,7 @@ public class UtilMain {
 				break ;
 			case 2 :
 				// Résoud automatiquement le probleme en faisant appel é la méthode resoudAuto
-				resoudAuto(agg);
+				MenuAlgorithmes.resoudAuto(agg);
 	
 				break ;
 			case 3 : 
@@ -98,7 +97,7 @@ public class UtilMain {
 	
 //termine la boucle quand l'utilisateur choisit de fermer le programme (choix 5).
 	
-	public  Agglomeration aggloManuelle(){// je ne sais pas quel type de retour il faut utiliser 
+	public static Agglomeration aggloManuelle(){// je ne sais pas quel type de retour il faut utiliser 
 		Scanner sc = new Scanner(System.in);
 	
 		int nbVilles = 0 ;
@@ -144,7 +143,8 @@ public class UtilMain {
 					char b = sc.next().charAt(0) ; //retourne une ville
 					System.out.println(a+" "+b) ;
 					agg.ajouterRoute(a, b) ;
-					System.out.println("Liste des routes de l'agglomeration :\n"+ agg.afficheRoutes()) ;
+					System.out.println("Liste des routes de l'agglomeration :\n") ;
+					agg.afficheRoutes();
 				} catch(Exception e) {
 					System.err.println(e);
 				}
@@ -183,7 +183,8 @@ public class UtilMain {
 
 		
 		System.out.println("Fin de la premiere etape. Bilan :\n") ;
-		System.out.println(agg.toString()+"Les routes sont les suivantes \n"+agg.afficheRoutes()) ;//regler la fonction afficheroutes
+		System.out.println(agg.toString()+"Les routes sont les suivantes \n") ;//regler la fonction afficheroutes
+		agg.afficheRoutes() ;
 	}
 	
 	private Agglomeration resoudManuelle(Agglomeration agg) {//pareil je ne sais pas quel type utiliser et si l'argument est bon
@@ -236,59 +237,11 @@ public class UtilMain {
 		}
 		System.out.println("\nBilan : \n"+agg.toString()+"\nLes ecoles sont dans les villes suivantes : ") ;
 		agg.afficheVilleAEcole();
-		System.out.print("Liste des routes de l'agglomeration :\n"+agg.afficheRoutes()) ;
+		System.out.print("Liste des routes de l'agglomeration :\n") ;
+		agg.afficheRoutes();
 		System.out.println("Contrainte accessibilite respectee ? "+(agg.respecteAccessibilite()?"Oui.":"Non.")) ;
 		System.out.println("Sortie du programme.") ;
 		sc.close();
-	}
-	
-	private  void resoudAuto(Agglomeration agg) {// quel type également ici et les arguments
-		
-		Scanner sc = new Scanner(System.in) ;
-		int choice = 0;
-		boolean exit;
-		do {
-			System.out.println("\n Choix de l'algorithme");
-			System.out.println("1- Algortihme naif");
-			System.out.println("2- Algorithme 2 ");
-			System.out.println("3- Algorithme optimal(file prioritaire)");
-			System.out.println("4- Algorithme par soustraction");
-			System.out.println("Veuillez entrer votre choix");
-			try {
-				choice = sc.nextInt() ;
-			} catch(InputMismatchException e) {
-				System.err.println("Il faut rentrer un int.") ;
-				sc.next();
-				choice = 4 ;
-			}
-			switch(choice) {
-			case 1 :
-				System.out.println("nombre d'itérations?");
-				Algos.algorithmeApproximationNaif(sc.nextInt(), agg);// je ne sais pas si l'appel est bon au niveau des arguments.
-				break;
-			case 2 : 
-				System.out.println("nombre de répétitions ? ");
-				Algos.algorithmeApproximationUnPeuMoinsNaif(sc.nextInt(), agg);// je ne sais pas si l'appel est bon au niveau des arguments.
-				break ;
-			case 3 : 
-				System.out.println("Garder les écoles déja construites? true or false");
-				boolean garderEcolesConstruites;
-				if (sc.nextLine() == "true") {
-					garderEcolesConstruites = true;
-				}	else garderEcolesConstruites = false;
-	
-	
-				Algos.algorithmeFilePriorite(agg, garderEcolesConstruites);// je ne sais pas si l'appel est bon au niveau des arguments.
-			case 4 :
-				// je dois encore faire l'appel a l'algo 4 
-				break;
-			default :
-				System.err.println("Choix incorrect.") ;
-				break;
-			}
-			exit = (choice>0 ) && (choice< 4);
-			sc.close();
-		}while (!exit);
 	}
 
 }

@@ -1,4 +1,4 @@
-package outils;
+package algorithmique;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,9 +8,7 @@ import java.util.PriorityQueue;
 
 import constructionEcoles.Agglomeration;
 import constructionEcoles.Ville;
-import constructionEcoles.exceptions.ExceptionVille;
-
-
+import exceptions.VilleException;
 
 
 /**
@@ -27,10 +25,7 @@ import constructionEcoles.exceptions.ExceptionVille;
 // ou alors mettre la classe Algos dans le package outils et mettre toutes les méthodes d'Agglo en public
 
 // TODO Changer le franglais
-
 // TODO alléger les commentaires quand il y en a trop, ajouter quand il y en a pas assez
-
-// TODO tester la complexité des différents algos
 // TODO proposer à l'utilisateur les meilleures combinaisons possibles
 
 
@@ -45,7 +40,7 @@ public class Algos {
 	 * @param	agg	l'agglomération dont on cherche à réduire le nombre d'écoles. 
 	 * @return	la même agglomération que celle passée en argument, mais avec une configuration d'écoles différentes
 	 */
-	public static Agglomeration algorithmeApproximationNaif(int k, Agglomeration agg) {
+	public static Agglomeration algorithmeApproximationNaif(Agglomeration agg, int k) {
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles() ;
 		for(int i = 0 ; i < k ; i++) {
 			Ville v = villes.get((int) (Math.random()*villes.size())) ;
@@ -58,11 +53,9 @@ public class Algos {
 					//System.out.println("Ajout") ;
 				}
 			} catch(Exception e) {
-				System.out.println(e) ;
+				//System.out.println(e) ;
 			}
 		} 
-		System.out.println("Bilan au sortir de algorithmeApproximationNaif() : ");
-		agg.afficheBilan() ;
 		return agg;
 	}
 	
@@ -74,7 +67,7 @@ public class Algos {
 	 * @param 	agg	l'agglomération dont on cherche à réduire le nombre d'écoles. 
 	 * @return	la même agglomération que celle passée en argument, mais potentiellement avec beaucoup moins d'écoles
 	 */
-	public static Agglomeration algorithmeApproximationUnPeuMoinsNaif(int k, Agglomeration agg) {
+	public static Agglomeration algorithmeApproximationUnPeuMoinsNaif(Agglomeration agg, int k) {
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles() ;
 		int scoreCourant = agg.nbEcoles();
 		for(int i = 0 ; i < k ; i++) {
@@ -84,16 +77,13 @@ public class Algos {
 					agg.retirerEcole(v);
 				} else agg.ajouterEcole(v) ;
 			} catch(Exception e) {
-				System.out.println(e) ;
+				//System.out.println(e) ;
 			}
 			if(agg.nbEcoles() < scoreCourant) {
 				i = 0 ;
 				scoreCourant = agg.nbEcoles() ;
 			}
 		} 
-
-		System.out.println("Bilan au sortir de algorithmeApproximationUnPeuMoinsNaif() : ");
-		agg.afficheBilan() ;
 		return agg;
 	}
 
@@ -154,10 +144,6 @@ public class Algos {
 			} 										// c'est çe qui est vraiment coûteux en temps de calcul dans l'algorithme donc on le fait uniquement quand la file doit
 		}											// être actualisée. La complexité est apparemment améliorable avec un tas de Fibonacci
 													// voir https://stackoverflow.com/questions/1871253/updating-java-priorityqueue-when-its-elements-change-priority
-		
-
-		System.out.println("Bilan au sortir de algorithmeFilePriorite() : ");
-		agg.afficheBilan() ;
 		return agg;							
 	}	
 	
@@ -167,32 +153,7 @@ public class Algos {
 	
 	private static Agglomeration algorithmeParSoustraction(Agglomeration agg, boolean estDynamique, int strateRecursivite, ListeAdjacence recursion) {
 				
-			/* Structure générale de l'algorithme :
-			 * 
-			 * Agg une agglomération
-			 * Soit L la liste d'adjacence de l'agglomération
-			 * Soit F une file vide
-			 * 
-			 * Tant que la liste d'adjacence n'est pas totalement constituée de 0
-			 * 		Tant qu'il y a des sommets de degré 1 dans L
-			 * 			Ajouter toutes les villes de degré 1 dans F avec leurs voisins
-			 * 			Ajouter une école à tous les voisins des villes de degré 1	
-			 * 		 
-			 *		 	Tant que F n'est pas vide
-			 *				défiler F dans V
-			 *				pour chaque entrée de L, retirer V et ses voisins de l'entrée
-			 *				retirer V de L
-			 *
-			 *			Ajouter une école dans chaque ville de degré 0
-			 * 
-			 * 		Si la contrainte n'est pas totalement respectée dans Agg
-			 * 			Soit u la ville de plus haut degré
-			 * 			Ajouter une école dans u
-			 * 			pour chaque colonne de L mettre la u-ième ligne à 0
-			 * 
-			 * 
-			 * 
-			 * Structure générale de l'algorithme algoPS() :
+			/* Structure générale de l'algorithme algoPS() :
 			 * 
 			 * Paramètres :
 			 * 		Strate : la profondeur de l'algorithme initialisé à 0 
@@ -270,7 +231,7 @@ public class Algos {
 					} catch (IndexOutOfBoundsException e) { //cette exception est levée uniquement dans le cas où la ville n'aurait plus de voisin
 						agg.getVille(c).setHasEcole(true); //si la ville n'a plus aucun voisin, alors on lui ajoute une école
 					}
-				} catch(ExceptionVille e) {
+				} catch(VilleException e) {
 					System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
 				} catch (NullPointerException e) {
 					if(affichageDebug) System.out.println("La ville que vous essayez d'accéder n'est plus dans la liste d'adjacence");
@@ -291,14 +252,13 @@ public class Algos {
 			// Cette partie n'est pas foncièrement nécessaire mais elle permet de gagner en temps de calcul
 			// Si on la commente, le résultat serait identique mais on ferait globalement plus de tests pour
 			// finir l'exécution de l'algorithme avec des plusHautDegre finissant par retourner des villes de degré 0.
-			// TODO Est-ce que cette partie va être rencontrée ?
 			la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
 			if(affichageDebug) System.out.println("Sortie du while des voisins de degré 0") ;
 			while(!agg.respecteAccessibilite() && !file.isEmpty()) {
 				String cDegreZero = file.poll() ;
 				try {
 					agg.getVille(cDegreZero).setHasEcole(true);
-				} catch (ExceptionVille e) {
+				} catch (VilleException e) {
 					if(affichageDebug) System.err.println("La ville "+cDegreZero+" n'a pas pu être accédée.") ;
 				}
 				la.remove(cDegreZero); // on vide la HashMap des villes isolées
@@ -325,6 +285,7 @@ public class Algos {
 					ArrayList<String> listePlusHautsDegres = la.plusHautsDegres() ;
 					
 					//il y a un bug à cet endroit : on ne peut pas sortir du loop car il reprend à chaque fois à 0 lorsqu'il remonte de la récursivité
+					//l'algorithme fonctionne donc pour descendre au fond de la récursivité mais pas pour remonter.
 					for(String c : listePlusHautsDegres) {
 						if(affichageDebug) {
 							System.out.print("listePlusHautsDegres : ") ;
@@ -335,7 +296,7 @@ public class Algos {
 							if(affichageDebug) System.out.println("Ajout d'école dans la ville "+c) ;
 							agg.getVille(c).setHasEcole(true);
 							
-						} catch (ExceptionVille e) {
+						} catch (VilleException e) {
 							if(affichageDebug) System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
 						}		
 						ListeAdjacence recursionLA = new ListeAdjacence(la) ;
@@ -406,7 +367,7 @@ public class Algos {
 					if(affichageDebug) System.out.println("Ville de plus haut degré : "+u);
 					try {
 						agg.getVille(u).setHasEcole(true);
-					} catch (ExceptionVille e) {
+					} catch (VilleException e) {
 						if(affichageDebug) System.err.println("La ville "+u+" n'a pas pu être accédée.") ;
 					}
 					la.removeVilleEtVoisins(u) ;
@@ -417,12 +378,9 @@ public class Algos {
 				System.out.println("Strate = "+strateRecursivite) ;
 			}
 		}
-	
-		System.out.println("Bilan au sortir de algorithmeParSoustraction() : ");
-		agg.afficheBilan() ;
-		System.out.println("\t\t\t\t\t\t\t\t\ton remonte d'une strate (strate -> "+strateRecursivite+"-1)") ;
+		if(affichageDebug) System.out.println("\t\t\t\t\t\t\t\t\ton remonte d'une strate (strate -> "+strateRecursivite+"-1)") ;
 		/*
-		 * try { Thread.sleep(5000); } catch (InterruptedException e) { // TODO
+		 * try { Thread.sleep(5000); } catch (InterruptedException e) {
 		 * Auto-generated catch block e.printStackTrace(); }
 		 */
 		return agg ;

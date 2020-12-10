@@ -138,11 +138,11 @@ public class MenuInitial {
 				//A MODIFIER tant que "Ville a" est null, demander a nouveau une ville
 				try {
 					System.out.print("\nEntrez la cle de la premiere ville a relier : ");
-					char a = sc.next().charAt(0) ; //retourne une ville
+					String villeA = sc.nextLine() ; //retourne une ville
 					System.out.print("Entrez la cle de la deuxieme ville a relier : ");
-					char b = sc.next().charAt(0) ; //retourne une ville
-					System.out.println(a+" "+b) ;
-					agg.ajouterRoute(a, b) ;
+					String villeB = sc.nextLine() ; //retourne une ville
+					System.out.println(villeA+" "+villeB) ;
+					agg.ajouterRoute(villeA, villeB) ;
 					System.out.println("Liste des routes de l'agglomeration :\n") ;
 					agg.afficheRoutes();
 				} catch(Exception e) {
@@ -187,7 +187,7 @@ public class MenuInitial {
 		agg.afficheRoutes() ;
 	}
 	
-	private Agglomeration resoudManuelle(Agglomeration agg) {//pareil je ne sais pas quel type utiliser et si l'argument est bon
+	private Agglomeration resoudManuelle(agg) {//pareil je ne sais pas quel type utiliser et si l'argument est bon
 		int choice = 0;
 		Scanner sc = new Scanner(System.in) ;
 		while (choice != 3){ 

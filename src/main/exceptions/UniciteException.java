@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 
 /**
  * Exception lancée dans le cas où une contrainte d'unicité n'est pas respectées (deux villes identiques, deux routes, etc.)

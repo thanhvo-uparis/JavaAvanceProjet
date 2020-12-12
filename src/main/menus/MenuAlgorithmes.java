@@ -1,10 +1,10 @@
-package menus;
+package main.menus;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import algorithmique.Algos;
-import constructionEcoles.Agglomeration;
+import main.algorithmique.Algos;
+import main.entites.Agglomeration;
 
 public class MenuAlgorithmes {
 	protected static void resoudAuto(Agglomeration agg) {// quel type également ici et les arguments

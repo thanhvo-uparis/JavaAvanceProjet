@@ -1,8 +1,8 @@
-package constructionEcoles;
+package main.entites;
 
 
 
-import menus.MenuInitial;
+import main.menus.MenuInitial;
 
 
 

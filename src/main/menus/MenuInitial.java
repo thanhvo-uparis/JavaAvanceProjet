@@ -1,15 +1,17 @@
-package menus;
+package main.menus;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import algorithmique.Algos;
-import constructionEcoles.Agglomeration;
-import outils.LectureEcriture;
+import main.algorithmique.Algos;
+import main.entites.Agglomeration;
+import main.io.LectureEcriture;
+import main.io.ChargeurProprietes;
 
 public class MenuInitial {
 	
 	public static void lancement() {
+		ChargeurProprietes.chargerProprietes();
 		MenuInitial.menuCreationAgglo();
 		MenuInitial.menuPrincipal(); //
 	}

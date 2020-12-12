@@ -1,4 +1,4 @@
-package algorithmique;
+package main.algorithmique;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import constructionEcoles.Ville;
+import main.entites.Ville;
 
 public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 	

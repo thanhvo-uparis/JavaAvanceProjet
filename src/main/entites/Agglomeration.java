@@ -1,6 +1,9 @@
-package constructionEcoles;
+package main.entites;
 import java.util.*;
-import exceptions.*;
+import main.exceptions.AccessibiliteException;
+import main.exceptions.EconomieException;
+import main.exceptions.UniciteException;
+import main.exceptions.VilleException;
 
 /**
  * Classe qui definit une agglomeration dans le cadre du projet de construction d'ecoles.
@@ -41,7 +44,9 @@ public class Agglomeration{
 	public Agglomeration(int nbVilles) {
 		this.villes = new ArrayList<Ville>(nbVilles);
 		char c = 'A';
-		if(nbVilles > 2 && nbVilles < 27) {
+		if(nbVilles < 2) {
+			throw new IllegalArgumentException("Le nombre de villes est invalide. Il doit être compris entre 2 et 26 000") ;
+		} else if(nbVilles < 27) {
 			for(c = 'A'; c < 'A'+nbVilles; c++) this.villes.add(new Ville(c));
 		} else if(nbVilles <= 26*10) {
 			for(int i = 0 ; i < nbVilles ; i++) this.villes.add(new Ville((char) ('A'+i%26)+""+String.format("%01d", i/26)));

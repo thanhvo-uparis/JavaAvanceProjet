@@ -1,13 +1,13 @@
-package outils;
-
-import constructionEcoles.Agglomeration;
-import constructionEcoles.Ville;
+package main.io;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import main.entites.Agglomeration;
+import main.entites.Ville;
 
 /**
  *Cette classe manipule un fichier avec un objet Agglomération, écrit un objet dans un fichier avec un chemin spécifié,

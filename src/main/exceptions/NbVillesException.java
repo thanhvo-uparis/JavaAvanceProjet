@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 
 /**
  * Exception lancée dans le cas où le nombre de villes n'est pas valide

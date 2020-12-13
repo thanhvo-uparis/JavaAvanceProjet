@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 
 /**
  * Exception lancée dans le cas où la contrainte Economie n'est pas respectée

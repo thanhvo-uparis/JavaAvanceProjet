@@ -1,4 +1,4 @@
-package constructionEcoles;
+package main.entites;
 import java.util.ArrayList;
 
 /**

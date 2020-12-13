@@ -1,13 +1,12 @@
-package algorithmique.testeur;
+package main.algorithmique.testeur;
 
-import constructionEcoles.Agglomeration;
-import constructionEcoles.Ville;
+import main.entites.Agglomeration;
+import main.entites.Ville;
+import main.io.ChargeurProprietes;
 
 public class GenerateurAgglomeration {
 	
 	private static final int nbOperations = 0 ; // pour générer des écoles aléatoirements
-	private static final boolean affichageExtendedLogs = false ; //affichage ou non de tous les logs
-	private static final boolean affichageExceptions = false ; 
 	
 	protected static Agglomeration randomOperationsSurAgglo(Agglomeration agg, int nbOperations) {
 		System.out.println("L'agglomeration est connexe.") ;
@@ -18,21 +17,21 @@ public class GenerateurAgglomeration {
 				String c = agg.getVilles().get((int) Math.round(Math.random()*(agg.getVilles().size()-1))).getKey() ;
 				System.out.println(c) ;
 				//Thread.sleep(1000);
-				if(affichageExtendedLogs) System.out.println("\nChar : "+c) ;
+				if(ChargeurProprietes.getPropriete("affichageLogs")) System.out.println("\nChar : "+c) ;
 				Ville v = agg.getVille(c) ;
-				if(affichageExtendedLogs) System.out.println("Ville : " +v.toString()) ;
-				if(affichageExtendedLogs) System.out.println(i%2); 
+				if(ChargeurProprietes.getPropriete("affichageLogs")) System.out.println("Ville : " +v.toString()) ;
+				if(ChargeurProprietes.getPropriete("affichageLogs")) System.out.println(i%2); 
 				if(i%2 == 0) agg.retirerEcole(v); //quand i est pair, on retire une ecole
 				if(i%2 == 1) agg.ajouterEcole(v); //quand i est impair, on ajoute une ecole
 			} catch(Exception e) {
-				if(affichageExceptions) System.out.println(e) ;
+				if(ChargeurProprietes.getPropriete("affichageExceptions")) System.out.println(e) ;
 			}
-			if(affichageExtendedLogs) {
+			if(ChargeurProprietes.getPropriete("affichageLogs")) {
 				System.out.println(agg.toString()) ;
 				agg.afficheVilleAEcole();
 			}
 		}
-		if(affichageExtendedLogs) {
+		if(ChargeurProprietes.getPropriete("affichageLogs")) {
 			agg.afficheRoutes() ;
 			System.out.println("Contrainte accessibilite respectee ? "+(agg.respecteAccessibilite()?"Oui.":"Non.")) ;
 			System.out.println("Fin du test.");
@@ -53,7 +52,7 @@ public class GenerateurAgglomeration {
 		 */
 		
 		
-		if(affichageExtendedLogs) System.out.println("Creation d'une agglomeration de "+nbVilles+" villes : " + agg.toString());
+		if(ChargeurProprietes.getPropriete("affichageLogs")) System.out.println("Creation d'une agglomeration de "+nbVilles+" villes : " + agg.toString());
 		
 		String a ;
 		String b ;
@@ -63,20 +62,20 @@ public class GenerateurAgglomeration {
 			try {
 				a = agg.getVilles().get((int) Math.round(Math.random()*(agg.getVilles().size()-1))).getKey() ; //extrait un caractere aleatoire de s puis extrait la ville correspondante a ce caractere dans agg
 				b = agg.getVilles().get((int) Math.round(Math.random()*(agg.getVilles().size()-1))).getKey() ;
-				if(affichageExtendedLogs){
+				if(ChargeurProprietes.getPropriete("affichageLogs")){
 					System.out.println("Ville 1 a relier : " +a) ;
 					System.out.println("Ville 2 a relier : " +b) ;
 				}
 				agg.ajouterRoute(a,b) ; 	
-				if(affichageExtendedLogs) {
+				if(ChargeurProprietes.getPropriete("affichageLogs")) {
 					System.out.println("Villes apres execution de ajouterRoute()") ;
 					System.out.println(agg.getVille(a).toString()) ;
 					System.out.println(agg.getVille(b).toString()) ;
 				}
 			} catch(Exception e) {
-				if(affichageExceptions) System.out.println(e) ;
+				if(ChargeurProprietes.getPropriete("affichageExceptions")) System.out.println(e) ;
 			}
-			if(affichageExtendedLogs) agg.afficheRoutes() ;
+			if(ChargeurProprietes.getPropriete("affichageLogs")) agg.afficheRoutes() ;
 		} while(!agg.estConnexe()) ;
 		
 		if(nbOperations > 0) agg = randomOperationsSurAgglo(agg, nbOperations) ;
@@ -84,7 +83,6 @@ public class GenerateurAgglomeration {
 		return agg ;
 	}	
 	
-	@Deprecated
 	@SuppressWarnings("unused")
 	private static String alphabetGen(int n) {
 		StringBuilder sb = new StringBuilder() ;

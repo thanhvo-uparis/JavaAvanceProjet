@@ -1,8 +1,8 @@
-package algorithmique.testeur;
+package main.algorithmique.testeur;
 
-import constructionEcoles.Agglomeration;
+import main.entites.Agglomeration;
 
-public class RapportTest {
+public class Rapport {
 	
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class RapportTest {
 	
 	private double temps ;
 	
-	protected RapportTest(String nomAlgo, Integer k, Boolean dynamique, Agglomeration agg, double temps) {
+	protected Rapport(String nomAlgo, Integer k, Boolean dynamique, Agglomeration agg, double temps) {
 		this.nomAlgo = nomAlgo ;
 		try { this.k = k.intValue() ; } catch(NullPointerException e) { this.k = null ;}
 		try { this.dynamique = dynamique.booleanValue() ; } catch(NullPointerException e) { this.dynamique = null ;}

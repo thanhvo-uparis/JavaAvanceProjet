@@ -34,23 +34,23 @@ public class LectureEcriture {
         try (BufferedReader br = new BufferedReader(new FileReader(chemin))) { //un objet reader
             String line; //lit ligne par ligne
             List<String> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
-            List<Character[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
-            List<Character> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
+            List<String[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
+            List<String> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
             while ((line = br.readLine()) != null) { //lit le fichier à la boucle de ligne par ligne, lire jusqu'à ce que le fichier soit terminé
                 if (line.startsWith("ville("))
-                    villes.add(parseVille(line)); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
+                    villes.add(parserVille(line)); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
                 if (line.startsWith("ecole("))
-                    ecoles.add(parseEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
+                    ecoles.add(parserEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
                 if (line.startsWith("routes("))
-                    routes.add(parseRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
+                    routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
             }
 		
             Agglomeration agg = new Agglomeration(villes.size());  //Initialise l'objet Agglomération à partir des informations lisibles dans le fichier
             for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
             }
-            for (Character[] chars : routes) {  //parcourt les routes à ajouter
-                agg.ajouterRoute(chars[0].toString(), chars[1].toString());
+            for (String[] ville : routes) {  //parcourt les routes à ajouter
+                agg.ajouterRoute(ville[0], ville[1]);
             }
             br.close();
             return agg;
@@ -116,34 +116,41 @@ public class LectureEcriture {
     /**
      * Methode effectue le filtrage des données des villes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
      *
-     * @param ville une chaîne contient ville và key sous la forme "ville(x)"
-     * @return key dans la chaîne ville sous la forme "x "
+     * @param ligne
+     * @return nomVille key dans la chaîne ville
      */
-    private static Character parseVille(String ville) {
-        return ville.replace("ville(", "").replace(").", "").trim().toCharArray()[0]; //supprime les éléments autour character et prend character
-    }
-
+     public static Ville parserVille(String ligne) {
+          String nomVille = ligne.split("\\(")[1].split("\\).")[0];
+          return new Ville(nomVille);
+	 }
 	
     /**
      * Methode effectue le filtrage des données des routes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
      *
-     * @param route une chaîne contient route và 2 key sous la forme "route(x,y)"
-     * @return un tableau contient 2 key dans une chaîne route sous la forme ['x','y']
+     * @param ligne
+     * @return route
      */
-    private static Character[] parseRoute(String route) {
-        String[] arr = route.replace("route(", "").replace(").", "").trim().split(",");  //supprime les éléments autour
-        return new Character[]{arr[0].toCharArray()[0], arr[1].toCharArray()[0]}; //obtient un tableau de 2 éléments
-    }
+      public static List<String> parserRoute(String ligne) {
+
+ 		  List<String> routes = new ArrayList<String>();
+ 		  String[] donnees = ligne.split("\\(")[1].split("\\).")[0].split(",");
+
+ 		  for (int i = 0; i < donnees.length; i++) {
+ 			 routes.add(donnees[i]);
+ 		 }
+ 		  return routes;
+ 	  }
 
 	
     /**
      * Method effectue le filtrage des données des ecoles lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
      *
-     * @param ecole une chaîne contient ecole và key sous la forme "ecoles(x)"
-     * @return key dans une chaîne ville sous la forme "x"
+     * @param ligne
+     * @return nomVille
      */
-    private static Character parseEcole(String ecole) {
-        return ecole.replace("ecole(", "").replace(").", "").trim().toCharArray()[0]; //supprime les éléments autour character et prend character
-    }
+     public static String parserEcole(String ligne) {
+         String nomVille = ligne.split("\\(")[1].split("\\).")[0];
+         return nomVille;
+	 }
 
 }

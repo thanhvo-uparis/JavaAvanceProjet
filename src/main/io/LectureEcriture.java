@@ -119,9 +119,9 @@ public class LectureEcriture {
      * @param ligne
      * @return nomVille key dans la chaîne ville
      */
-     public static Ville parserVille(String ligne) {
-          String nomVille = ligne.split("\\(")[1].split("\\).")[0];
-          return new Ville(nomVille);
+     public static String parserVille(String ville) {
+          String nomVille = ville.split("\\(")[1].split("\\).")[0];
+          return nomVille;
 	 }
 	
     /**
@@ -130,26 +130,20 @@ public class LectureEcriture {
      * @param ligne
      * @return route
      */
-      public static List<String> parserRoute(String ligne) {
-
- 		  List<String> routes = new ArrayList<String>();
- 		  String[] donnees = ligne.split("\\(")[1].split("\\).")[0].split(",");
-
- 		  for (int i = 0; i < donnees.length; i++) {
- 			 routes.add(donnees[i]);
- 		 }
- 		  return routes;
- 	  }
+       public static String[] parserRoute(String route) {
+            String[] donnees = route.split("\\(")[1].split("\\).")[0].split(",");
+            return donnees;  
+        }
 
 	
     /**
      * Method effectue le filtrage des données des ecoles lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
      *
-     * @param ligne
+     * @param ligne 
      * @return nomVille
      */
-     public static String parserEcole(String ligne) {
-         String nomVille = ligne.split("\\(")[1].split("\\).")[0];
+     public static String parserEcole(String ecole) {
+         String nomVille = ecole.split("\\(")[1].split("\\).")[0];
          return nomVille;
 	 }
 

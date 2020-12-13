@@ -13,12 +13,12 @@ public class Testeur {
 	// cette classe va contenir les méthodes qui permettront de tester les algos. Il faut y mettre le contenu de la classe Test
 	
 	private static final Integer k = 100 ;	// il s'agit du k de l'énoncé
-	private static final Boolean estDynamique = true ;
 	
 	// liste des noms des méthodes, si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence.
 	private static final String [] algos = { "algorithmeApproximationNaif", 
 											 "algorithmeApproximationUnPeuMoinsNaif", 
 											 "algorithmeFilePriorite",
+											 "algorithmeParSoustraction",
 											 "algorithmeParSoustraction" } ;
 	
 	private static void switchAlgo(int algo, Agglomeration agg) {
@@ -33,7 +33,10 @@ public class Testeur {
 			Algos.algorithmeFilePriorite(agg, false) ;
 			break ;
 		case 3 :
-			Algos.algorithmeParSoustraction(agg, estDynamique) ;
+			Algos.algorithmeParSoustraction(agg, true) ;
+			break;
+		case 4 :
+			Algos.algorithmeParSoustraction(agg, false) ;
 			break;
 		}
 	}
@@ -84,7 +87,10 @@ public class Testeur {
 				affichageAvancement+=2 ;
 			}
 			if(algo == null) {
-				for(int i = 0; i < algos.length ; i++) rapports.add(getTestAlgoSurAgglomerationAleatoire(nbVilles, i, false)) ;
+				Agglomeration agg = GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles) ;
+				for(int i = 0; i < algos.length ; i++) {
+					rapports.add(getTestSurAlgo(agg, i, false)) ;
+				}
 			} else {
 				rapports.add(getTestAlgoSurAgglomerationAleatoire(nbVilles, algo, false)) ;
 			}
@@ -113,7 +119,7 @@ public class Testeur {
 		//System.out.println("Temps d'exécution en millisecondes : " + tempsEcoule / 1000000);
 		
 		if(affichage) affichageBilanAlgo(agg, algo) ;
-		return new Rapport(algos[algo], (algo==0||algo==1)?k:null, (algo==3)?estDynamique:null, agg, tempsEcoule/1000000) ;
+		return new Rapport(algos[algo], (algo==0||algo==1)?k:null, (algo==3)?Boolean.valueOf(true):(algo==4)?Boolean.valueOf(false):null, agg, tempsEcoule/1000000) ;
 	}
 		
 	
@@ -220,21 +226,22 @@ public class Testeur {
 		//System.out.println("Entrée dans le Tester : ") 
 		
 		
-		compareAlgorithmes(agg3) ;
-		compareAlgorithmes(agg1) ;
+		//compareAlgorithmes(agg3) ;
+		//compareAlgorithmes(agg1) ;
 		
-		Agglomeration agg = GenerateurAgglomeration.randomAggloConnexeGenerateur(2) ;
-		agg.afficheBilan();
+		//Agglomeration agg = GenerateurAgglomeration.randomAggloConnexeGenerateur(2) ;
+		//agg.afficheBilan();
 		
-		//System.out.println(getTestSurAlgo(agg2, 3, true)) ;
+		//System.out.println(getTestSurAlgo(agg1, 2, true)) ;
 		//System.out.println(Testeur.getTestAlgoSurAgglomerationAleatoire(45, 2)) ;
 		
+		//getTestAlgoSurAgglomerationAleatoire(4, 3) ;
 		
 		
-		
-		ArrayList<Rapport> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(2, 100) ;
+		ArrayList<Rapport> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(2, 400) ;
 		System.out.println("\n-----------------------------------------------\n\nVotre fichier CSV :\n\n"+Rapport.enteteCSV()) ;
 		for(Rapport t : testsAleatoiresSurAlgos) System.out.println(t.formatCSV()) ;
+		
 		
 		
 		/*

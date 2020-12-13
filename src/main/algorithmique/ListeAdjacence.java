@@ -5,8 +5,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
+import main.entites.Agglomeration;
 import main.entites.Ville;
+import main.exceptions.VilleException;
 
 public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 	
@@ -58,7 +61,7 @@ public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 		}
 	}
 
-	protected void voisinsDegreUn(LinkedList<String> file) {
+	protected void voisinsDegreUn(List<String> file) {
 		Iterator<Map.Entry<String, ArrayList<String>>> it = this.entrySet().iterator();
 		//System.out.print("Voisins de degré 1 : ");
 		while(it.hasNext()) {
@@ -66,6 +69,20 @@ public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 			if(pair.getValue().size() == 1 && (!file.contains(pair.getValue().get(0)))) {
 				file.add(pair.getValue().get(0)) ;
 				//System.out.print(pair.getValue().get(0)+ " ");
+			}
+		}										// la deuxième condition permet d'éviter les doublons
+		//System.out.print("\n");
+	}
+	
+	protected void voisinsDegreUn(Agglomeration agg, PriorityQueue<Ville> p) {
+		Iterator<Map.Entry<String, ArrayList<String>>> it = this.entrySet().iterator();
+		//System.out.print("Voisins de degré 1 : ");
+		while(it.hasNext()) {
+			Map.Entry<String, ArrayList<String>> pair = it.next() ;
+			try {
+				if(pair.getValue().size() == 1 && (!p.contains(agg.getVille(pair.getValue().get(0))))) p.add(agg.getVille(pair.getValue().get(0))) ;
+			} catch (VilleException e) {
+				e.printStackTrace();
 			}
 		}										// la deuxième condition permet d'éviter les doublons
 		//System.out.print("\n");

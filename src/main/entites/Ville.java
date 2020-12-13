@@ -120,14 +120,19 @@ public class Ville {
 		return voisins;
 	}
 	
+	public int getNbVoisins() {
+		return voisins.size() ;
+	}
+	
 	public boolean aAccesEcole() {
 		return getHasEcole() || hasEcoleVoisins() ;
 	}
 	
 	public int beneficeSiAjoutEcole() {
-		int score = (aAccesEcole()?1:0) ;
-		for(Ville v : getVoisins()) if(v.aAccesEcole()) score++ ;
+		int score = (aAccesEcole()?0:1) ;
+		for(Ville v : getVoisins()) if(!v.aAccesEcole()) score++ ;
 		//score += (Math.random()-0.5)*0.01 ;	// si on veut randomiser, la fonction doit retourner un double
+		//System.out.println(this.key+" = "+score) ;
 		return score ;		
 	}
 	

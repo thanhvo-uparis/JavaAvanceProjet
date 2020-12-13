@@ -61,7 +61,6 @@ public class Algos {
 	 * @return	la même agglomération que celle passée en argument, mais potentiellement avec beaucoup moins d'écoles
 	 */
 	public static Agglomeration algorithmeApproximationUnPeuMoinsNaif(Agglomeration agg, int k) {
-		System.out.println("Entrée dans algorithmeApproximationUnPeuMoinsNaif") ;
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles() ;
 		int scoreCourant = agg.nbEcoles();
 		for(int i = 0 ; i < k ; i++) {
@@ -95,13 +94,17 @@ public class Algos {
 	 * @param garderEcolesConstruites	booléen permettant de préciser si on souhaite garder ou non les écoles déjà présentes dans l'agglomération
 	 * @return							l'agglomération donnée en argument avec un nombre d'école minimisé
 	 */
+	
+	//TODO mesurer quand est-ce qu'une bascule serait nécessaire
+	//TODO implémenter la récursivité ?
 	public static Agglomeration algorithmeFilePriorite(Agglomeration agg, boolean garderEcolesConstruites) {
-		System.out.println("Entrée dans algorithmeFilePriorite") ;
 		// TODO tester la validité de cet algorithme, sa complexité et vérifier empiriquement s'il permet de trouver le résultat optimal à chaque fois
 		// ^^^^^ à faire dans la classe Tester
 		
 		if(!garderEcolesConstruites) agg.clearEcole(); 	// on enlève toutes les écoles présentes. L'algorithme fonctionne si on décide de garder les écoles
 		//System.out.println(agg.nbEcoles()) ;			// déjà construites. Le nombre d'écoles final risque cependant d'être supérieur.
+		
+		//agg.afficheBilan();
 		
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles();
 				
@@ -111,13 +114,17 @@ public class Algos {
 		// on peut modifier beneficeSiAjoutEcole en ajoutant un bruit aléatoire à la valeur retournée (voir le commentaire dans la méthode citée)
 		
 		for(Ville v : villes) { 							// cette boucle met une école dans les villes qui devront forcément contenir une école
-			ArrayList<Ville> voisins;
-			if((voisins = v.getVoisins()).size() == 1) { 	// c'est-à-dire les villes qui n'ont qu'un voisin et qui n'ont pas déjà d'école construite
+			ArrayList<Ville> voisins = v.getVoisins();
+			if(voisins.size() == 0) {
+				v.setHasEcole(true);
+			} else if(voisins.size() == 1 || voisins.size() == 0) { 	// c'est-à-dire les villes qui n'ont qu'un voisin et qui n'ont pas déjà d'école construite
 				if(!v.getHasEcole()) voisins.get(0).setHasEcole(true);		// le 2e if sert dans le cas d'une agglomération de deux villes 
-			} else {														// ou qu'on a choisi de garder les écoles déjà construites
+			} else if (!p.contains(v)){														// ou qu'on a choisi de garder les écoles déjà construites
 				p.add(v); 									// si elles ont plus d'un voisin, on les ajoute dans la file de priorité
 			}
+			//agg.afficheBilan();
 		}
+		
 		//agg.afficheBilan();
 		//System.out.println(p.size()) ;
 		
@@ -131,12 +138,15 @@ public class Algos {
 		// On pourrait potentiellement améliorer la complexité en calculant le ratio nbVillesDeg1/nbVilles marquant la limite entre l'efficacite de
 		// la première méthode et l'efficacité de la seconde.
 		
+		
 		while(!agg.respecteAccessibilite()) {		// La file ne sera jamais vide alors que la contrainte d'accessibilité n'est pas respectée ;
 			Ville v = p.poll();						// tant que la contrainte d'accessibilité n'est pas respectée ...
-			if(!v.getHasEcole()) {					// ... on défile et on ajoute une école dans la ville défilée si elle n'en a pas déjà une. Sinon, on ne fait rien.
-				v.setHasEcole(true);
-				if(!p.isEmpty()) p.add(p.remove());	// permet d'actualiser la file de priorité selon les nouveaux résultats du comparateur, 
-			} 										// c'est çe qui est vraiment coûteux en temps de calcul dans l'algorithme donc on le fait uniquement quand la file doit
+							// ... on défile et on ajoute une école dans la ville défilée si elle n'en a pas déjà une. Sinon, on ne fait rien.
+
+			v.setHasEcole(true);
+			if(!p.isEmpty()) p.add(p.remove());	// permet d'actualiser la file de priorité selon les nouveaux résultats du comparateur, 
+									// c'est çe qui est vraiment coûteux en temps de calcul dans l'algorithme donc on le fait uniquement quand la file doit
+
 		}											// être actualisée. La complexité est apparemment améliorable avec un tas de Fibonacci
 													// voir https://stackoverflow.com/questions/1871253/updating-java-priorityqueue-when-its-elements-change-priority
 		return agg;							
@@ -148,6 +158,9 @@ public class Algos {
 	
 	
 	// INITIALISATION DE LA RECURSIVITE
+	//TODO implémenter une bascule pour ne pas utiliser la file de priorité quand n est grand ?
+	//TODO vérifier si la file de priorité aide bien à obtenir de meilleurs résultats
+	//TODO tester avec l'autre critère
 	public static Agglomeration algorithmeParSoustraction(Agglomeration agg, boolean estDynamique) {
 		return algorithmeParSoustraction(agg, estDynamique, null, null, true) ;
 	}
@@ -201,7 +214,6 @@ public class Algos {
 
 		//if(ChargeurProprietes.getPropriete("affichageDebug")) System.out.println("\n\n\n-----------------------------------------------------------------------------------------------\n\n\n") ;
 		
-		System.out.println("Entrée dans algorithmeParSoustraction") ;
 		
 		ListeAdjacence la ;
 		ArrayList<ArrayList<String>> meilleuresRepartitions ; // pour stocker les meilleures répartitions
@@ -230,14 +242,18 @@ public class Algos {
 				
 		// 1ère étape : on ajoute des écoles dans les villes ayant un seul voisin dans une file
 		LinkedList<String> file = new LinkedList<String>() ;
-		la.voisinsDegreUn(file) ; // enfile tous les voisins des villes de degré 1
+		PriorityQueue<Ville> pqVoisinsDegreUn = new PriorityQueue<Ville>(agg.getVilles().size(), Comparator.comparing(Ville::getNbVoisins).reversed()) ;
+		la.voisinsDegreUn(agg, pqVoisinsDegreUn) ; // enfile tous les voisins des villes de degré 1
 		
+		//la.voisinsDegreUn(file) ;
 		// 2e étape : Tant qu'on peut, on va essayer d'ajouter des écoles dans les villes qui doivent de toute façon en accueillir.
 		do {
 			// 2.a) on met des écoles dans chacune des villes de la file, tout en les retirant de la liste d'adjacence avec leurs voisines.
-			//System.out.println("Entrée dans la fonction remplirEcolesVillesDegreUN()") ;
-			remplirVillesDegreUn(agg, la, file) ;
-			System.out.println(la.toString());
+			//System.o0ut.println("Entrée dans la fonction remplirEcolesVillesDegreUN()") ;
+			//remplirVillesDegreUn(agg, la, file) ;
+			remplirVillesDegreUn(agg, la, pqVoisinsDegreUn) ;
+			
+			//System.out.println(la.toString());
 			//System.out.println("Sortie de la fonction remplirEcolesVillesDegreUn() (strate = "+strateRecursivite+") : ") ;
 			//System.out.println(la.toString()) ; // Après un premier nettoyage
 				
@@ -246,13 +262,15 @@ public class Algos {
 			remplirVillesDegreZero(agg, la, file) ;
 			//System.out.println("Affichage de l'état de la file après sortie du while des voisins de degré 0 (strate = "+strateRecursivite+") :") ;
 			//System.out.println(la.toString()) ; // Après un premier nettoyage
-			la.voisinsDegreUn(file) ; // Il est possible que cette opération ait généré des villes auxquelles il faudra de toute façon rajouter des écoles.
-			for(String s : file) {
-				System.out.print(s+" ") ;
-			}
-			System.out.print("\n") ;
-			agg.afficheBilan();
-		} while(!file.isEmpty() && !agg.respecteAccessibilite()) ;
+			//la.voisinsDegreUn(file) ; // Il est possible que cette opération ait généré des villes auxquelles il faudra de toute façon rajouter des écoles.
+			la.voisinsDegreUn(agg, pqVoisinsDegreUn) ;
+			
+			//for(String s : file) {
+			//	System.out.print(s+" ") ;
+			//}
+			//System.out.print("\n") ;
+			//agg.afficheBilan();
+		} while(!pqVoisinsDegreUn.isEmpty() && !agg.respecteAccessibilite()) ;
 
 		// 3e étape : S'il n'y a aucun point d'entrée dans l'algorithme, c'est-à-dire aucune ville de degré 1, alors il va falloir explorer récursivement le graphe pour trouver une bonne répartition d'écoles
 		if(!agg.respecteAccessibilite()) { //&& !la.isEmpty()) { //TODO vérifier si l'algo reste valide sans la deuxième condition
@@ -276,22 +294,22 @@ public class Algos {
 		}
 		
 		if(premiereIteration == true) {// Cette partie ne s'exécute uniquement quand l'algorithme est en train de conclure
-			System.out.println("BILAN FINAL") ;
+			//System.out.println("BILAN FINAL") ;
+			if(meilleuresRepartitions.size() > 1) {
+				for(ArrayList<String> al : meilleuresRepartitions) Collections.sort(al); 				// Chacune des configurations est triée par ordre alphabétique
+				meilleuresRepartitions.sort(Comparator.comparing(ArrayList<String>::size)); 	// Puis par taille
+				//System.out.println("Voici certaines des meilleures configurations possibles pour construire vos écoles :") ;
+				//for(ArrayList<String> ss : meilleuresRepartitions) {
+				//	for(String s : ss) System.out.print(s+" ");
+				//	System.out.print("\n") ;
+				//}
+			}
 			if(!meilleuresRepartitions.isEmpty()) {
 				agg.clearEcole();
 				try {
 					agg.ajouterEcole(meilleuresRepartitions.get(0));	// Par défaut, on met la meilleure configuration dans l'agglo
-					agg.afficheBilan();
+					//agg.afficheBilan();
 				} catch (Exception e) { System.out.println(e) ;}
-			}
-			if(meilleuresRepartitions.size() > 1) {
-				for(ArrayList<String> al : meilleuresRepartitions) Collections.sort(al); 				// Chacune des configurations est triée par ordre alphabétique
-				meilleuresRepartitions.sort(Comparator.comparing(ArrayList<String>::size).reversed()); 	// Puis par taille
-				System.out.println("Voici certaines des meilleures configurations possibles pour construire vos écoles :") ;
-				for(ArrayList<String> ss : meilleuresRepartitions) {
-					for(String s : ss) System.out.print(s+" ");
-					System.out.print("\n") ;
-				}
 			}
 		}
 			
@@ -299,7 +317,7 @@ public class Algos {
 	}
 
 	private static LinkedList<String> remplirVillesDegreUn(Agglomeration agg, ListeAdjacence la, LinkedList<String> file) {
-		System.out.println("Entrée dans remplirVillesDegreUn") ;
+		//System.out.println("Entrée dans remplirVillesDegreUn") ;
 		while(!agg.respecteAccessibilite() && !file.isEmpty()) {
 			String c = file.poll() ;
 			try {
@@ -325,8 +343,35 @@ public class Algos {
 		return file ;
 	}
 	
+	
+	private static void remplirVillesDegreUn(Agglomeration agg, ListeAdjacence la, PriorityQueue<Ville> p) {
+		//System.out.println("Entrée dans remplirVillesDegreUn") ;
+		while(!agg.respecteAccessibilite() && !p.isEmpty()) {
+			String c = p.poll().getKey() ;
+			try {
+				try { //si la ville ville voisine n'a pas d'école, alors on en met une, sinon non
+					boolean voisinDegreUnAEcole = agg.getVille(la.get(c).get(0)).getHasEcole() ;
+					if(!voisinDegreUnAEcole) agg.getVille(c).setHasEcole(true);
+				} catch (IndexOutOfBoundsException e) { //cette exception est levée uniquement dans le cas où la ville n'aurait plus de voisin
+					agg.getVille(c).setHasEcole(true); //si la ville n'a plus aucun voisin, alors on lui ajoute une école
+				}
+			} catch(VilleException e) {
+				//System.err.println("La ville "+c+" n'a pas pu être accédée.") ;
+			} catch (NullPointerException e) {
+				//if(ChargeurProprietes.getPropriete("affichageExceptions")) System.out.println("La ville que vous essayez d'accéder n'est plus dans la liste d'adjacence");
+			} 
+			
+			//TODO il y a de la marge pour optimiser ça 
+			if(la.containsKey(c)) {
+				//if(ChargeurProprietes.getPropriete("affichageExceptions")) System.out.println("Entrée removeVilleEtVoisins pour "+c);
+				la.removeVilleEtVoisins(c); 
+				//if(ChargeurProprietes.getPropriete("affichageExceptions")) System.out.println(la.toString()) ;
+			}
+		}
+	}
+	
 	private static void remplirVillesDegreZero(Agglomeration agg, ListeAdjacence la, LinkedList<String> file) {
-		System.out.println("Entrée dans remplirVillesDegreZero") ;
+		//System.out.println("Entrée dans remplirVillesDegreZero") ;
 		la.degreZero(file) ; // enfile toutes les files de degré 0 dans file
 		//if(ChargeurProprietes.getPropriete("affichageExceptions")) System.out.println("Sortie du while des voisins de degré 0") ;
 		while(!agg.respecteAccessibilite() && !file.isEmpty()) {
@@ -341,7 +386,7 @@ public class Algos {
 	}
 	
 	private static ArrayList<ArrayList<String>> remplirVillesSansDegreUn(Agglomeration agg, ListeAdjacence la, ArrayList<ArrayList<String>> meilleuresRepartitions, boolean estDynamique) {
-		System.out.println("Entrée dans remplirVillesSansDegreUn") ;
+		//System.out.println("Entrée dans remplirVillesSansDegreUn") ;
 
 		ArrayList<String> villesAEcoles = agg.getVillesAEcole() ;
 		ArrayList<String> listePlusHautsDegres ;
@@ -413,6 +458,29 @@ public class Algos {
 		
 		return meilleuresRepartitions ;
 	}
+	
+	/*
+	private class FrequenceCle {
+		String cle ;
+		int occurrence ;
+		
+		public FrequenceCle(String cle, int occurrence) {
+			this.cle = cle ;
+			this.occurrence = occurrence ;
+		}
+		
+		public String getCle() {
+			return cle ;
+		}
+		
+		public int getOccurrence() {
+			return occurrence ;
+		}
+		
+		public void incrementerOccurrence() {
+			occurrence++ ;
+		}
+	}*/
 }
 
 

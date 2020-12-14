@@ -1,5 +1,8 @@
 package main.algorithmique.testeur;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
@@ -7,17 +10,26 @@ import java.util.LinkedList;
 import main.algorithmique.Algos;
 import main.entites.Agglomeration;
 
+/**
+ * Classe statique permettant de réaliser diverses tests sur les algorithmes, principalement pour comparer leurs performances.
+ * @author Yann Trividic
+ * @version 1.0
+ */
+
+
 public class Testeur {
 	
-	//TODO vérifier qu'on ne peut pas créer d'Agglomération de taille inférieure à 2
-	// cette classe va contenir les méthodes qui permettront de tester les algos. Il faut y mettre le contenu de la classe Test
+	private static final Integer k = 100 ;	// paramètre des deux algorithmes naïfs
 	
-	private static final Integer k = 100 ;	// il s'agit du k de l'énoncé
-	
-	// liste des noms des méthodes, si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence.
-	private static final String [] algos = { "algorithmeApproximationNaif", 
+	/*
+	 * Liste des noms d'algorithmes qui sera exécutée lors des tests effectués sur tous les algos de manière transversale.
+	 * La valeur de leurs paramètres est spécifiée dans la méthode switchAlgo
+	 * si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence et le return de la méthode getTestSurAlgo
+	 */
+	public static final String [] algos = { "algorithmeApproximationNaif", 
 											 "algorithmeApproximationUnPeuMoinsNaif", 
 											 "algorithmeFilePriorite",
+											 "algorithmeParSoustraction",
 											 "algorithmeParSoustraction",
 											 "algorithmeParSoustraction" } ;
 	
@@ -33,38 +45,61 @@ public class Testeur {
 			Algos.algorithmeFilePriorite(agg, false) ;
 			break ;
 		case 3 :
-			Algos.algorithmeParSoustraction(agg, true) ;
+			Algos.algorithmeParSoustraction(agg, true, true) ;
 			break;
 		case 4 :
-			Algos.algorithmeParSoustraction(agg, false) ;
+			Algos.algorithmeParSoustraction(agg, false, false) ;
+			break;
+		case 5 :
+			Algos.algorithmeParSoustraction(agg, true, false) ;
 			break;
 		}
 	}
 	
-	//pour tester la complexité d'un algo en particulier
-	// voir https://www.techiedelight.com/measure-elapsed-time-execution-time-java/
+	/**
+	 * Méthode retournant une liste de Rapport contenant des informations sur l'exécution des algorithmes de la liste algos
+	 * @param agg Une agglomération quelconque.
+	 * @see algos
+	 * @return
+	 */
 	public static ArrayList<Rapport> getTestComplexiteTousAlgos(Agglomeration agg) {
 		ArrayList<Rapport> tests = new ArrayList<Rapport>(algos.length) ;
 		for(int i = 0 ; i < algos.length ; i++) tests.add(getTestSurAlgo(agg, i)) ;
 		return tests ;
 	}
 	
+	/**
+	 * Méthode permettant d'effectuer un test sur une agglomération aléatoire
+	 * @param nbVilles le nombre de villes de l'agglomération aléatoire (minimum 2, maximum 500)
+	 * @param algo le numéro associé à l'algorithme à exécuter (voir la méthode privée switchAlgo) ou la liste algos
+	 * @see algos
+	 * @return ArrayList<Rapport> contenant le bilan des différentes exécutions d'algorithmes
+	 * @throws InputMismatchException dans le cas où les valeurs ne correspondraient pas à celles spécifiées ici.
+	 */
 	public static Rapport getTestAlgoSurAgglomerationAleatoire(int nbVilles, int algo) throws InputMismatchException {
 		return getTestAlgoSurAgglomerationAleatoire(nbVilles, algo, true) ;
 	}
 	
 	private static Rapport getTestAlgoSurAgglomerationAleatoire(int nbVilles, int algo, boolean affichage) throws InputMismatchException {
-		if(nbVilles < 2) throw new InputMismatchException("Le nombre de villes minimum pour une agglomération est 2.") ;
+		if(nbVilles <= 2 || nbVilles >= 500) throw new InputMismatchException("Le nombre de villes minimum pour une agglomération est 2 et le maximum est 500 (pour cet algorithme).") ;
 		if(algo < 0 || algo > algos.length-1) throw new InputMismatchException("Algorithme invalide") ;
 		if(affichage) System.out.println("Résultat de l'algorithme "+algos[algo]+" sur une agglomération aléatoire de "+nbVilles+" villes.");
 		return getTestSurAlgo(GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles), algo, affichage) ;
 	}
 	
+	/**
+	 * Méthode retournant des Rapport après avoir exécutés les différents algorithmes de la liste algo sur des agglomérations aléatoires
+	 * @param nbVillesMin la taille minimale des agglomérations aléatoires à tester (au minimum 2)
+	 * @param nbVillesMax la taille maximale des agglomératoires aléatoires à tester (au maximum 500)
+	 * @return Un ArrayList<Rapport> contenant les résultats des tests effectués
+	 * @see algos
+	 * @throws InputMismatchException dans le cas où les valeurs ne correspondraient pas à celles spécifiées ici.
+	 */
 	public static ArrayList<Rapport> getTestsAlgosSurAgglomerationAleatoire(int nbVillesMin, int nbVillesMax) {
 		return getTestsAlgosSurAgglomerationAleatoire(nbVillesMin, nbVillesMax, null) ; //permet d'appliquer le calcul sur tous les algorithmes
 	}
 	
-	public static ArrayList<Rapport> getTestsAlgosSurAgglomerationAleatoire(int nbVillesMin, int nbVillesMax, Integer algo) throws InputMismatchException {
+	private static ArrayList<Rapport> getTestsAlgosSurAgglomerationAleatoire(int nbVillesMin, int nbVillesMax, Integer algo) throws InputMismatchException {
 		if(nbVillesMin > nbVillesMax) { // dans le cas où on aurait inversé les arguments
 			int tmp = nbVillesMin ;
 			nbVillesMin = nbVillesMax ;
@@ -72,9 +107,8 @@ public class Testeur {
 			System.out.println("Vos arguments étaient dans le mauvais ordre, on a réparé ça pour vous.") ;
 		}
 		
-		if(nbVillesMax-nbVillesMin > 1000) throw new InputMismatchException("Cette méthode accepte au maximum une amplitude de 1000 villes de différence.") ;
-		if(nbVillesMin < 2) throw new InputMismatchException("On ne peut pas avoir d'agglomération avec moins de 2 villes.") ;
-		if(nbVillesMin > 26000) throw new InputMismatchException("Le programme ne supporte pas d'agglomération de plus de 26 000 villes.") ;
+		if(nbVillesMin <= 2) throw new InputMismatchException("On ne peut pas avoir d'agglomération avec moins de 2 villes.") ;
+		if(nbVillesMin >= 500) throw new InputMismatchException("Cette méthode n'accepte pas d'agglomérations de plus de 500 villes.") ;
 		
 		ArrayList<Rapport> rapports = new ArrayList<Rapport>((nbVillesMax-nbVillesMin)*algos.length) ;
 		
@@ -99,17 +133,35 @@ public class Testeur {
 		return rapports ;
 	}
 	
-	public static ArrayList<Rapport> getTestSurAlgo(int algo, Agglomeration...aggs) {
+	/**
+	 * Méthode appliquant un algorithme sur une série d'agglomérations.
+	 * @param algo int correspondant à l'identifiant d'un algorithme dans la liste algos
+	 * @param aggs varargs d'agglomérations quelconque
+	 * @return ArrayList<Rapport> contenant les rapports des tests effectués
+	 * @throws InputMismatchException dans le cas où l'algorithme spécifié n'existerait pas dans algos.
+	 * @see algos
+	 */
+	public static ArrayList<Rapport> getTestSurAlgo(int algo, Agglomeration...aggs) throws InputMismatchException {
+		if(algo < 0 || algo > algos.length-1) throw new InputMismatchException("Algorithme invalide") ;
 		ArrayList<Rapport> tests = new ArrayList<Rapport>() ;
 		for(Agglomeration agg : aggs) tests.add(getTestSurAlgo(agg, algo)) ;
 		return tests ;
 	}
 	
+	/**
+	 * Méthode appliquant un algorithme sur une agglomération.
+	 * @param algo int correspondant à l'identifiant d'un algorithme dans la liste algos
+	 * @param agg Agglomération quelconque
+	 * @return Rapport contenant le bilan du test effectué
+	 * @throws InputMismatchException dans le cas où l'algorithme spécifié n'existerait pas dans algos.
+	 * @see algos
+	 */
 	public static Rapport getTestSurAlgo(Agglomeration agg, int algo) {
 		 return getTestSurAlgo(agg, algo, true) ;
 	}
 	
-	private static Rapport getTestSurAlgo(Agglomeration agg, int algo, boolean affichage) {
+	private static Rapport getTestSurAlgo(Agglomeration agg, int algo, boolean affichage) throws InputMismatchException {
+		if(algo < 0 || algo > algos.length-1) throw new InputMismatchException("Algorithme invalide") ;
 		long tempsDebut = System.nanoTime();
 		switchAlgo(algo, agg) ;
 		long tempsFin = System.nanoTime();
@@ -119,10 +171,20 @@ public class Testeur {
 		//System.out.println("Temps d'exécution en millisecondes : " + tempsEcoule / 1000000);
 		
 		if(affichage) affichageBilanAlgo(agg, algo) ;
-		return new Rapport(algos[algo], (algo==0||algo==1)?k:null, (algo==3)?Boolean.valueOf(true):(algo==4)?Boolean.valueOf(false):null, agg, tempsEcoule/1000000) ;
+		return new Rapport(algos[algo], //nom de l'algo
+				(algo==0||algo==1)?k:null, //valeur de k
+				(algo==3||algo==5)?Boolean.valueOf(true):Boolean.valueOf(false), //estDynamique
+				(algo==2||algo==3)?Boolean.valueOf(true):Boolean.valueOf(false),
+				agg, 
+				tempsEcoule/1000000) ;
 	}
 		
-	
+	/**
+	 * Méthode affichant et comparant les résultats obtenus par les différents algorithmes de la liste algos
+	 * @param agg Une agglomération quelconque
+	 * @return ArrayList<Rapport> contenant les rapports des tests effectués
+	 * @see algos
+	 */
 	public static ArrayList<Rapport> compareAlgorithmes(Agglomeration agg) {
 		
 		System.out.println("\t **** Comparatif des résultats obtenus par nos algorithmes **** \n") ;
@@ -162,7 +224,32 @@ public class Testeur {
 	}
 	
 	
-	public static void affichageBilanAlgo(Agglomeration agg, int algo) {
+	/**
+	 * Méthode écrivant dans un fichier CSV les résultats passés en arguments
+	 * @param rapports ArrayList<Rapport> quelconque
+	 * @param chemin Chemin valide
+	 */
+	public static void ecrireRapportsDansCSV(ArrayList<Rapport> rapports, String chemin) {
+        try (FileWriter fileWriter = new FileWriter(chemin)) {
+        	fileWriter.append(Rapport.enteteCSV()+"\n") ;
+    		for(Rapport t : rapports) fileWriter.append(t.formatCSV()+"\n") ;
+        } catch (FileNotFoundException e) {
+            System.err.println("Le chemin suivant est invalide : " + chemin);
+        } catch (IOException e) {
+            System.err.println("Le chemin suivant est invalide : " + chemin);
+        }
+        System.out.println("Votre fichier CSV a été généré à l'adresse suivante : "+chemin) ;
+	}
+	
+	
+	/**
+	 * Méthode affichant le bilan d'une agglomération suite à l'exécution d'un algorithme sur cette dernière
+	 * @param agg Agglomération quelconque 
+	 * @param algo int correspondant à un algorithme de la liste algos
+	 * @see algos
+	 * @throws InputMismatchException dans le cas où l'algorithme spécifié n'existerait pas dans algos.
+	 */
+	public static void affichageBilanAlgo(Agglomeration agg, int algo) throws InputMismatchException {
 		System.out.println("\n - Bilan au sortir de "+algos[algo]+"() :");
 		agg.afficheBilan() ;
 		System.out.println("\n-----------------------------") ;
@@ -238,12 +325,11 @@ public class Testeur {
 		//getTestAlgoSurAgglomerationAleatoire(4, 3) ;
 		
 		
+		String chemin = "./src/resources/rapports.csv" ;
 		ArrayList<Rapport> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(2, 400) ;
-		System.out.println("\n-----------------------------------------------\n\nVotre fichier CSV :\n\n"+Rapport.enteteCSV()) ;
-		for(Rapport t : testsAleatoiresSurAlgos) System.out.println(t.formatCSV()) ;
-		
-		
-		
+
+		ecrireRapportsDansCSV(testsAleatoiresSurAlgos, chemin) ;
+        
 		/*
 		System.out.println("\n-----------------------------------------------\n\n\n\t\t****** Tests sur algorithmeFilePriorite avec agglomérations connues ******\n\n") ;
 		ArrayList<RapportTest> testsSurAlgoAvecAggloDefinie = getTestSurAlgo(2, agg1, agg2, agg3) ;

@@ -10,16 +10,18 @@ public class Rapport {
 	private String nomAlgo ;
 	private Integer k ;
 	private Boolean dynamique ;
+	private Boolean filePriorite ;
 	
 	private int nbVilles, nbEcoles ;
 	private boolean contrainteAccessibilite ;
 	
 	private double temps ;
 	
-	protected Rapport(String nomAlgo, Integer k, Boolean dynamique, Agglomeration agg, double temps) {
+	protected Rapport(String nomAlgo, Integer k, Boolean dynamique, Boolean filePriorite, Agglomeration agg, double temps) {
 		this.nomAlgo = nomAlgo ;
 		try { this.k = k.intValue() ; } catch(NullPointerException e) { this.k = null ;}
 		try { this.dynamique = dynamique.booleanValue() ; } catch(NullPointerException e) { this.dynamique = null ;}
+		try { this.filePriorite = filePriorite.booleanValue() ; } catch(NullPointerException e) { this.filePriorite = null ;}
 		this.nbVilles = agg.getVilles().size() ;
 		this.nbEcoles = agg.nbEcoles() ;
 		this.contrainteAccessibilite = agg.respecteAccessibilite() ;
@@ -39,11 +41,11 @@ public class Rapport {
 	}
 
 	protected String formatCSV() {
-		return "\""+nomAlgo+"\","+k+","+dynamique+","+String.format("%.3f", getScore())+","+String.format("%.3f", temps)+","+nbVilles+","+"\""+contrainteAccessibilite+"\"";
+		return "\""+nomAlgo+"\","+k+","+dynamique+","+filePriorite+","+String.format("%.3f", getScore())+","+String.format("%.3f", temps)+","+nbVilles+","+"\""+contrainteAccessibilite+"\"";
 	}
 	
 	protected static String enteteCSV() {
-		return "\"nomAlgo\",\"k\",\"dynamique\",\"score\",\"temps\",\"nbVilles\",\"contrainteAccessibilite\"" ;
+		return "\"nomAlgo\",\"k\",\"dynamique\",\"filePriorite\",\"score\",\"temps\",\"nbVilles\",\"contrainteAccessibilite\"" ;
 	}
 	
 	public String toString() {

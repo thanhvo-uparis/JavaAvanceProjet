@@ -26,12 +26,12 @@ public class Testeur {
 	 * La valeur de leurs paramètres est spécifiée dans la méthode switchAlgo
 	 * si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence et le return de la méthode getTestSurAlgo
 	 */
-	public static final String [] algos = { "algorithmeApproximationNaif", 
-											 "algorithmeApproximationUnPeuMoinsNaif", 
-											 "algorithmeFilePriorite",
-											 "algorithmeParSoustraction",
-											 "algorithmeParSoustraction",
-											 "algorithmeParSoustraction" } ;
+	public static final String [] algos = { "algorithmeApproximationNaif(agg, k)", 
+											 "algorithmeApproximationUnPeuMoinsNaif(agg, k)", 
+											 "algorithmeFilePriorite(agg, false)",
+											 "algorithmeParSoustraction(agg, true, true)",
+											 "algorithmeParSoustraction(agg, false, false)",
+											 "algorithmeParSoustraction(agg, true, false)" } ;
 	
 	private static void switchAlgo(int algo, Agglomeration agg) {
 		switch(algo) {
@@ -107,8 +107,8 @@ public class Testeur {
 			System.out.println("Vos arguments étaient dans le mauvais ordre, on a réparé ça pour vous.") ;
 		}
 		
-		if(nbVillesMin <= 2) throw new InputMismatchException("On ne peut pas avoir d'agglomération avec moins de 2 villes.") ;
-		if(nbVillesMin >= 500) throw new InputMismatchException("Cette méthode n'accepte pas d'agglomérations de plus de 500 villes.") ;
+		if(nbVillesMin < 2) throw new InputMismatchException("On ne peut pas avoir d'agglomération avec moins de 2 villes.") ;
+		if(nbVillesMin > 500) throw new InputMismatchException("Cette méthode n'accepte pas d'agglomérations de plus de 500 villes.") ;
 		
 		ArrayList<Rapport> rapports = new ArrayList<Rapport>((nbVillesMax-nbVillesMin)*algos.length) ;
 		
@@ -195,7 +195,7 @@ public class Testeur {
 		LinkedList<String> nomsAlgoMeilleursScore = new LinkedList<String>();
 		double meilleurScore = Double.MAX_VALUE ;
 		
-		System.out.println("-----------------------------\n\nRapports :") ;
+		System.out.println("-----------------------------\n\n --> Rapports :") ;
 		for(Rapport t : tests) {
 			System.out.println(t.toString()) ;
 			if(t.getTemps() < meilleurTemps) {
@@ -221,6 +221,46 @@ public class Testeur {
 		}
 		
 		return tests ;
+	}
+	
+	/**
+	 * Méthode permettant d'obtenir une résolution optimale ou quasi-optimale de la disposition des écoles dans l'agglomération.
+	 * Etant donné que algorithmeFilePriorite performe parfois mieux avec un petit nombre de villes, on l'utilise ici en parallèle 
+	 * d'algorithmeParSoustraction. Quand le nombre de villes est grand, on privilégiera algorithmeParSoustraction.
+	 * @param agg Agglomération quelconque
+	 * @see algorithmeParSoustraction(Agglomeration, boolean, boolean)
+	 * @see algorithmeFilePriorite(Agglomeration, boolean)
+	 * @see Le fichier ./src/resources/rapports.ods pour comprendre les choix expliqués dans la description
+	 * @return Rapport de l'exécution de l'algorithme choisi
+	 */
+	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) {
+		System.out.println("\t **** Choix automatique de l'algorithme et résolution **** \n") ;
+		System.out.print(" --> ") ;
+		if(agg.getVilles().size() < 20) {
+			Rapport [] coupleRapport = new Rapport[2] ;
+			coupleRapport[0] = getTestSurAlgo(agg, 2, false) ;
+			ArrayList<String> meilleureRepartition = agg.getVillesAEcole() ;
+			coupleRapport[1] = getTestSurAlgo(agg, 3, false) ;
+			if(meilleureRepartition.size() > agg.getVillesAEcole().size()) {
+				meilleureRepartition =  agg.getVillesAEcole() ;
+				agg.clearEcole();
+				try {
+					agg.ajouterEcole(meilleureRepartition);
+				} catch (Exception e) {
+					System.err.println(e) ;
+				}
+				System.out.println("Algorithme utilisé : "+algos[2]+"\n") ;
+				agg.afficheBilan();
+				return coupleRapport[0] ;
+			} else {
+				System.out.println("Algorithme utilisé : "+algos[3]+"\n") ;
+				agg.afficheBilan();
+				return coupleRapport[1] ;
+			}
+		} else {
+			System.out.println("Algorithme utilisé : "+algos[3]+"\n") ;
+			return getTestSurAlgo(agg, 3) ;
+		}
 	}
 	
 	
@@ -250,14 +290,14 @@ public class Testeur {
 	 * @throws InputMismatchException dans le cas où l'algorithme spécifié n'existerait pas dans algos.
 	 */
 	public static void affichageBilanAlgo(Agglomeration agg, int algo) throws InputMismatchException {
-		System.out.println("\n - Bilan au sortir de "+algos[algo]+"() :");
+		System.out.println("\n --> Bilan au sortir de "+algos[algo]+" :");
 		agg.afficheBilan() ;
 		System.out.println("\n-----------------------------") ;
 	}
 	
 	//Main de test
 	public static void main(String[] args) {
-		main.io.ChargeurProprietes.chargerProprietes();
+		main.io.ChargeurProprietes.chargerProprietes(false);
 		
 		Agglomeration agg1 = new Agglomeration(22) ;
 		try {
@@ -324,11 +364,12 @@ public class Testeur {
 		
 		//getTestAlgoSurAgglomerationAleatoire(4, 3) ;
 		
+		//System.out.println(resolutionAgglomerationAvecBascule(GenerateurAgglomeration.randomAggloConnexeGenerateur(10))) ;
 		
-		String chemin = "./src/resources/rapports.csv" ;
-		ArrayList<Rapport> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(2, 400) ;
+		//String chemin = "./src/resources/rapports.csv" ;
+		//ArrayList<Rapport> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(2, 400) ;
 
-		ecrireRapportsDansCSV(testsAleatoiresSurAlgos, chemin) ;
+		//ecrireRapportsDansCSV(testsAleatoiresSurAlgos, chemin) ;
         
 		/*
 		System.out.println("\n-----------------------------------------------\n\n\n\t\t****** Tests sur algorithmeFilePriorite avec agglomérations connues ******\n\n") ;

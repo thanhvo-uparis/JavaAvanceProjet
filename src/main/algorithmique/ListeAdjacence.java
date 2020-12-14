@@ -1,5 +1,6 @@
 package main.algorithmique;
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,6 +12,12 @@ import main.entites.Agglomeration;
 import main.entites.Ville;
 import main.exceptions.VilleException;
 
+/**
+ * Classe implémentant des méthodes pour faciliter la manipulation d'une agglomération sous la forme de la liste d'adjacence du graphe qui lui est associé.
+ * Cette classe fonctionne exclusivement en dialogue avec la méthode algorithmeParSoustraction de la classe Algos.java
+ * @author Yann Trividic
+ * @see algorithmeParSoustration(Agglomeration, boolean, boolean)
+ */
 public class ListeAdjacence extends HashMap<String, ArrayList<String>> {
 	
 	private static final long serialVersionUID = 1L;

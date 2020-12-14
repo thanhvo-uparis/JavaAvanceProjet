@@ -8,7 +8,7 @@ import main.exceptions.VilleException;
 /**
  * Classe qui definit une agglomeration dans le cadre du projet de construction d'ecoles.
  * @author Yann Trividic
- * @version 1.0
+ * @version 1.1
  */
 
 public class Agglomeration{
@@ -74,7 +74,7 @@ public class Agglomeration{
 	 * @param	a	ville a chercher dans l'agglomeration
 	 * @return	v	la ville trouvee dans l'agglomeration si elle a ete trouvee
 	 * @exception	VilleException	lance une exception si la ville n'est pas dans l'agglomeration
-	 * @see getVille(char)
+	 * @see getVille(String)
 	 */
 	public Ville getVille(Ville a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a.getKey()) return v;
@@ -91,6 +91,10 @@ public class Agglomeration{
 		}
 	}
 
+	/**
+	 * Getter pour l'attribut villes
+	 * @return la liste de villes associées à l'agglomération appelant la méthode
+	 */
 	public List<Ville> getVilles() {
 		return villes;
 	}
@@ -100,7 +104,7 @@ public class Agglomeration{
 	 * @param		a	premiere ville du couple de villes a relier par une route
 	 * @param		b	seconde ville du couple de villes a relier par une route
 	 * @exception	VilleException dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
-	 * @see			ajouterRoute(char, char)
+	 * @see			ajouterRoute(String, String)
 	 */
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
 		if(a.equals(b)) throw new VilleException("Les deux villes sont identiques"); // equals ne marche pas ?
@@ -111,7 +115,7 @@ public class Agglomeration{
 	}
 	
 	/**
-	 * Surcharge de la methode ajouterRoute(Ville, Ville) avec a la place des arguments Ville deux char
+	 * Surcharge de la methode ajouterRoute(Ville, Ville) avec a la place des arguments Ville deux String
 	 * @see		ajouterRoute(Ville, Ville)
 	 * @param		a	premiere ville du couple de villes a relier par une route
 	 * @exception	VilleException dans le cas ou les deux villes sont identiques, si elles sont deja reliees ou si l'une d'elles n'existe pas
@@ -136,7 +140,7 @@ public class Agglomeration{
 	}
 	
 	/**
-	 * Surcharge de la methode ajouterEcole(Ville) avec a la place de l'argument Ville un char
+	 * Surcharge de la methode ajouterEcole(Ville) avec a la place de l'argument Ville un String
 	 * @param		c					la ville dans laquelle on veut ajouter une ecole
 	 * @exception	EconomieException 	dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
 	 * @see		ajouterEcole(Ville)
@@ -148,9 +152,14 @@ public class Agglomeration{
 		a.setHasEcole(true);																			//	soit satisfaite en chaque instant de l'execution du programme
 	}
 	
-	
-	public void ajouterEcole(ArrayList<String> keys) throws Exception {
-		for(String key : keys) ajouterEcole(key) ;
+	/**
+	 * Surcharge de la méthode ajouterEcole avec un ArrayList à la place de la ville passée en argument
+	 * @see ajouterEcole(Ville)
+	 * @param cles Les clés associées aux villes dans lesquelles on veut ajouter des écoles
+	 * @throws Exception dans le cas ou la ville a deja une ecole (a terme, une exception sera aussi lancee si la ville est deja proche d'une ecole)
+	 */
+	public void ajouterEcole(ArrayList<String> cles) throws Exception {
+		for(String cle : cles) ajouterEcole(cle) ;
 	}
 	
 	
@@ -159,14 +168,14 @@ public class Agglomeration{
 	 * dans le cas ou cet ajout ne brise pas la contrainte d'Accessibilite
 	 * @param		a						la ville dans laquelle on essaiera de retirer une ecole
 	 * @exception	AccessibiliteException	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
-	 * @see			retirerEcole(char)
+	 * @see			retirerEcole(String)
 	 */
 	public void retirerEcole(Ville a) throws Exception {
 		retirerEcole(a.getKey());
 	}
 	
 	/**
-	 * Surcharge de la methode retirerEcole(Ville) avec a la place de l'argument Ville un char
+	 * Surcharge de la methode retirerEcole(Ville) avec a la place de l'argument Ville un String
 	 * @param		c						la ville dans laquelle on essaiera de retirer une ecole
 	 * @see		retirerEcole(Ville)
 	 * @exception	AccessibiliteException	si enlever l'ecole de la ville casse la contrainte d'Accessibilite
@@ -181,7 +190,11 @@ public class Agglomeration{
 	}
 	
 	
-	//permet de supprimer toutes les ecoles de l'agglomeration
+	/**
+	 * Surcharge de la méthode clearEcole permettant de conserver les écoles de certaines villes
+	 * @param conserverEcoles ArrayList contenant les clés des villes dont il faut conserver les écoles
+	 * @see clearEcole()
+	 */
 	public void clearEcole(ArrayList<String> conserverEcoles) {
 		if(conserverEcoles != null) {
 			for(Ville v : villes) if(!conserverEcoles.contains(v.getKey())) v.setHasEcole(false);
@@ -190,6 +203,9 @@ public class Agglomeration{
 		}
 	}
 	
+	/**
+	 * Méthode permettant de retirer les écoles pouvant exister dans les villes de l'agglomération appelant la méthode
+	 */
 	public void clearEcole() {
 		clearEcole(null);
 	}
@@ -220,8 +236,11 @@ public class Agglomeration{
 		return true; //sinon on retourne vrai
 	}
 	
+
 	/**
 	 * Methode permettant d'afficher la liste des villes possedant des ecoles dans l'agglomeration.
+	 * @param vueEtendue Booléen permettant de choisir entre deux modes d'affichage possible
+	 * @param tailleLigne Le nombre de villes à afficher par lignes
 	 */
 	public void afficheVilleAEcole(boolean vueEtendue, int tailleLigne) {
 
@@ -266,14 +285,22 @@ public class Agglomeration{
 		System.out.print("\n");
 	}
 	
+	/**
+	 * Surchage de la méthode afficheVilleAEcole avec des valeurs de paramètres par défaut
+	 * @see afficheVilleAEcole(boolean, int)
+	 */
 	public void afficheVilleAEcole() {
-		if(nbEcoles() != 0) {
+		if(getNbEcoles() != 0) {
 			afficheVilleAEcole(true, 40) ;
 		} else {
 			System.out.println("Aucune école construite.") ;
 		}		
 	}
 	
+	/**
+	 * Methode permettant d'afficher la liste des villes avec un certain nombre de villes par lignes
+	 * @param tailleLigne
+	 */
 	public void afficheVilles(int tailleLigne) {
 		int compteur = 0 ;
 		for(Ville a : villes) {
@@ -284,6 +311,10 @@ public class Agglomeration{
 		System.out.print("\n");
 	}
 	
+	/**
+	 * Méthode retournant la liste des clés des villes contenant des écoles
+	 * @return Un ArrayList contenant les clés des villes avec des écoles
+	 */
 	public ArrayList<String> getVillesAEcole() {
 		ArrayList<String> villesAEcole = new ArrayList<String>(0) ;
 		for(Ville a : villes) {
@@ -292,8 +323,11 @@ public class Agglomeration{
 		return villesAEcole ;
 	}
 
-	//retourne le nombre d'ecoles de l'agglomeration
-	public int nbEcoles() {
+	/**
+	 * Getter pour le nombre d'écoles dans l'agglomération
+	 * @return int le nombre d'écoles de l'agglomération
+	 */
+	public int getNbEcoles() {
 		int compteur = 0;
 		for(Ville a : villes) {
 			if(a.getHasEcole()) compteur++;
@@ -317,18 +351,29 @@ public class Agglomeration{
 		}
 	}
 	
+	/**
+	 * Surcharge de la méthode afficheRoutes avec paramètre par défaut à false 
+	 * @see afficheRoutes(boolean)
+	 */
 	public void afficheRoutes() {
 		afficheRoutes(false) ;
 	}
 	
-	
+	/**
+	 * Surcharge de la méthode afficheBilan avec paramètre par défaut à false
+	 * @see afficheBilan(boolean)
+	 */
 	public void afficheBilan() {
 		afficheBilan(true) ;
 	}
 	
+	/**
+	 * Méthode permettant d'afficher une vue d'ensemble de l'état de l'agglomération (écoles, villes, routes, connexité, contrainte d'accessibilité...)
+	 * @param condense booléen permettant de changer le mode d'affichage
+	 */
 	public void afficheBilan(boolean condense) {
-		System.out.print("Agglomération "+(estConnexe()?"":"non ")+ "connexe de "+villes.size()+" et "+nbEcoles());
-		System.out.println(" écoles ("+String.format("%.2f", (double) (nbEcoles())/villes.size()*100)+" %)");
+		System.out.print("Agglomération "+(estConnexe()?"":"non ")+ "connexe de "+villes.size()+" et "+getNbEcoles());
+		System.out.println(" écoles ("+String.format("%.2f", (double) (getNbEcoles())/villes.size()*100)+" %)");
 		System.out.println("Contrainte d'accessibilité : "+(respecteAccessibilite()?"Respectée":"Non respectée")) ;
 		if(condense) {
 			System.out.println("Représentation du graphe (Ecole [\"*\":oui, \" \":non] - Ville : Voisins) :") ;
@@ -361,6 +406,6 @@ public class Agglomeration{
 	
 	@Override
 	public String toString() {
-		return("Agglomeration de "+villes.size()+" villes et "+nbEcoles()+" ecoles.");
+		return("Agglomeration de "+villes.size()+" villes et "+getNbEcoles()+" ecoles.");
 	}
 }

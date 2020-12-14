@@ -11,7 +11,6 @@ import main.io.ChargeurProprietes;
 public class MenuInitial {
 	
 	public static void lancement() {
-		ChargeurProprietes.chargerProprietes();
 		MenuInitial.menuCreationAgglo();
 		MenuInitial.menuPrincipal(); //
 	}

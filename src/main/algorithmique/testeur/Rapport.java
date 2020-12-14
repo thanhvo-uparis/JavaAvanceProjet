@@ -2,11 +2,13 @@ package main.algorithmique.testeur;
 
 import main.entites.Agglomeration;
 
+/**
+ * Classe utilitaire permettant d'extraire des informations sur l'exécution d'un algorithme
+ * @author Yann Trividic
+ * @version 1.0
+ */
 public class Rapport {
 	
-	/**
-	 * 
-	 */
 	private String nomAlgo ;
 	private Integer k ;
 	private Boolean dynamique ;
@@ -23,7 +25,7 @@ public class Rapport {
 		try { this.dynamique = dynamique.booleanValue() ; } catch(NullPointerException e) { this.dynamique = null ;}
 		try { this.filePriorite = filePriorite.booleanValue() ; } catch(NullPointerException e) { this.filePriorite = null ;}
 		this.nbVilles = agg.getVilles().size() ;
-		this.nbEcoles = agg.nbEcoles() ;
+		this.nbEcoles = agg.getNbEcoles() ;
 		this.contrainteAccessibilite = agg.respecteAccessibilite() ;
 		this.temps = temps ;
 	}

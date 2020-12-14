@@ -4,6 +4,12 @@ import main.entites.Agglomeration;
 import main.entites.Ville;
 import main.io.ChargeurProprietes;
 
+
+/**
+ * Classe statique permettant de générer de différentes manières des agglomérations aléatoires. 
+ * @author Yann Trividic
+ * @version 1.0
+ */
 public class GenerateurAgglomeration {
 	
 	private static final int nbOperations = 0 ; // pour générer des écoles aléatoirements
@@ -45,13 +51,6 @@ public class GenerateurAgglomeration {
 	
 	protected static Agglomeration randomAggloConnexeGenerateur(int nbVilles, int nbOperations) {
 		Agglomeration agg = new Agglomeration(nbVilles) ;
-		//agg.afficheBilan();
-		/*
-		 * try { Thread.sleep(5000); } catch (InterruptedException e1) {
-		 * Auto-generated catch block e1.printStackTrace(); }
-		 */
-		
-		
 		if(ChargeurProprietes.getPropriete("affichageLogs")) System.out.println("Creation d'une agglomeration de "+nbVilles+" villes : " + agg.toString());
 		
 		String a ;

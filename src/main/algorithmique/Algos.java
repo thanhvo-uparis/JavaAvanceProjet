@@ -58,7 +58,7 @@ public class Algos {
 	 */
 	public static Agglomeration algorithmeApproximationUnPeuMoinsNaif(Agglomeration agg, int k) {
 		ArrayList<Ville> villes = (ArrayList<Ville>) agg.getVilles() ;
-		int scoreCourant = agg.nbEcoles();
+		int scoreCourant = agg.getNbEcoles();
 		for(int i = 0 ; i < k ; i++) {
 			Ville v = villes.get((int) (Math.random()*villes.size())) ;
 			try {
@@ -68,9 +68,9 @@ public class Algos {
 			} catch(Exception e) {
 				//System.out.println(e) ;
 			}
-			if(agg.nbEcoles() < scoreCourant) {
+			if(agg.getNbEcoles() < scoreCourant) {
 				i = 0 ;
-				scoreCourant = agg.nbEcoles() ;
+				scoreCourant = agg.getNbEcoles() ;
 			}
 		} 
 		return agg;

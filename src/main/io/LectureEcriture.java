@@ -144,9 +144,11 @@ public class LectureEcriture {
          return nomVille;
 	 }
      
+     
      public static void main(String[] args) {
-         Agglomeration agglomeration = LectureEcriture.lectureDepuisFichier("D:\\exp.ca");
-         LectureEcriture.ecritureVersFichier("D:\\exp2",agglomeration);
+         Agglomeration agglomeration = LectureEcriture.lectureDepuisFichier("./src/test/exemple.ca");
+         agglomeration.afficheBilan() ;
+         LectureEcriture.ecritureVersFichier("./src/resources/out.ca",agglomeration);
      }
 
 }

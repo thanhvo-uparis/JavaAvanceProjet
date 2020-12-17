@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import main.algorithmique.Algos;
 import main.entites.Agglomeration;
@@ -352,7 +353,7 @@ public class Testeur {
 		//agg.ajouterRoute(V) ;
 		//System.out.println("Entrée dans le Tester : ") 
 		
-		
+		//Scanner sc = new Scanner(System.in) ;
 		//compareAlgorithmes(agg3) ;
 		//compareAlgorithmes(agg1) ;
 		

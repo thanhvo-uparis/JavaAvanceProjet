@@ -11,7 +11,7 @@ public class MenuChargementAgglomeration {
 	public static Agglomeration choixTypeChargement(Scanner sc) {
 
 		Affichage.afficherMenuChoixTypeChargement() ;
-		int choix = EntreeClavier.getEntierDansIntervalleExclu(0, 4, sc) ;
+		int choix = EntreeClavier.getEntierDansIntervalleExclu(0, 2, sc) ;
 		Agglomeration agg = null ;
 		
 		switch (choix) {
@@ -116,7 +116,7 @@ public class MenuChargementAgglomeration {
 				//quitte le menu
 				System.out.println("Fin du programme.") ;
 				sc.close();
-				System.exit(0) ;
+				System.exit(1) ;
 				break ;
 				
 			default : 

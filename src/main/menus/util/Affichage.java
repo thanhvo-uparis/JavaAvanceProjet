@@ -5,7 +5,7 @@ import main.algorithmique.testeur.Testeur;
 public class Affichage {
 
 	public static void afficherIntro() {
-		System.out.println("Bienvenue !\n\nCette application est là pour faciliter la gestion de votre agglomération, ses villes et ses écoles.") ;
+		System.out.println("Bienvenue !\n\nCette application est là pour faciliter la gestion de votre agglomération, de ses villes et de ses écoles.") ;
 	}
 	
 	public static void afficherMenuChoixTypeChargement() {

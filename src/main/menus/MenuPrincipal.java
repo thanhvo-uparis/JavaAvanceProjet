@@ -1,6 +1,7 @@
 package main.menus;
 
 import java.util.Scanner;
+import java.util.ArrayList ;
 
 import main.entites.Agglomeration;
 import main.menus.util.Affichage;
@@ -8,9 +9,8 @@ import main.menus.util.Affichage;
 
 public class MenuPrincipal {
 	
-	public static void lancement() {
+	public static void lancement(Scanner sc) {
 		Affichage.afficherIntro();
-		Scanner sc = new Scanner(System.in) ;
 		Agglomeration agg = MenuChargementAgglomeration.choixTypeChargement(sc) ;
 		MenuChargementAgglomeration.menuResolutionProbleme(agg, sc);
 	}

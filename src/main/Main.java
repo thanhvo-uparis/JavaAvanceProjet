@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Scanner;
+
 import main.menus.MenuPrincipal;
 
 /**
@@ -32,10 +34,12 @@ import main.menus.MenuPrincipal;
 
 public class Main {
 	public static void main(String[] args) {
-		main.io.ChargeurProprietes.chargerProprietes(false); 
-		MenuPrincipal.lancement();
+		
+		Scanner sc = new Scanner(System.in) ; 
+		main.io.ChargeurProprietes.chargerProprietes(false); //FIXME apparemment, si cette ligne apparaît avant l'initialisation du scanner, le scanner est cassé
+		MenuPrincipal.lancement(sc);
+		sc.close();
 	}
-
 }	
 
 //Me manque encore a g�rer les exceptions que je vais avancer et la complexit� des algorithmes.

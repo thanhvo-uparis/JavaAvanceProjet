@@ -7,6 +7,12 @@ import main.io.LectureEcriture;
 import main.menus.util.*;
 
 public class MenuChargementAgglomeration {
+	/**
+	 * Méthode qui permet à l'utilisateur de choisir le type de chargement de l'agglomération(manuelle/depuis un fichier)
+	 * 
+	 * @param sc entrée clavier qui permet de prendre le choix de l'utilisateur
+	 * @return l'agglomération agg 
+	 */
 
 	public static Agglomeration choixTypeChargement(Scanner sc) {
 
@@ -43,7 +49,11 @@ public class MenuChargementAgglomeration {
 		}
 		return agg ;
 	}
-	
+	/**
+	 * méthode qui permet de créer le menu de résolution de problème: choisir entre résoudre le problème manuellement/résoudre automatiquement/sauvegarder le fichier/ fermer le programme.
+	 * @param agg qui correspond à l'agglomération chargée/crée par l'uitilisateur 
+	 * @param sc qui permet de prendre le choix de l'utilisateur
+	 */
 	public static void menuResolutionProbleme(Agglomeration agg, Scanner sc) {
 
 		Affichage.afficherMenuResolution() ;
@@ -75,7 +85,11 @@ public class MenuChargementAgglomeration {
 			break ;
 		}
 	}
-	
+	/**
+	 * Méthode qui permet d'ajouter une route au clavier (dans le cas d'une création manuelle de l'agglomération
+	 * @param sc qui permet de prendre les entrées clavier de l'utilisateur (notamment les villes à relier par une route
+	 * @return l'agglomération crée agg
+	 */
 	public static Agglomeration ajoutRoutesAuClavier(Scanner sc){
 
 		System.out.print("Vous avez choisi de rentrer votre agglomération au clavier.\n"
@@ -137,7 +151,12 @@ public class MenuChargementAgglomeration {
 		agg.afficheBilan();
 		return agg;
 	}
-
+	/**
+	 * méthode qui permet à l'utilisateur d'ajouter ou retirer les écoles dans les villes.
+	 * @param agg qui correspond à l'agglomération chargée/crée
+	 * @param sc qui permet de prendre les entrée clavier de l'utilisateur(ville dans laquelle ajouter/retirer une école)
+	 * @return l'agglomération crée agg
+	 */
 	private static Agglomeration ajoutEtRetraitEcolesAuClavier(Agglomeration agg, Scanner sc) {
 		int choix = 0;
 		

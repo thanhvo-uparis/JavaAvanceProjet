@@ -234,7 +234,7 @@ public class Testeur {
 	 * @see Le fichier ./src/resources/rapports.ods pour comprendre les choix expliqués dans la description
 	 * @return Rapport de l'exécution de l'algorithme choisi
 	 */
-	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) {
+	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) { //FIXME je ne donne pas toujours le bon résultat
 		System.out.println("\t **** Choix automatique de l'algorithme et résolution **** \n") ;
 		System.out.print(" --> ") ;
 		if(agg.getVilles().size() < 20) {

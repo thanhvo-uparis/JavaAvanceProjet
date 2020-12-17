@@ -11,13 +11,25 @@ public class MenuChargementAgglomeration {
 	public static Agglomeration choixTypeChargement(Scanner sc) {
 
 		Affichage.afficherMenuChoixTypeChargement() ;
-		int choix = EntreeClavier.getEntierDansIntervalleExclu(0, 2, sc) ;
+		int choix = EntreeClavier.getEntierDansIntervalleExclu(0, 3, sc) ;
 		Agglomeration agg = null ;
+		int nbVilles; 
 		
 		switch (choix) {
 		case 1 :
-			//Charge une agglomàration de facon manuelle grâce à la fonction aggloManuelle()
-			agg = ajoutRoutesAuClavier(sc);
+			System.out.print("Vous avez choisi de rentrer votre agglomération au clavier.\n"
+					+ "Attention, plus ce nombre est grand et plus il vous prendra du temps de créer cette agglomération.\n"
+					+ "Entrez le nombre de villes de votre agglomération : ") ;
+			nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 150, sc) ;
+			
+			Affichage.afficherDemandeNomsAuClavier();
+			boolean rentreNomsAuClavier = (EntreeClavier.getEntierDansIntervalleExclu(0, 1, sc) == 1)?true:false ;
+			
+			System.out.print("Entrez le nombre de villes de votre agglomération : ");
+
+			agg = (rentreNomsAuClavier)? EntreeClavier.nomsVillesAuClavier(sc, nbVilles):new Agglomeration(nbVilles) ;
+					
+			ajoutRoutesAuClavier(sc, agg) ;
 			break ;
 		case 2 :
 			//Charge l'agglomàration depuis un fichier grâce à la fonction LectureDepuisFichier de la classe LectureEcriture
@@ -28,6 +40,12 @@ public class MenuChargementAgglomeration {
 				System.out.println("Retour au menu de chargement d'agglomération.") ;
 				MenuPrincipal.lancement(sc, false);
 			}
+			break ;
+		case 3 :
+			System.out.print("Entrez le nombre de villes de votre agglomération : ");
+			nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 500, sc) ;
+			agg = main.algorithmique.testeur.GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles) ;
+			agg.afficheBilan();
 			break ;
 		case 0 : 
 			// Fermeture du programme
@@ -56,13 +74,14 @@ public class MenuChargementAgglomeration {
 			break ;
 		case 2 :
 			// Résoud automatiquement le probleme en faisant appel à la méthode resoudAuto
-			MenuAlgorithmes.menuPrincipalAlgorithmes(agg);
+			MenuAlgorithmes.menuPrincipalAlgorithmes(agg, sc);
 			break ;
 		case 3 : 
 			//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture.
 			sc.nextLine();
-			System.out.println("Veuillez entrer le chemin absolu où sauvegarder votre fichier");
+			System.out.println("Veuillez entrer le chemin absolu où vous souhaitez sauvegarder votre fichier : ");
 			LectureEcriture.ecritureVersFichier(sc.nextLine(), agg);
+			menuResolutionProbleme(agg, sc) ;
 			break;
 		case 0 : 
 			// Fermeture du programme
@@ -76,15 +95,9 @@ public class MenuChargementAgglomeration {
 		}
 	}
 	
-	public static Agglomeration ajoutRoutesAuClavier(Scanner sc){
+	
+	public static void ajoutRoutesAuClavier(Scanner sc, Agglomeration agg){
 
-		System.out.print("Vous avez choisi de rentrer votre agglomération au clavier.\n"
-				+ "Attention, plus ce nombre est grand et plus il vous prendra du temps de créer cette agglomération.\n"
-				+ "Entrez le nombre de villes de votre agglomération : ");
-		int nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 150, sc) ;
-
-		//Crée une agglomération en prenant comme paramètre nbVilles
-		Agglomeration agg = new Agglomeration(nbVilles);
 		agg.afficheBilan();
 		Affichage.afficherDemandeConnexite() ;
 		
@@ -97,6 +110,7 @@ public class MenuChargementAgglomeration {
 			choice = EntreeClavier.getEntierDansIntervalleExclu(0, 2, sc) ;
 			switch(choice) {
 			case 1 :
+				sc.nextLine() ;
 				//Permet à l'utilisateur d'ajouter une route entre 2 villes en lui demandant de relier deux villes via leurs clés. Affiche ensuite la liste des routes de l'agglomération.
 				try {
 					System.out.print("\nEntrez la clé de la première ville à relier : ");
@@ -108,19 +122,18 @@ public class MenuChargementAgglomeration {
 					System.out.println("Liste des routes de l'agglomération :\n") ;
 					agg.afficheRoutes();
 				} catch(Exception e) {
-					System.err.println(e);
+					System.err.println(e.getMessage());
 				}
 				break ;
 			case 2 :
 				//Vérifie que l'agglomération est bien connexe. Le cas échéant, on demande à l'utilisateur de continuer à ajouter des routes
 				System.out.println("Est-ce que toutes les villes sont bien accessibles...\n"
-									+ (agg.estConnexe()?"Oui !\n":"Non ! "
-									+ (connexiteNecessaire?"Continuez d'ajouter des routes":""))) ;
+									+ (agg.estConnexe()?"Oui !\n":("Non ! "
+									+ (connexiteNecessaire?"Continuez d'ajouter des routes.":"Mais c'est comme vous-voulez...")))) ;
 				break ;
-				
-			case 3 :
+			case 0 :
 				//quitte le menu
-				System.out.println("Fin du programme.") ;
+				System.out.println("Toutes vos routes ont été rentrées, votre agglomération est la suivante : ") ;
 				sc.close();
 				System.exit(1) ;
 				break ;
@@ -135,7 +148,6 @@ public class MenuChargementAgglomeration {
 
 		System.out.println("Votre agglomération a bien été créée.") ;
 		agg.afficheBilan();
-		return agg;
 	}
 
 	private static Agglomeration ajoutEtRetraitEcolesAuClavier(Agglomeration agg, Scanner sc) {

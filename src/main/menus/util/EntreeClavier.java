@@ -1,9 +1,11 @@
 package main.menus.util;
 
 import java.io.File;
-
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import main.entites.Agglomeration;
 
 public class EntreeClavier {
 	
@@ -58,4 +60,21 @@ public class EntreeClavier {
     	} while(chemin == "") ;
    	 return chemin ;
     }
+    
+	public static Agglomeration nomsVillesAuClavier(Scanner sc, int nbVilles){
+		sc.nextLine();
+		System.out.print("\n");
+		String nom ;
+		boolean contient ;
+		ArrayList<String> noms = new ArrayList<String>() ;
+		for(int i = 0 ; i < nbVilles ; i++) {
+			do {
+				System.out.print("Nom de la ville #"+(i+1)+" : ") ;
+				nom = sc.nextLine() ;
+				if((contient = noms.contains(nom)) == true) System.err.println("Vous avez déjà proposé la ville "+nom+". Réessayez.\n") ; 
+			} while(contient) ;
+			noms.add(nom) ;
+		}
+		return new Agglomeration(noms) ;
+	}
 }

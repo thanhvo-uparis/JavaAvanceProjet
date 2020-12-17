@@ -8,6 +8,10 @@ public class Affichage {
 		System.out.println("\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n") ;
 	}
 	
+	private static void politesse() {
+		System.out.print("Veuillez entrer votre choix : ");
+	}
+	
 	public static void afficherIntro() {
 		System.out.println("Bienvenue !\n\nCette application est là pour faciliter la gestion de votre agglomération, de ses villes et de ses écoles.") ;
 		System.out.println("Elle a été développée par Anthony Baptista, Thanh-Vo Cong et Yann Trividic.") ;
@@ -18,8 +22,9 @@ public class Affichage {
 		System.out.println("\n  - Menu de chargement d'agglomérations - \n") ;
 		System.out.println("1 - Charger une agglomération vous-même");
 		System.out.println("2 - Charger une agglomération depuis un fichier");
-		System.out.println("0 - Terminer le programme") ;
-		System.out.print("Veuillez entrer votre choix : ");
+		System.out.println("3 - Générer une agglomération aléatoirement");
+		System.out.println("0 - Quitter le programme") ;
+		politesse() ;
 	}
 
 	public static void afficherMenuResolution() {
@@ -28,8 +33,8 @@ public class Affichage {
 		System.out.println("1 - Résoudre manuellement la position de vos écoles");
 		System.out.println("2 - Résoudre automatiquement la position de vos écoles");
 		System.out.println("3 - Sauvegarder votre agglomération dans un fichier CA") ;
-		System.out.println("0 - Terminer le programme") ;
-		System.out.print("Veuillez entrer votre choix : ");
+		System.out.println("0 - Quitter le programme") ;
+		politesse() ;
 	}
 	
 	public static void afficherMenuAjoutRoutes() {
@@ -37,14 +42,22 @@ public class Affichage {
 		System.out.println("\n  - Menu d'ajout des routes - \n") ;
 		System.out.println("1 - Ajouter une route");
 		System.out.println("2 - J'ai rentré toutes mes routes");
-		System.out.println("0 - Terminer du programme") ;
-		System.out.print("Veuillez entrer votre choix : ");
+		System.out.println("0 - Quitter le programme") ;
+		politesse() ;
 	}
 	
 	public static void afficherDemandeConnexite() {
 		System.out.println("Voulez-vous que votre agglomération soit forcément connexe ?") ;
 		System.out.println("1 - Oui") ;
 		System.out.println("0 - Non") ;
+		politesse() ;
+	}
+	
+	public static void afficherDemandeNomsAuClavier() {
+		System.out.println("Voulez-vous que vous rentrer vous-même le nom de vos villes ?") ;
+		System.out.println("1 - Oui") ;
+		System.out.println("0 - Non") ;
+		politesse() ;
 	}
 	
 	public static void afficherMenuAjoutRetraitEcoles() {
@@ -53,8 +66,8 @@ public class Affichage {
 		System.out.println("1 - Ajouter une ecole");
 		System.out.println("2 - Retirer une ecole");
 		System.out.println("3 - J'ai fini mes modifications sur les écoles");	
-		System.out.println("0 - Terminer le programme");
-		System.out.print("Veuillez entrer votre choix : ");
+		System.out.println("0 - Quitter le programme");
+		politesse() ;
 	}
 	
 	public static void afficherMenuPrincipalAlgorithmes() {
@@ -64,9 +77,10 @@ public class Affichage {
 		System.out.println("2 - Appliquer notre meilleur algorithme sur votre agglomération") ;
 		System.out.println("3 - Comparer les résultats de nos différents algorithmes sur votre agglomération") ;
 		System.out.println("4 - Tester nos algorithmes sur une série d'agglomérations aléatoires") ;
-		System.out.println("5 - Retourner au menu de création/chargement d'agglomérations") ;
-		System.out.println("0 - Terminer le programme") ;
-		System.out.print("Votre choix ? ") ;
+		System.out.println("5 - Sauvegarder votre agglomération dans un fichier CA") ;
+		System.out.println("6 - Retourner au menu de chargement d'agglomérations") ;
+		System.out.println("0 - Quitter le programme") ;
+		politesse() ;
 	}
 	
 	public static void afficherListeAlgorithmes() {
@@ -77,6 +91,6 @@ public class Affichage {
 		}
 		System.out.println("0 - Retourner au menu précédent sans exécuter d'algorithme") ;
 		System.out.println("(Si vous ne savez pas quoi choisir, allez consulter la page Algos.java de notre JavaDoc)") ;
-		System.out.print("Votre choix ? ") ;
+		politesse() ;
 	}
 }

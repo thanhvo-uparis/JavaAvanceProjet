@@ -45,7 +45,7 @@ public class GenerateurAgglomeration {
 		return agg ;
 	}
 	
-	protected static Agglomeration randomAggloConnexeGenerateur(int nbVilles) {
+	public static Agglomeration randomAggloConnexeGenerateur(int nbVilles) {
 		return randomAggloConnexeGenerateur(nbVilles, nbOperations) ;
 	}
 	

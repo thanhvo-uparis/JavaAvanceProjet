@@ -7,6 +7,10 @@ ville(F).
 ville(G).
 ville(H).
 ville(I).
+ville(I).
+ville(I).
+ville(I).
+ville(I).
 ville(J).
 ville(K).
 route(A,B).

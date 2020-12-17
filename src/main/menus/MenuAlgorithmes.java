@@ -6,42 +6,52 @@ import main.menus.util.Affichage;
 import main.menus.util.EntreeClavier;
 import main.algorithmique.testeur.Testeur;
 import main.entites.Agglomeration;
+import main.io.LectureEcriture;
 
 public class MenuAlgorithmes {
 	
 	//TODO il ne serait pas très long d'implémenter la possibilité de générer un CSV bilan de tous les algos
-	protected static void menuPrincipalAlgorithmes(Agglomeration agg) {
+	protected static void menuPrincipalAlgorithmes(Agglomeration agg, Scanner sc) {
 		int choix = -1 ;
-		Scanner sc = new Scanner(System.in) ;
-		
-		do {
-			Affichage.afficherMenuPrincipalAlgorithmes() ;
-			choix = EntreeClavier.getEntierDansIntervalleExclu(0, 5, sc) ;
-			System.out.println("Votre choix : "+choix) ;
-			
-			switch(choix) {
-			case 0 :
-				break ; 
-			case 1 :
-				resoudAutoAvecChoixAlgorithme(agg, sc) ;
-				break ;
-			case 2 :
-				Testeur.resolutionAgglomerationAvecBascule(agg) ;
-				break ;
-			case 3 :
-				Testeur.compareAlgorithmes(agg) ;
-				break ;
-			case 4 :
-				resoudAutoAvecAgglomerationsAleatoires(sc) ;
-			case 5 :
-				MenuPrincipal.lancement(sc, false) ;
-			default :
-				break ;
-			}
-		} while(choix != 0) ;
 
-		sc.close();
-		System.out.println("\n\nFin du programme.") ;		
+		Affichage.afficherMenuPrincipalAlgorithmes() ;
+		choix = EntreeClavier.getEntierDansIntervalleExclu(0, 6, sc) ;
+		System.out.println("Votre choix : "+choix) ;
+
+		switch(choix) {
+		case 0 :
+			// Fermeture du programme
+			System.out.println("Fin du programme.");
+			sc.close();
+			System.exit(1);
+			break ;
+		case 1 :
+			resoudAutoAvecChoixAlgorithme(agg, sc) ;
+			break ;
+		case 2 :
+			Testeur.resolutionAgglomerationAvecBascule(agg) ;
+			break ;
+		case 3 :
+			Testeur.compareAlgorithmes(agg) ;
+			break ;
+		case 4 :
+			resoudAutoAvecAgglomerationsAleatoires(sc) ;
+			break ;
+		case 5 : 
+			//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture.
+			sc.nextLine();
+			System.out.println("Veuillez entrer le chemin absolu où vous souhaitez sauvegarder votre fichier : ");
+			LectureEcriture.ecritureVersFichier(sc.nextLine(), agg);
+			menuPrincipalAlgorithmes(agg, sc) ;
+			break;
+		case 6 :
+			MenuPrincipal.lancement(sc, false) ;
+		default :
+			System.out.println("Choix incorrect.");
+			break ;
+		}
+		
+		menuPrincipalAlgorithmes(agg, sc) ;
 	}
 	
 	private static void resoudAutoAvecAgglomerationsAleatoires(Scanner sc) {

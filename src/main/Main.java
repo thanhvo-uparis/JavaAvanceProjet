@@ -17,8 +17,6 @@ import main.menus.MenuPrincipal;
  * @version 1.0
  */
 
-//TEST COMMIT PAZRTIE 2///
-
 //TODO 	faire un Main concis et faire une classe UtilMain.java avec tout le nécessaire, mettre le moins de code possible
 //		il existe des architectures java pour lesquelles le main tient en une seule ligne (voir 
 //TODO reprendre les nommages, supprimer le franglais, utiliser des noms parlant
@@ -31,6 +29,7 @@ import main.menus.MenuPrincipal;
 //TODO vérifier que tout le code s'exécute bien en testant différentes toutes les erreurs possibles (fichier inexistant, mauvais input au clavier...)
 
 //TODO Mettre à jour le readme (expliquer très brièvement le rôle des packages, peut-être mettre un lien vers la JavaDoc ? Expliquer brièvement les algos)
+//TODO Vérifier que toutes les exceptions sont bien gérées
 
 public class Main {
 	public static void main(String[] args) {
@@ -41,5 +40,3 @@ public class Main {
 		sc.close();
 	}
 }	
-
-//Me manque encore a g�rer les exceptions que je vais avancer et la complexit� des algorithmes.

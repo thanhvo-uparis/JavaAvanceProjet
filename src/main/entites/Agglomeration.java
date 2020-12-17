@@ -30,11 +30,22 @@ public class Agglomeration{
 	 * @see Agglomeration()
 	 * @see Agglomeration(int)
 	 */
-	  public Agglomeration(Ville[] villes) {
+	  public Agglomeration(Ville [] villes) {
             this.villes = new ArrayList<Ville>();
             for (Ville v : villes) this.villes.add(v);
        }
-	
+
+	  /**
+	   * Constructeur initialisant ses villes grace aux villes passees en arguments
+	   * @param villes	varargs de villes qui seront stockees dans l'attribut villes de l'objet
+	   * @see Agglomeration()
+	   * @see Agglomeration(int)
+	   */
+	  public Agglomeration(ArrayList<String> noms) {
+		  this.villes = new ArrayList<Ville>();
+		  for (String n : noms) this.villes.add(new Ville(n));
+	  }  
+
 	/**
 	 * Constructeur initialisant le ArrayList villes avec la taille de l'entier passe en argument tant qu'il ne depasse pas 26
 	 * @param nbVilles	le nombre de villes a generer dans l'agglo
@@ -343,9 +354,14 @@ public class Agglomeration{
 	public void afficheRoutes(boolean enListe) {
 		for(Ville ville : villes) {
 			if(!enListe) System.out.print(ville.getKey()+" : ");
-			for(Ville voisin : ville.getVoisins()) {
-				if(enListe)	if(voisin.getKey().compareTo(ville.getKey()) > 0) System.out.print("["+ville.getKey()+", "+voisin.getKey()+"] ");
-				if(!enListe) System.out.print(voisin.getKey()+" ");
+			ArrayList<Ville> voisins = ville.getVoisins() ;
+			if(voisins.isEmpty()) {
+				System.out.print("Aucun voisin") ;
+			} else {
+				for(Ville voisin : ville.getVoisins()) {
+					if(enListe)	if(voisin.getKey().compareTo(ville.getKey()) > 0) System.out.print("["+ville.getKey()+", "+voisin.getKey()+"] ");
+					if(!enListe) System.out.print(voisin.getKey()+" ");
+				}
 			}
 			System.out.print("\n");	
 		}
@@ -381,7 +397,11 @@ public class Agglomeration{
 				System.out.print(v.getAEcole()?" * ":"   ") ;
 				System.out.print(v.getKey()+" : ") ;
 				Collections.sort(v.getVoisins(), Comparator.comparing(Ville::getKey)) ;
-				for(Ville voisin : v.getVoisins()) System.out.print(voisin.getKey()+" ");
+				ArrayList<Ville> voisins = v.getVoisins() ;
+				if(voisins.isEmpty()) {
+					System.out.print("Aucun voisin.");
+				}
+				else for(Ville voisin : voisins) System.out.print(voisin.getKey()+" ");
 				System.out.print("\n");
 			}
 		} else {

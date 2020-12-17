@@ -38,7 +38,8 @@ public class LectureEcriture {
             
             while ((line = br.readLine()) != null) { //lit le fichier à la boucle de ligne par ligne, lire jusqu'à ce que le fichier soit terminé
                 if (line.toLowerCase().startsWith("ville(") || line.toLowerCase().startsWith("v(") || line.toLowerCase().startsWith("villes(")) {
-                    villes.add(parserVille(line)); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
+                    String ville = parserVille(line) ; // on évite les doublons
+                	if(!villes.contains(ville)) villes.add(ville); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
                 } else if(line.toLowerCase().startsWith("ecole(") || line.toLowerCase().startsWith("e(") || line.toLowerCase().startsWith("ecoles(")) {
                     ecoles.add(parserEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
                 } else if(line.toLowerCase().startsWith("route(") || line.toLowerCase().startsWith("r(") || line.toLowerCase().startsWith("routes(")) {
@@ -83,12 +84,15 @@ public class LectureEcriture {
      * @param agg    L'objet est écrit dans le fichier
      */
     public static void ecritureVersFichier(String chemin, Agglomeration agg) {
+    	String [] decoupe = chemin.split("\\.") ;
+    	if(!decoupe[decoupe.length-1].toLowerCase().equals("ca")) chemin += ".ca" ;
+    	
         try (FileWriter fileWriter = new FileWriter(chemin)) {
             //écrit une liste des villes au fichier
             for (Ville v : agg.getVilles()) {
                 fileWriter.append("ville(" + v.getKey() + ").\r\n");
             }
-		
+            
 		
             //écrit une liste des routes au fichier
             Set<Double> hashRoutes = new HashSet<>(); ////crée une liste hash ( identifiant unique ) de route, vérifie si les routes sont identiques ou non lors de l'examen sur les voisins
@@ -119,6 +123,7 @@ public class LectureEcriture {
             //TODO traite exception s'il y a une erreur Input Output Exception lors de la lecture du fichier
             e.printStackTrace();
         }
+        System.out.println("Votre fichier "+chemin+" a bien été généré.") ;
     }
 
     /**

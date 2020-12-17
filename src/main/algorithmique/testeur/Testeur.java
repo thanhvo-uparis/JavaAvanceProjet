@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import main.algorithmique.Algos;
 import main.entites.Agglomeration;
@@ -228,10 +227,13 @@ public class Testeur {
 	 * Méthode permettant d'obtenir une résolution optimale ou quasi-optimale de la disposition des écoles dans l'agglomération.
 	 * Etant donné que algorithmeFilePriorite performe parfois mieux avec un petit nombre de villes, on l'utilise ici en parallèle 
 	 * d'algorithmeParSoustraction. Quand le nombre de villes est grand, on privilégiera algorithmeParSoustraction.
+	 * Il est cependant à noter que algorithmeParSoustraction avec sa file de priorité ne donnera pas à chaque fois le résultat optimal.
+	 * Cet algorithme favorise la vitesse de calcul. La méthode compareAlgorithmes vous donnera le meilleur résultat de nos algorithmes à coup sûr.
 	 * @param agg Agglomération quelconque
 	 * @see algorithmeParSoustraction(Agglomeration, boolean, boolean)
 	 * @see algorithmeFilePriorite(Agglomeration, boolean)
 	 * @see Le fichier ./src/resources/rapports.ods pour comprendre les choix expliqués dans la description
+	 * @see compareAlgorithmes(Agglomeration)
 	 * @return Rapport de l'exécution de l'algorithme choisi
 	 */
 	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) { //FIXME je ne donne pas toujours le bon résultat
@@ -242,8 +244,13 @@ public class Testeur {
 			coupleRapport[0] = getTestSurAlgo(agg, 2, false) ;
 			ArrayList<String> meilleureRepartition = agg.getVillesAEcole() ;
 			coupleRapport[1] = getTestSurAlgo(agg, 3, false) ;
+			//System.out.println(coupleRapport[0]) ;
+			//System.out.println(coupleRapport[1]) ;
 			if(meilleureRepartition.size() > agg.getVillesAEcole().size()) {
-				meilleureRepartition =  agg.getVillesAEcole() ;
+				System.out.println("Algorithme utilisé : "+algos[3]+"\n") ;
+				agg.afficheBilan();
+				return coupleRapport[1] ;
+			} else {
 				agg.clearEcole();
 				try {
 					agg.ajouterEcole(meilleureRepartition);
@@ -253,10 +260,6 @@ public class Testeur {
 				System.out.println("Algorithme utilisé : "+algos[2]+"\n") ;
 				agg.afficheBilan();
 				return coupleRapport[0] ;
-			} else {
-				System.out.println("Algorithme utilisé : "+algos[3]+"\n") ;
-				agg.afficheBilan();
-				return coupleRapport[1] ;
 			}
 		} else {
 			System.out.println("Algorithme utilisé : "+algos[3]+"\n") ;
@@ -295,7 +298,8 @@ public class Testeur {
 		agg.afficheBilan() ;
 		System.out.println("\n-----------------------------") ;
 	}
-	
+}
+	/*
 	//Main de test
 	public static void main(String[] args) {
 		resources.ChargeurProprietes.chargerProprietes(false);
@@ -372,14 +376,12 @@ public class Testeur {
 
 		//ecrireRapportsDansCSV(testsAleatoiresSurAlgos, chemin) ;
         
-		/*
+
 		System.out.println("\n-----------------------------------------------\n\n\n\t\t****** Tests sur algorithmeFilePriorite avec agglomérations connues ******\n\n") ;
 		ArrayList<RapportTest> testsSurAlgoAvecAggloDefinie = getTestSurAlgo(2, agg1, agg2, agg3) ;
 		System.out.println("\n-----------------------------------------------\n\nVotre fichier CSV :\n\n"+RapportTest.enteteCSV()) ;
 		for(RapportTest t : testsSurAlgoAvecAggloDefinie) System.out.println(t.formatCSV()) ;
-		*/
+
 		//System.out.println(Tester.testComplexiteTousAlgos(500).toString()) ;
 		//Tester.testComplexiteTousAlgos(25) ;
-		
-	}
-}
+*/

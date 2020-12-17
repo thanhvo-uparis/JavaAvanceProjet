@@ -7,13 +7,13 @@ import main.io.LectureEcriture;
 import main.menus.util.*;
 
 public class MenuChargementAgglomeration {
+	
 	/**
 	 * Méthode qui permet à l'utilisateur de choisir le type de chargement de l'agglomération(manuelle/depuis un fichier)
 	 * 
 	 * @param sc entrée clavier qui permet de prendre le choix de l'utilisateur
 	 * @return l'agglomération agg 
 	 */
-
 	public static Agglomeration choixTypeChargement(Scanner sc) {
 
 		Affichage.afficherMenuChoixTypeChargement() ;

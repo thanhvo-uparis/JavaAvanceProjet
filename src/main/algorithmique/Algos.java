@@ -34,7 +34,7 @@ public class Algos {
 		for(int i = 0 ; i < k ; i++) {
 			Ville v = villes.get((int) (Math.random()*villes.size())) ;
 			try {
-				if(v.getHasEcole()) {
+				if(v.getAEcole()) {
 					agg.retirerEcole(v);
 					//System.out.println("Retrait") ;
 				} else {
@@ -62,7 +62,7 @@ public class Algos {
 		for(int i = 0 ; i < k ; i++) {
 			Ville v = villes.get((int) (Math.random()*villes.size())) ;
 			try {
-				if(v.getHasEcole()) {
+				if(v.getAEcole()) {
 					agg.retirerEcole(v);
 				} else agg.ajouterEcole(v) ;
 			} catch(Exception e) {
@@ -112,7 +112,7 @@ public class Algos {
 			if(voisins.size() == 0) {
 				v.setHasEcole(true);
 			} else if(voisins.size() == 1 || voisins.size() == 0) { 		// c'est-à-dire les villes qui n'ont qu'un voisin et qui n'ont pas déjà d'école construite
-				if(!v.getHasEcole()) voisins.get(0).setHasEcole(true);		// le 2e if sert dans le cas d'une agglomération de deux villes 
+				if(!v.getAEcole()) voisins.get(0).setHasEcole(true);		// le 2e if sert dans le cas d'une agglomération de deux villes 
 			} else if (!p.contains(v)){										// ou qu'on a choisi de garder les écoles déjà construites
 				p.add(v); 													// si elles ont plus d'un voisin, on les ajoute dans la file de priorité
 			}
@@ -237,7 +237,7 @@ public class Algos {
 			String c = file.poll() ;
 			try {
 				try { //si la ville ville voisine n'a pas d'école, alors on en met une, sinon non
-					boolean voisinDegreUnAEcole = agg.getVille(la.get(c).get(0)).getHasEcole() ;
+					boolean voisinDegreUnAEcole = agg.getVille(la.get(c).get(0)).getAEcole() ;
 					if(!voisinDegreUnAEcole) agg.getVille(c).setHasEcole(true);
 				} catch (IndexOutOfBoundsException e) { //cette exception est levée uniquement dans le cas où la ville n'aurait plus de voisin
 					agg.getVille(c).setHasEcole(true);	//si la ville n'a plus aucun voisin, alors on lui ajoute une école
@@ -260,7 +260,7 @@ public class Algos {
 			String c = p.poll().getKey() ;
 			try {
 				try { //si la ville ville voisine n'a pas d'école, alors on en met une, sinon non
-					boolean voisinDegreUnAEcole = agg.getVille(la.get(c).get(0)).getHasEcole() ;
+					boolean voisinDegreUnAEcole = agg.getVille(la.get(c).get(0)).getAEcole() ;
 					if(!voisinDegreUnAEcole) agg.getVille(c).setHasEcole(true);
 				} catch (IndexOutOfBoundsException e) { //cette exception est levée uniquement dans le cas où la ville n'aurait plus de voisin
 					agg.getVille(c).setHasEcole(true);	//si la ville n'a plus aucun voisin, alors on lui ajoute une école

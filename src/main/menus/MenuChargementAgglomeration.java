@@ -21,8 +21,8 @@ public class MenuChargementAgglomeration {
 			break ;
 		case 2 :
 			//Charge l'agglomàration depuis un fichier grâce à la fonction LectureDepuisFichier de la classe LectureEcriture
-			System.out.println("Rentrez le chemin vers le fichier nécessaire à la création de l'agglomération");
-			agg = LectureEcriture.lectureDepuisFichier(sc.nextLine()) ;
+			System.out.print("Rentrez le chemin (absolu) vers le fichier CA nécessaire à la création de l'agglomération : ");
+			agg = LectureEcriture.lectureDepuisFichier(EntreeClavier.getCheminValideCA(sc)) ;
 			break ;
 		case 0 : 
 			// Fermeture du programme
@@ -55,6 +55,7 @@ public class MenuChargementAgglomeration {
 			break ;
 		case 3 : 
 			//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture.
+			sc.nextLine();
 			System.out.println("Veuillez entrer le chemin absolu où sauvegarder votre fichier");
 			LectureEcriture.ecritureVersFichier(sc.nextLine(), agg);
 			break;

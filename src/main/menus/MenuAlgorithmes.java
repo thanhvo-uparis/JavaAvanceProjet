@@ -34,7 +34,7 @@ public class MenuAlgorithmes {
 			case 4 :
 				resoudAutoAvecAgglomerationsAleatoires(sc) ;
 			case 5 :
-				; //TODO mettre la méthode pour rentrer dans le menu de création d'agglomération
+				MenuPrincipal.lancement(sc) ;
 			default :
 				break ;
 			}

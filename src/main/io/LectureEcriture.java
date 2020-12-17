@@ -96,7 +96,7 @@ public class LectureEcriture {
 		
             //écrit une liste des ecoles au fichier
             for (Ville v : agg.getVilles()) {
-                if (v.getHasEcole()) {
+                if (v.getAEcole()) {
                     fileWriter.append("ecole(" + v.getKey() + ").\r\n");
                 }
             }
@@ -143,12 +143,13 @@ public class LectureEcriture {
          String nomVille = ecole.split("\\(")[1].split("\\).")[0];
          return nomVille;
 	 }
-     
+    
      
      public static void main(String[] args) {
          Agglomeration agglomeration = LectureEcriture.lectureDepuisFichier("./src/test/exemple.ca");
          agglomeration.afficheBilan() ;
          LectureEcriture.ecritureVersFichier("./src/resources/out.ca",agglomeration);
      }
+
 
 }

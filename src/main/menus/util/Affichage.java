@@ -4,12 +4,17 @@ import main.algorithmique.testeur.Testeur;
 
 public class Affichage {
 
+	private static void enteteMenu() {
+		System.out.println("\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n") ;
+	}
+	
 	public static void afficherIntro() {
 		System.out.println("Bienvenue !\n\nCette application est là pour faciliter la gestion de votre agglomération, de ses villes et de ses écoles.") ;
 	}
 	
 	public static void afficherMenuChoixTypeChargement() {
-		System.out.println("\n  - Menu de chargement d'gglomérations - ") ;
+		enteteMenu() ;
+		System.out.println("\n  - Menu de chargement d'agglomérations - \n") ;
 		System.out.println("1 - Charger une agglomération vous-même");
 		System.out.println("2 - Charger une agglomération depuis un fichier");
 		System.out.println("0 - Terminer le programme") ;
@@ -17,7 +22,8 @@ public class Affichage {
 	}
 
 	public static void afficherMenuResolution() {
-		System.out.println("\n  - Menu de résolution des écoles - ") ;
+		enteteMenu() ;
+		System.out.println("\n  - Menu de résolution des écoles - \n") ;
 		System.out.println("1 - Résoudre manuellement");
 		System.out.println("2 - Résoudre automatiquement");
 		System.out.println("3 - Sauvegarder votre agglomération dans un fichier CA") ;
@@ -26,7 +32,8 @@ public class Affichage {
 	}
 	
 	public static void afficherMenuAjoutRoutes() {
-		System.out.println("\n  - Menu d'ajout des routes - ") ;
+		enteteMenu() ;
+		System.out.println("\n  - Menu d'ajout des routes - \n") ;
 		System.out.println("1 - Ajouter une route");
 		System.out.println("2 - J'ai rentré toutes mes routes");
 		System.out.println("0 - Terminer du programme") ;
@@ -40,7 +47,8 @@ public class Affichage {
 	}
 	
 	public static void afficherMenuAjoutRetraitEcoles() {
-		System.out.println("\n  - Menu d'ajout et de retrait d'écoles - ") ;
+		enteteMenu() ;
+		System.out.println("\n  - Menu d'ajout et de retrait d'écoles - \n") ;
 		System.out.println("1 - Ajouter une ecole");
 		System.out.println("2 - Retirer une ecole");
 		System.out.println("3 - J'ai fini mes modifications sur les écoles");	
@@ -49,7 +57,8 @@ public class Affichage {
 	}
 	
 	public static void afficherMenuPrincipalAlgorithmes() {
-		System.out.println("  - Menu Principal Algorithmes - ") ;
+		enteteMenu() ;
+		System.out.println("\n  - Menu Principal Algorithmes - \n") ;
 		System.out.println("1 - Appliquer l'algorithme de votre choix sur votre agglomération") ;
 		System.out.println("2 - Appliquer notre meilleur algorithme sur votre agglomération") ;
 		System.out.println("3 - Comparer les résultats de nos différents algorithmes sur votre agglomération") ;
@@ -60,7 +69,8 @@ public class Affichage {
 	}
 	
 	public static void afficherListeAlgorithmes() {
-		System.out.println("\n\n  - Nos algorithmes - ") ;
+		enteteMenu() ;
+		System.out.println("\n\n  - Nos algorithmes - \n") ;
 		for(int i = 0 ; i < Testeur.algos.length ; i++) {
 			System.out.println((i+1)+" - "+Testeur.algos[i]) ;
 		}

@@ -52,7 +52,7 @@ public class Ville {
 	 *  d'instance privee hasEcole.
 	 *  @return	hasEcole
 	 */
-	public boolean getHasEcole() {
+	public boolean getAEcole() {
 		return hasEcole;
 	}
 	
@@ -81,7 +81,7 @@ public class Ville {
 	public boolean hasEcoleVoisins() {
 		boolean b = false ;
 		  for(int i=0; i< voisins.size(); i++) {
-			 if (voisins.get(i).getHasEcole()) b = true;  
+			 if (voisins.get(i).getAEcole()) b = true;  
 		  }
 		 return b;
 	}
@@ -90,7 +90,7 @@ public class Ville {
 	private int nbEcolesVoisins() {
 		int nbEcoles = 0 ;
 		  for(int i=0; i< voisins.size(); i++) {
-			 if (voisins.get(i).getHasEcole()) nbEcoles++ ;  
+			 if (voisins.get(i).getAEcole()) nbEcoles++ ;  
 		  }
 		 return nbEcoles;
 	}
@@ -125,7 +125,7 @@ public class Ville {
 	}
 	
 	public boolean aAccesEcole() {
-		return getHasEcole() || hasEcoleVoisins() ;
+		return getAEcole() || hasEcoleVoisins() ;
 	}
 	
 	public int beneficeSiAjoutEcole() {

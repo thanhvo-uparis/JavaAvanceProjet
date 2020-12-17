@@ -147,7 +147,7 @@ public class Agglomeration{
 	 */
 	public void ajouterEcole(String c) throws Exception {
 		Ville a = getVille(c);
-		if(a.getHasEcole()) throw new EconomieException("La ville a deja une ecole.");
+		if(a.getAEcole()) throw new EconomieException("La ville a deja une ecole.");
 		//if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est deja proche d'une ecole."); //	decommenter cette ligne pour que la contrainte d'Economie
 		a.setHasEcole(true);																			//	soit satisfaite en chaque instant de l'execution du programme
 	}
@@ -183,8 +183,8 @@ public class Agglomeration{
 	public void retirerEcole(String c) throws Exception {
 		Ville a = getVille(c);
 		boolean accessibiliteVoisins = true;
-		if(!a.hasEcoleVoisins() && a.getHasEcole()) throw new AccessibiliteException("La ville "+a.getKey()+" ne serait plus assez proche une ecole.");
-		for(Ville voisin : a.getVoisins()) if(voisin.getNbEcolesAccessibles() == 1 && !voisin.getHasEcole()) accessibiliteVoisins = false;
+		if(!a.hasEcoleVoisins() && a.getAEcole()) throw new AccessibiliteException("La ville "+a.getKey()+" ne serait plus assez proche une ecole.");
+		for(Ville voisin : a.getVoisins()) if(voisin.getNbEcolesAccessibles() == 1 && !voisin.getAEcole()) accessibiliteVoisins = false;
 		if(!accessibiliteVoisins) throw new AccessibiliteException("L'ecole de la ville "+a.getKey()+" est l'unique ecole accessible pour au moins une de ses villes voisines.");
 		a.setHasEcole(false);
 	}
@@ -257,14 +257,14 @@ public class Agglomeration{
 				//System.out.println(compteur) ;
 				System.out.print("\n");
 				for(tmp = compteur ; tmp%tailleLigne != tailleLigne-1 && tmp%tailleLigne+compteur < villes.size() ; tmp++) {
-					if(villes.get(tmp).getHasEcole()) {
+					if(villes.get(tmp).getAEcole()) {
 						System.out.print(new String(new char[size]).replace("\0", "E")+" ");
 					} else {
 						System.out.print(new String(new char[size]).replace("\0", "-")+" ");
 					}
 				}
 				if(tmp < villes.size()) {
-					if(villes.get(tmp-1).getHasEcole()) {
+					if(villes.get(tmp-1).getAEcole()) {
 						System.out.print(new String(new char[size]).replace("\0", "E")+" ");
 					} else {
 						System.out.print(new String(new char[size]).replace("\0", "-")+" ");
@@ -277,7 +277,7 @@ public class Agglomeration{
 				
 		} else {
 			for(Ville a : villes) {
-			if (!vueEtendue) if(a.getHasEcole()) System.out.print(a.getKey()+" ");
+			if (!vueEtendue) if(a.getAEcole()) System.out.print(a.getKey()+" ");
 			compteur++ ;
 			if(compteur%tailleLigne-1 == 0) System.out.print("\n") ;
 			}
@@ -318,7 +318,7 @@ public class Agglomeration{
 	public ArrayList<String> getVillesAEcole() {
 		ArrayList<String> villesAEcole = new ArrayList<String>(0) ;
 		for(Ville a : villes) {
-			if(a.getHasEcole()) villesAEcole.add(a.getKey()) ;
+			if(a.getAEcole()) villesAEcole.add(a.getKey()) ;
 		}
 		return villesAEcole ;
 	}
@@ -330,7 +330,7 @@ public class Agglomeration{
 	public int getNbEcoles() {
 		int compteur = 0;
 		for(Ville a : villes) {
-			if(a.getHasEcole()) compteur++;
+			if(a.getAEcole()) compteur++;
 		}
 		return compteur;
 	}
@@ -378,7 +378,7 @@ public class Agglomeration{
 		if(condense) {
 			System.out.println("Représentation du graphe (Ecole [\"*\":oui, \" \":non] - Ville : Voisins) :") ;
 			for(Ville v : villes) {
-				System.out.print(v.getHasEcole()?" * ":"   ") ;
+				System.out.print(v.getAEcole()?" * ":"   ") ;
 				System.out.print(v.getKey()+" : ") ;
 				Collections.sort(v.getVoisins(), Comparator.comparing(Ville::getKey)) ;
 				for(Ville voisin : v.getVoisins()) System.out.print(voisin.getKey()+" ");

@@ -10,12 +10,12 @@ ville(I).
 ville(J).
 ville(K).
 route(A,B).
-route(A,D).
+route(A,Bidule).
 route(B,C).
 route(B,H).
-route(C,D).
+route(C,Bidule).
 route(C,I).
-route(D,E).
+route(Bidule,E).
 route(E,F).
 route(E,G).
 route(H,I).

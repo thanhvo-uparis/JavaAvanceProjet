@@ -36,8 +36,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in) ; 
-		main.io.ChargeurProprietes.chargerProprietes(false); //FIXME apparemment, si cette ligne apparaît avant l'initialisation du scanner, le scanner est cassé
-		MenuPrincipal.lancement(sc);
+		resources.ChargeurProprietes.chargerProprietes(false); //FIXME apparemment, si cette ligne apparaît avant l'initialisation du scanner, le scanner est cassé
+		MenuPrincipal.lancement(sc, true);
 		sc.close();
 	}
 }	

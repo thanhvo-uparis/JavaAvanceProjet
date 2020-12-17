@@ -9,8 +9,8 @@ import main.menus.util.Affichage;
 
 public class MenuPrincipal {
 	
-	public static void lancement(Scanner sc) {
-		Affichage.afficherIntro();
+	public static void lancement(Scanner sc, boolean intro) {
+		if(intro) Affichage.afficherIntro();
 		Agglomeration agg = MenuChargementAgglomeration.choixTypeChargement(sc) ;
 		MenuChargementAgglomeration.menuResolutionProbleme(agg, sc);
 	}

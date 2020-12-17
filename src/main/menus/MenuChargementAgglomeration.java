@@ -22,7 +22,12 @@ public class MenuChargementAgglomeration {
 		case 2 :
 			//Charge l'agglomàration depuis un fichier grâce à la fonction LectureDepuisFichier de la classe LectureEcriture
 			System.out.print("Rentrez le chemin (absolu) vers le fichier CA nécessaire à la création de l'agglomération : ");
-			agg = LectureEcriture.lectureDepuisFichier(EntreeClavier.getCheminValideCA(sc)) ;
+			String chemin = EntreeClavier.getCheminValideCA(sc) ;
+			agg = LectureEcriture.lectureDepuisFichier(chemin) ;
+			if(agg == null) {
+				System.out.println("Retour au menu de chargement d'agglomération.") ;
+				MenuPrincipal.lancement(sc, false);
+			}
 			break ;
 		case 0 : 
 			// Fermeture du programme

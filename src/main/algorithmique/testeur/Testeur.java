@@ -298,7 +298,7 @@ public class Testeur {
 	
 	//Main de test
 	public static void main(String[] args) {
-		main.io.ChargeurProprietes.chargerProprietes(false);
+		resources.ChargeurProprietes.chargerProprietes(false);
 		
 		Agglomeration agg1 = new Agglomeration(22) ;
 		try {

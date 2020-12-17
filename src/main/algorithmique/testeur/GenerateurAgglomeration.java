@@ -2,7 +2,7 @@ package main.algorithmique.testeur;
 
 import main.entites.Agglomeration;
 import main.entites.Ville;
-import main.io.ChargeurProprietes;
+import resources.ChargeurProprietes;
 
 
 /**

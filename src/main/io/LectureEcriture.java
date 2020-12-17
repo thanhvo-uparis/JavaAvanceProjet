@@ -43,12 +43,12 @@ public class LectureEcriture {
                     ecoles.add(parserEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
                 } else if(line.toLowerCase().startsWith("route(") || line.toLowerCase().startsWith("r(") || line.toLowerCase().startsWith("routes(")) {
                     routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
-                } else throw new FichierAgglomerationSyntaxeException("Fichier corrompu. Une ligne n'a pas pu être parsée. Veuillez présenter un fichier CA valide.") ;
+                } else throw new FichierAgglomerationSyntaxeException("Fichier corrompu. Une ligne de votre fichier "+chemin+" pas pu être parsée. Veuillez présenter un fichier CA valide.") ;
             }
 
-		
-            Ville[] villess = villes.stream().map(ville -> new Ville(ville)).collect(Collectors.toList()).toArray(new Ville[villes.size()]);
-            Agglomeration agg = new Agglomeration(villess);  //Initialise l'objet Agglom�ration � partir des informations lisibles dans le fichier
+            Ville [] villesParsees = villes.stream().map(ville -> new Ville(ville)).collect(Collectors.toList()).toArray(new Ville[villes.size()]);
+            if(villesParsees.length == 0) throw new FichierAgglomerationSyntaxeException("Votre fichier "+chemin+" ne contient aucune ville.") ;
+            Agglomeration agg = new Agglomeration(villesParsees);  //Initialise l'objet Agglom�ration � partir des informations lisibles dans le fichier
             
             for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
@@ -57,6 +57,8 @@ public class LectureEcriture {
                 agg.ajouterRoute(ville[0], ville[1]);
             }
             br.close();
+            
+            System.out.println("\nL'agglomération suivante a pu être extraite de votre fichier "+chemin+" :") ;
             agg.afficheBilan();
             return agg;
             
@@ -65,7 +67,9 @@ public class LectureEcriture {
             System.err.println("Le fichier \""+(chemin.length()==0?"vide":chemin)+"\" n'exite pas");
         } catch (IOException e) {
             System.err.println("Problème de lecture avec le fichier \""+(chemin.length()==0?"vide":chemin)+"\"");
-        } catch (Exception e) {
+		} catch(FichierAgglomerationSyntaxeException e) {
+			System.err.println(e.getMessage()) ;
+		} catch (Exception e) {
             System.err.println("Une des villes n'a pas pu être atteinte lors de la lecture du fichier");
         }
         return null; // retourne null si rencontre une exception

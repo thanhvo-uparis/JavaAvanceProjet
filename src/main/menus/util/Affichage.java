@@ -10,6 +10,7 @@ public class Affichage {
 	
 	public static void afficherIntro() {
 		System.out.println("Bienvenue !\n\nCette application est là pour faciliter la gestion de votre agglomération, de ses villes et de ses écoles.") ;
+		System.out.println("Elle a été développée par Anthony Baptista, Thanh-Vo Cong et Yann Trividic.") ;
 	}
 	
 	public static void afficherMenuChoixTypeChargement() {
@@ -24,8 +25,8 @@ public class Affichage {
 	public static void afficherMenuResolution() {
 		enteteMenu() ;
 		System.out.println("\n  - Menu de résolution des écoles - \n") ;
-		System.out.println("1 - Résoudre manuellement");
-		System.out.println("2 - Résoudre automatiquement");
+		System.out.println("1 - Résoudre manuellement la position de vos écoles");
+		System.out.println("2 - Résoudre automatiquement la position de vos écoles");
 		System.out.println("3 - Sauvegarder votre agglomération dans un fichier CA") ;
 		System.out.println("0 - Terminer le programme") ;
 		System.out.print("Veuillez entrer votre choix : ");

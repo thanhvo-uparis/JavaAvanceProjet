@@ -34,7 +34,7 @@ public class MenuAlgorithmes {
 			case 4 :
 				resoudAutoAvecAgglomerationsAleatoires(sc) ;
 			case 5 :
-				MenuPrincipal.lancement(sc) ;
+				MenuPrincipal.lancement(sc, false) ;
 			default :
 				break ;
 			}

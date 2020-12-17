@@ -143,5 +143,10 @@ public class LectureEcriture {
          String nomVille = ecole.split("\\(")[1].split("\\).")[0];
          return nomVille;
 	 }
+     
+     public static void main(String[] args) {
+         Agglomeration agglomeration = LectureEcriture.lectureDepuisFichier("D:\\exp.ca");
+         LectureEcriture.ecritureVersFichier("D:\\exp2",agglomeration);
+     }
 
 }

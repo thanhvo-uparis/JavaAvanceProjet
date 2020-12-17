@@ -18,9 +18,6 @@ import main.entites.Ville;
  */
 
 
-//TODO Gérer les différentes exceptions (fichier invalide, chemin invalide, etc, voir slides données en TD)
-//TODO Faire en sorte que seuls des fichiers .CA puisse être lus, sinon on throw une exception (Il faut créer une exception en plus pour ça)
-//TODO ajouter une méthode EcritureCSV pour les RapportTest des algos ?
 
 public class LectureEcriture {
 	/**
@@ -41,7 +38,7 @@ public class LectureEcriture {
                     villes.add(parserVille(line)); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
                 if (line.startsWith("ecole("))
                     ecoles.add(parserEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
-                if (line.startsWith("routes("))
+                if (line.startsWith("route("))
                     routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
             }
 		
@@ -78,7 +75,7 @@ public class LectureEcriture {
         try (FileWriter fileWriter = new FileWriter(chemin)) {
             //écrit une liste des villes au fichier
             for (Ville v : agg.getVilles()) {
-                fileWriter.append("ville(" + v.getKey() + ").");
+                fileWriter.append("ville(" + v.getKey() + ").\r\n");
             }
 		
 		
@@ -88,7 +85,7 @@ public class LectureEcriture {
                 for (Ville v2 : v.getVoisins()) {
                 	Double hash = Math.pow(v.getKey().toCharArray()[0], 2) + Math.pow(v2.getKey().toCharArray()[0], 2); //récupére hash de route
                 	if (!hashRoutes.contains(hash)) { //si hash n'est pas encore dans la liste
-                        fileWriter.append("route(" + v.getKey() + "," + v2.getKey() + ")."); //écrit au fichier de route
+                        fileWriter.append("route(" + v.getKey() + "," + v2.getKey() + ").\r\n"); //écrit au fichier de route
                         hashRoutes.add(hash); // add hash à la liste pour vérifier dans la boucle suivante
                 }
                 //parcourt les villes et les voisins pour créer une route et add à la liste des routes
@@ -100,7 +97,7 @@ public class LectureEcriture {
             //écrit une liste des ecoles au fichier
             for (Ville v : agg.getVilles()) {
                 if (v.getHasEcole()) {
-                    fileWriter.append("ecole(" + v.getKey() + ").");
+                    fileWriter.append("ecole(" + v.getKey() + ").\r\n");
                 }
             }
             fileWriter.flush(); // clear buffer de writer

@@ -30,10 +30,10 @@ public class Agglomeration{
 	 * @see Agglomeration()
 	 * @see Agglomeration(int)
 	 */
-	public Agglomeration(Ville...villes) {
-		this.villes = new ArrayList<Ville>();		
-		for (Ville a : villes) addVille(a);
-	}
+	  public Agglomeration(Ville[] villes) {
+            this.villes = new ArrayList<Ville>();
+            for (Ville v : villes) this.villes.add(v);
+       }
 	
 	/**
 	 * Constructeur initialisant le ArrayList villes avec la taille de l'entier passe en argument tant qu'il ne depasse pas 26

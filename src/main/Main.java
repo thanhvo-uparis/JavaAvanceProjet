@@ -1,10 +1,6 @@
 package main;
 
-
-
-import main.menus.MenuInitial;
-
-
+import main.menus.MenuPrincipal;
 
 /**
  * La classe Main va permettre a l'utilisateur de modeliser son agglomeration en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
@@ -32,11 +28,12 @@ import main.menus.MenuInitial;
 //TODO une fois que tout ça est fait, penser à l'utilisateur, le prof va tester différents scénarios et on doit fournir un truc robuste
 //TODO vérifier que tout le code s'exécute bien en testant différentes toutes les erreurs possibles (fichier inexistant, mauvais input au clavier...)
 
+//TODO Mettre à jour le readme (expliquer très brièvement le rôle des packages, peut-être mettre un lien vers la JavaDoc ? Expliquer brièvement les algos)
 
 public class Main {
 	public static void main(String[] args) {
 		main.io.ChargeurProprietes.chargerProprietes(false); 
-		MenuInitial.lancement();
+		MenuPrincipal.lancement();
 	}
 
 }	

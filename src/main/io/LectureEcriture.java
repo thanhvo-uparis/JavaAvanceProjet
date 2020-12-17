@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import main.entites.Agglomeration;
 import main.entites.Ville;
@@ -44,8 +45,11 @@ public class LectureEcriture {
                     routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
                 } else throw new FichierAgglomerationSyntaxeException("Fichier corrompu. Une ligne n'a pas pu être parsée. Veuillez présenter un fichier CA valide.") ;
             }
+
+		
+            Ville[] villess = villes.stream().map(ville -> new Ville(ville)).collect(Collectors.toList()).toArray(new Ville[villes.size()]);
+            Agglomeration agg = new Agglomeration(villess);  //Initialise l'objet Agglom�ration � partir des informations lisibles dans le fichier
             
-            Agglomeration agg = new Agglomeration(villes.size());  //Initialise l'objet Agglomération à partir des informations lisibles dans le fichier
             for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
             }

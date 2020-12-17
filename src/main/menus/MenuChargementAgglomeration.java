@@ -16,51 +16,54 @@ public class MenuChargementAgglomeration {
 
 	public static Agglomeration choixTypeChargement(Scanner sc) {
 
-		Affichage.afficherMenuChoixTypeChargement() ;
-		int choix = EntreeClavier.getEntierDansIntervalleExclu(0, 3, sc) ;
-		Agglomeration agg = null ;
-		int nbVilles; 
+		Affichage.afficherMenuChoixTypeChargement() ;//fait appel à la méthode afficherMenuTypeChargement de la classe Affichage 
+		int choix = EntreeClavier.getEntierDansIntervalleExclu(0, 3, sc) ;/*fait appel à la méthode getEntierDansIntervalleExclu de la classe EntreeClavier afin de s'assurer que l'utilisateur
+		choisisse un nombre entre 1 et 3 .*/
+		Agglomeration agg = null ;//affecte la valeur null à une nouvelle agglomération agg
+		int nbVilles; //décalaration de la variable entière nbVilles.
 		
 		switch (choix) {
 		case 1 :
 			System.out.print("Vous avez choisi de rentrer votre agglomération au clavier.\n"
 					+ "Attention, plus ce nombre est grand et plus il vous prendra du temps de créer cette agglomération.\n"
 					+ "Entrez le nombre de villes de votre agglomération : ") ;
-			nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 150, sc) ;
+			nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 150, sc) ;/*fait appel à la méthode getEntierDansIntervalleExclu de la classe EntreeClavier afin de s'assurer
+			que l'utilisateur choisisse un nombre entre 2 et 150 .(nombre de villes dans l'agglomération).*/
 			
 			Affichage.afficherDemandeNomsAuClavier();
-			boolean rentreNomsAuClavier = (EntreeClavier.getEntierDansIntervalleExclu(0, 1, sc) == 1)?true:false ;
+			boolean rentreNomsAuClavier = (EntreeClavier.getEntierDansIntervalleExclu(0, 1, sc) == 1)?true:false ;//Demande à l'utilisateur si il veut rentrer lui-même les noms au clavier.
 			
 			System.out.print("Entrez le nombre de villes de votre agglomération : ");
 
 			agg = (rentreNomsAuClavier)? EntreeClavier.nomsVillesAuClavier(sc, nbVilles):new Agglomeration(nbVilles) ;
 					
-			ajoutRoutesAuClavier(sc, agg) ;
+			ajoutRoutesAuClavier(sc, agg) ;//fait appel à la méthode ajoutRoutesAuClavier qui permet à l'utilisateur de rentrer les routes reliant les villes au clavier.
 			break ;
 		case 2 :
-			//Charge l'agglomàration depuis un fichier grâce à la fonction LectureDepuisFichier de la classe LectureEcriture
+			//Charge l'agglomération depuis un fichier grâce à la fonction LectureDepuisFichier de la classe LectureEcriture
 			System.out.print("Rentrez le chemin (absolu) vers le fichier CA nécessaire à la création de l'agglomération : ");
-			String chemin = EntreeClavier.getCheminValideCA(sc) ;
-			agg = LectureEcriture.lectureDepuisFichier(chemin) ;
+			String chemin = EntreeClavier.getCheminValideCA(sc) ;//fait appel à la méthode getCheminValideCA de la classe LectureEcriture qui prend comme paramètre sc et permet de vérifier que le chemin de l'utilisateur est un fichier valide.
+			agg = LectureEcriture.lectureDepuisFichier(chemin) ;//fait appel à la méthode lectureDepuisFichier de la classe LectureEcriture avec comme paramètre chemin qui mène au fichier à lire.
 			if(agg == null) {
-				System.out.println("Retour au menu de chargement d'agglomération.") ;
+				System.out.println("Retour au menu de chargement d'agglomération.") ;//Si l'agglomération est nulle, on retourne au menu principal.
 				MenuPrincipal.lancement(sc, false);
 			}
 			break ;
 		case 3 :
 			System.out.print("Entrez le nombre de villes de votre agglomération : ");
-			nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 500, sc) ;
-			agg = main.algorithmique.testeur.GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles) ;
-			agg.afficheBilan();
+			nbVilles = EntreeClavier.getEntierDansIntervalleExclu(2, 500, sc) ;/*fait appel à la méthode getEntierDansIntervalleExclu de la classe EntreeClavier afin de s'assurer
+			que l'utilisateur choisisse un nombre entre 2 et 500 .(nombre de villes dans l'agglomération).*/
+			agg = main.algorithmique.testeur.GenerateurAgglomeration.randomAggloConnexeGenerateur(nbVilles) ;//permet de créer une agglomération aléatoire.
+			agg.afficheBilan();// affiche l'agglomération.
 			break ;
 		case 0 : 
 			// Fermeture du programme
 			System.out.println("Fin du programme.");
-			sc.close();
+			sc.close();//libération du scanner.
 			System.exit(1);
 			break ;
 		default :
-			//affiche choix incorrect si le choix rentrà n'est pas 1 ou 2 
+			//affiche choix incorrect si le choix rentré n'est pas 1 ou 2 
 			System.out.println("Erreur lors du choix de votre type de chargement.") ;
 			agg = null ;
 			break ;
@@ -79,15 +82,15 @@ public class MenuChargementAgglomeration {
 
 		switch(choix) {
 		case 1 :
-			// Résoud manuellement le probleme en faisant appel à la méthode resoudManuelle qui prend comme paramètre la variable agg
+			// Résoud manuellement le probleme en faisant appel à la méthode resoudManuelle qui prend comme paramètres agg et sc
 			ajoutEtRetraitEcolesAuClavier(agg, sc);
 			break ;
 		case 2 :
-			// Résoud automatiquement le probleme en faisant appel à la méthode resoudAuto
+			// Résoud automatiquement le probleme en faisant appel à la méthode resoudAuto qui prend comme paramètres agg et sc
 			MenuAlgorithmes.menuPrincipalAlgorithmes(agg, sc);
 			break ;
 		case 3 : 
-			//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture.
+			//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture qui prend comme paramètres agg et sc. La variable sc prendra comme valeur le chemin où sauvegarder le fichier.
 			sc.nextLine();
 			System.out.println("Veuillez entrer le chemin absolu où vous souhaitez sauvegarder votre fichier : ");
 			LectureEcriture.ecritureVersFichier(sc.nextLine(), agg);

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import main.entites.Agglomeration;
 import main.entites.Ville;
+import main.exceptions.FichierAgglomerationSyntaxeException;
 
 /**
  *Cette classe manipule un fichier avec un objet Agglomération, écrit un objet dans un fichier avec un chemin spécifié,
@@ -33,15 +34,17 @@ public class LectureEcriture {
             List<String> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
             List<String[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
             List<String> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
+            
             while ((line = br.readLine()) != null) { //lit le fichier à la boucle de ligne par ligne, lire jusqu'à ce que le fichier soit terminé
-                if (line.startsWith("ville("))
+                if (line.toLowerCase().startsWith("ville(") || line.toLowerCase().startsWith("v(") || line.toLowerCase().startsWith("villes(")) {
                     villes.add(parserVille(line)); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
-                if (line.startsWith("ecole("))
+                } else if(line.toLowerCase().startsWith("ecole(") || line.toLowerCase().startsWith("e(") || line.toLowerCase().startsWith("ecoles(")) {
                     ecoles.add(parserEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
-                if (line.startsWith("route("))
+                } else if(line.toLowerCase().startsWith("route(") || line.toLowerCase().startsWith("r(") || line.toLowerCase().startsWith("routes(")) {
                     routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
+                } else throw new FichierAgglomerationSyntaxeException("Fichier corrompu. Une ligne n'a pas pu être parsée. Veuillez présenter un fichier CA valide.") ;
             }
-		
+            
             Agglomeration agg = new Agglomeration(villes.size());  //Initialise l'objet Agglomération à partir des informations lisibles dans le fichier
             for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
@@ -50,16 +53,16 @@ public class LectureEcriture {
                 agg.ajouterRoute(ville[0], ville[1]);
             }
             br.close();
+            agg.afficheBilan();
             return agg;
+            
         } catch (FileNotFoundException e) {
             //TODO traite exception si le fichier est introuvable après le chemin
-            System.err.println("N'existence pas d'un fichier avec chemin: " + chemin);
+            System.err.println("Le fichier \""+(chemin.length()==0?"vide":chemin)+"\" n'exite pas");
         } catch (IOException e) {
-            //TODO traite exception s'il y a une erreur Input Output Exception lors de la lecture du fichier
-            e.printStackTrace();
+            System.err.println("Problème de lecture avec le fichier \""+(chemin.length()==0?"vide":chemin)+"\"");
         } catch (Exception e) {
-            //TODO exception requise est à la ligne 42 - agg.getVille (v)
-            e.printStackTrace();
+            System.err.println("Une des villes n'a pas pu être atteinte lors de la lecture du fichier");
         }
         return null; // retourne null si rencontre une exception
     }

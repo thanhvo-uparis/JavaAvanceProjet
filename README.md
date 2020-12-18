@@ -7,7 +7,6 @@ Date de debut : 12/10/2020
 
 
 
-
 Pour pouvoir utiliser ce programme, veuillez suivre les instructions suivantes afin de le configurer correctement et d'en avoir une utilisation optimale.
 
 **Configuration recommandee (developpe avec) :**
@@ -17,16 +16,9 @@ Pour pouvoir utiliser ce programme, veuillez suivre les instructions suivantes a
 	Windows 10 ou Ubuntu 18.04
 
 **Protocole d'installation du programme** :
-Une fois la configuration necessaire installee, vous devez telecharger le projet. Une fois la configuration necessaire installee, vous devez telecharger le projet. Creez un nouveau Java Project du nom de votre choix (`File > New Project... > Java > Java Project`). Une fois le projet cree, vous devez importer l'archive `JAR` dans celui-ci. Clic droit sur le projet `Import... > General > Archive File` selectionnez l'archive, puis votre projet. Vous pouvez maintenant executer l'un des programmes.
+Ouvrez un terminal et rendez-vous dans le répertoire contenant l'archive JAR. Exécutez la commande `java -jar NOMDUJAR.jar`. Suivez les instructions affichées dans le terminal.
 
-Si cela ne fonctionne pas, vous pouvez alternativement cloner le depot GitHub depuis Eclipse. Pour importer le projet, faites `File > Import... Projects from Git (with smart import) > Clone URI` et remplissez le champ avec ![https://github.com/thanhvo-uparis/JavaAvanceProjet](https://github.com/thanhvo-uparis/JavaAvanceProjet). Le projet s'installe ensuite facilement.
-
-
-**Protocole d'installation du programme :**
-
-Pour comprendre la structure du programme, référez-vous au document `class-diagram.svg`.
-
-Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
+Si cela ne fonctionne pas, vous pouvez alternativement cloner le depot GitHub depuis Eclipse. Pour importer le projet, faites `File > Import... Projects from Git (with smart import) > Clone URI` et remplissez le champ avec ![https://github.com/thanhvo-uparis/JavaAvanceProjet](https://github.com/thanhvo-uparis/JavaAvanceProjet). Le projet s'installe ensuite facilement en sélectionnant la branche Partie2.
 
 
 
@@ -35,8 +27,6 @@ Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bout
 
 Maintenant que le programme est lancé il ne vous reste plus qu'à l'utiliser correctement. 
 
-
-Voici un bref descriptif du fonctionnement de la classe `Main` :
 
 ETAPE 1: menu de chargement de l'agglomération.
 
@@ -80,7 +70,7 @@ ETAPE 2 : Résolution des écoles
 
 Vous avez ici le menu qui vous permet de résoudre le problème. Vous avez 4 choix possibles.:
 
-1- Résoudre manuellement la position de vos écoles: 
+- 1) Résoudre manuellement la position de vos écoles: 
 
 Vous arrivez sur un menu qui vous permet d'ajouter une école, d'en retirer une ou alors de valider les modifications
 Si vous voulez ajouter une école, rentrez le nom de la ville dans laquelle ajouter une école, si la ville possède deja une école elle ne sera pas ajoutée.
@@ -91,34 +81,34 @@ Une fois que vous êtes satisfait vous n'avez plus qu'à choisir 3 pour finir le
 On vous renverra sur le menu précédent.
 Faites 0 si vous souhaitez quitter le programme.
 
-2- Résoudre automatiquement le problème:
+- 2) Résoudre automatiquement le problème:
 
 Vous arrivez sur le menu principal Algorithmes qui vous laisse 7 possibilités:
 
-		1- Appliquer l'algorithme de votre choix sur l'agglomération:
-			Vous avez le choix de l'algorithme de votre choix à utiliser. On vous sort le résultat et vous rement sur le le menu principal Algorithmes.
+			1- Appliquer l'algorithme de votre choix sur l'agglomération:
+				Vous avez le choix de l'algorithme de votre choix à utiliser. On vous sort le résultat et vous rement sur le le menu principal Algorithmes.
+				
+			2- Appliquer notre meilleur Algorithme sur votre agglomération: 
+				Va utiliser le meilleur Algorithme possible pour votre configuration. Vous renvoie ensuite sur le menu Principal Algorithmes.
+				
+			3- Comparer les différents résultats de nos différents algorithmes sur votre agglomération.
+				Vous affiche une comparaison de nos différents algorithmes (score + temps ). Vous renvoie ensuite sur le menu principal Algorithmes.
+				
+			4- Permet de voir des tests sur la complexité des algorithmes disponibles.
 			
-		2- Appliquer notre meilleur Algorithme sur votre agglomération: 
-			Va utiliser le meilleur Algorithme possible pour votre configuration. Vous renvoie ensuite sur le menu Principal Algorithmes.
-			
-		3- Comparer les différents résultats de nos différents algorithmes sur votre agglomération.
-			Vous affiche une comparaison de nos différents algorithmes (score + temps ). Vous renvoie ensuite sur le menu principal Algorithmes.
-			
-		4- Permet de voir des tests sur la complexité des algorithmes disponibles.
-		
-		5- Sauvegarder votre agglomération dans un fichier CA 
-			Permet de sauvegarder la configuration de l'agglomération actuelle. Vous demande le chemin vers le où sauvegarder votre fichier.
-			Vous renvoie ensuite sur le menu Principal Algorithmes.
-			
-	   6- Retourner au menu de chargement d'agglomération.
-	   
-	   0- Permet de quitter le programme.
-	   	
-3- Sauvegarder votre agglomération dans un fichier CA.
+			5- Sauvegarder votre agglomération dans un fichier CA 
+				Permet de sauvegarder la configuration de l'agglomération actuelle. Vous demande le chemin vers le où sauvegarder votre fichier.
+				Vous renvoie ensuite sur le menu Principal Algorithmes.
+				
+		    6- Retourner au menu de chargement d'agglomération.
+		   
+		    0- Permet de quitter le programme.
+		   	
+- 3) Sauvegarder votre agglomération dans un fichier CA.
 
 Permet de sauvegarder votre agglomération dans un fichier CA. Vous demande le chemin où sauvegarder le fichier.
 
-0- Quitter le programme.
+- 0) Quitter le programme.
 
 Vous permet de quitter le programme.
 			

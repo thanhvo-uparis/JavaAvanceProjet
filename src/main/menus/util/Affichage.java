@@ -22,7 +22,7 @@ public class Affichage {
 		System.out.println("\n  - Menu de chargement d'agglomérations - \n") ;
 		System.out.println("1 - Charger une agglomération vous-même");
 		System.out.println("2 - Charger une agglomération depuis un fichier");
-		System.out.println("3 - Générer une agglomération aléatoirement");
+		System.out.println("3 - Générer aléatoirement une agglomération connexe");
 		System.out.println("0 - Quitter le programme") ;
 		politesse() ;
 	}
@@ -76,7 +76,7 @@ public class Affichage {
 		System.out.println("1 - Appliquer l'algorithme de votre choix sur votre agglomération") ;
 		System.out.println("2 - Appliquer notre meilleur algorithme sur votre agglomération") ;
 		System.out.println("3 - Comparer les résultats de nos différents algorithmes sur votre agglomération") ;
-		System.out.println("4 - Tester nos algorithmes sur une série d'agglomérations aléatoires") ;
+		System.out.println("4 - Tester nos algorithmes sur une série d'agglomérations aléatoires (les résultats seront enregistrés dans un fichier CSV)") ;
 		System.out.println("5 - Sauvegarder votre agglomération dans un fichier CA") ;
 		System.out.println("6 - Retourner au menu de chargement d'agglomérations") ;
 		System.out.println("0 - Quitter le programme") ;

@@ -26,8 +26,8 @@ public class Testeur {
 	 * La valeur de leurs paramètres est spécifiée dans la méthode switchAlgo
 	 * si cette liste est modifiée, bien penser à modifier la méthode switchAlgo en conséquence et le return de la méthode getTestSurAlgo
 	 */
-	public static final String [] algos = { "algorithmeApproximationNaif(agg, k)", 
-											 "algorithmeApproximationUnPeuMoinsNaif(agg, k)", 
+	public static final String [] algos = { "algorithmeApproximationNaif(agg, "+k+")", 
+											 "algorithmeApproximationUnPeuMoinsNaif(agg, "+k+")", 
 											 "algorithmeFilePriorite(agg, false)",
 											 "algorithmeParSoustraction(agg, true, true)",
 											 "algorithmeParSoustraction(agg, false, false)",

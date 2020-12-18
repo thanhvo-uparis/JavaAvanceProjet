@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 import main.entites.Agglomeration;
 import main.entites.Ville;
 import main.exceptions.VilleException;
-import resources.ChargeurProprietes;
+import main.io.ChargeurProprietes;
 
 /**
  * Classe statique contenant plusieurs algorithmes permettant de minimiser plus ou moins bien le nombre d'écoles d'une agglomération.

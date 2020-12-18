@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import main.entites.Agglomeration;
 import main.entites.Ville;
 import main.exceptions.FichierAgglomerationSyntaxeException;
+import main.exceptions.NbVillesException;
+import main.exceptions.VilleException;
 
 /**
  *Cette classe manipule un fichier avec un objet Agglomération, écrit un objet dans un fichier avec un chemin spécifié,
@@ -32,6 +34,7 @@ public class LectureEcriture {
     public static Agglomeration lectureDepuisFichier(String chemin) {
         try (BufferedReader br = new BufferedReader(new FileReader(chemin))) { //un objet reader
             String line; //lit ligne par ligne
+            boolean toutesLesRoutesAjoutees = true, toutesLesEcolesAjoutees = true ;
             List<String> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
             List<String[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
             List<String> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
@@ -48,18 +51,27 @@ public class LectureEcriture {
             }
 
             Ville [] villesParsees = villes.stream().map(ville -> new Ville(ville)).collect(Collectors.toList()).toArray(new Ville[villes.size()]);
-            if(villesParsees.length == 0) throw new FichierAgglomerationSyntaxeException("Votre fichier "+chemin+" ne contient aucune ville.") ;
+            if(villesParsees.length == 0) throw new FichierAgglomerationSyntaxeException("Nous n'avons pu lire aucune ville de votre fichier "+chemin) ;
+            if(villesParsees.length == 1) throw new NbVillesException("Nous n'avons pu lire qu'une  seule ville de votre fichier "+chemin+".\nUne agglomération comporte au moins deux villes.") ;
             Agglomeration agg = new Agglomeration(villesParsees);  //Initialise l'objet Agglom�ration � partir des informations lisibles dans le fichier
             
             for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
-                if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
+                try {
+                	if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
+	            } catch(VilleException e) {
+	            	toutesLesRoutesAjoutees = false ;
+	            }
             }
             for (String[] ville : routes) {  //parcourt les routes à ajouter
-                agg.ajouterRoute(ville[0], ville[1]);
+                if(ville.length != 2) {
+                	toutesLesRoutesAjoutees = false ;
+                } else agg.ajouterRoute(ville[0], ville[1]);
             }
             br.close();
             
-            System.out.println("\nL'agglomération suivante a pu être extraite de votre fichier "+chemin+" :") ;
+            if(!toutesLesEcolesAjoutees) System.err.println("Une ou plusieurs écoles n'ont pas pu être correctement ajoutées à l'agglomération car votre fichier est corrompu.") ;
+            if(!toutesLesRoutesAjoutees) System.err.println("Une ou plusieurs routes n'ont pas pu être correctement ajoutées à l'agglomération car votre fichier est corrompu.") ;
+            System.out.println("\nL'agglomération suivante a "+((!toutesLesEcolesAjoutees || !toutesLesRoutesAjoutees)?"pourtant ":"")+"pu être extraite de votre fichier "+chemin+" :") ;
             agg.afficheBilan();
             return agg;
             
@@ -68,11 +80,12 @@ public class LectureEcriture {
             System.err.println("Le fichier \""+(chemin.length()==0?"vide":chemin)+"\" n'exite pas");
         } catch (IOException e) {
             System.err.println("Problème de lecture avec le fichier \""+(chemin.length()==0?"vide":chemin)+"\"");
-		} catch(FichierAgglomerationSyntaxeException e) {
-			System.err.println(e.getMessage()) ;
-		} catch (Exception e) {
-            System.err.println("Une des villes n'a pas pu être atteinte lors de la lecture du fichier");
-        }
+		} catch(Exception e) {
+			System.err.println(e) ; //FIXME 
+		}
+        //catch (Exception e) {
+            //System.err.println("Une des villes n'a pas pu être lue correctement lors de la lecture du fichier "+chemin+".s");
+        //}
         return null; // retourne null si rencontre une exception
     }
 
@@ -84,16 +97,12 @@ public class LectureEcriture {
      * @param agg    L'objet est écrit dans le fichier
      */
     public static void ecritureVersFichier(String chemin, Agglomeration agg) {
-    	String [] decoupe = chemin.split("\\.") ;
-    	if(!decoupe[decoupe.length-1].toLowerCase().equals("ca")) chemin += ".ca" ;
-    	
         try (FileWriter fileWriter = new FileWriter(chemin)) {
             //écrit une liste des villes au fichier
             for (Ville v : agg.getVilles()) {
                 fileWriter.append("ville(" + v.getKey() + ").\r\n");
             }
             
-		
             //écrit une liste des routes au fichier
             Set<Double> hashRoutes = new HashSet<>(); ////crée une liste hash ( identifiant unique ) de route, vérifie si les routes sont identiques ou non lors de l'examen sur les voisins
             for (Ville v : agg.getVilles()) {

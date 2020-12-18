@@ -9,12 +9,14 @@ import main.entites.Agglomeration;
 
 public class EntreeClavier {
 	
-	public static int getEntierDansIntervalleExclu(int min, int max, Scanner sc) {
+	public static int nbEssaisMax = 10 ; 
+	
+	public static int getEntierDansIntervalleInclu(int min, int max, Scanner sc) {
 		int valeur = min-1 ;
 		int compteur = 0 ;
 		//System.out.println("min = "+min+" max = "+max) ;
 		do {
-			if(compteur != 0) System.out.print("Votre nombre doit être compris entre "+min+" et "+max+". Réessayez : ") ;
+			if(compteur != 0) System.err.print("Votre nombre doit être compris entre "+min+" et "+max+". Réessayez : ") ;
 			try {
 				valeur = sc.nextInt() ;
 			} catch(InputMismatchException e) {
@@ -23,13 +25,12 @@ public class EntreeClavier {
 				valeur = max+1 ;
 			}
 			compteur ++ ;
-			if(compteur == 10) {
-				System.err.print("Nombre d'essais maximum autorisés dépassé. Sortie du programme");
-				sc.close();
-				System.exit(-1);
+			if(compteur == nbEssaisMax) {
+				System.err.println("Nombre d'essais maximum autorisés dépassé. Sortie du programme");
+				FonctionnalitesCommunes.finProgramme(sc);
 			}
 		} while(valeur < min || valeur > max) ;
-		System.out.print("\n");
+		System.out.print("Votre choix : "+valeur+"\n");
 		return valeur ;
 	}
 
@@ -52,13 +53,51 @@ public class EntreeClavier {
 		    	}
 	    	}
 			compteur ++ ;
-			if(compteur == 10) {
-				System.err.print("Nombre d'essais maximum autorisés dépassé. Sortie du programme");
-				sc.close();
-				System.exit(-1);
+			if(compteur == nbEssaisMax) {
+				System.err.println("Nombre d'essais maximum autorisés dépassé. Sortie du programme");
+				FonctionnalitesCommunes.finProgramme(sc);
 			}
     	} while(chemin == "") ;
    	 return chemin ;
+    }
+    
+    public static boolean dossierExiste(String chemin) {
+    	File f = new File(chemin) ;
+    	if(f.exists() && f.isDirectory()) return true ;
+    	return false ;
+    }
+    
+    public static String getDossierValide(Scanner sc) {
+    	sc.nextLine() ;
+    	String chemin ;
+    	int compteur = 0 ;
+    	do {
+    		if (compteur != 0) System.err.print("Dossier invalide. Réessayez : ") ;
+    		chemin = sc.nextLine() ;
+    		compteur ++ ;
+			if(compteur == nbEssaisMax) {
+				System.err.println("Nombre d'essais maximum autorisés dépassé. Sortie du programme");
+				FonctionnalitesCommunes.finProgramme(sc);
+			}
+    	} while(!dossierExiste(chemin)) ;
+    	if(chemin.endsWith("/")) chemin = chemin.substring(0,chemin.length()-1) ;
+    	return chemin ;
+    }
+    
+    public static String getNomFichierEcritureValide(Scanner sc) {
+    	String dossier = getDossierValide(sc) ;
+    	System.out.print("Veuillez entrer le nom de votre fichier : ") ;
+    	return dossier+"/"+sc.nextLine().replace(" ", ""); //prend en compte les espaces, mais ne fait pas grand chose d'autre... à améliorer
+    }
+    
+    public static String ajouterExtension(String nomFichier, String extension) {
+    	String [] decoupe = nomFichier.split("\\.") ;
+    	if(!decoupe[decoupe.length-1].toLowerCase().equals(extension)) nomFichier += "."+extension.toLowerCase() ;
+    	return nomFichier ;
+    }
+    
+    public static String getNomFichierEcritureValideAvecExtension(Scanner sc, String extension) {
+    	return ajouterExtension(getNomFichierEcritureValide(sc), extension) ;
     }
     
 	public static Agglomeration nomsVillesAuClavier(Scanner sc, int nbVilles){

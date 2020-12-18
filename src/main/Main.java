@@ -24,7 +24,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in) ; 
-		main.io.ChargeurProprietes.chargerProprietes(false); //FIXME apparemment, si cette ligne apparaît avant l'initialisation du scanner, le scanner est cassé
+		main.io.ChargeurProprietes.chargerProprietes(false);
 		EntreeApp.lancement(sc);
 		sc.close();
 	}

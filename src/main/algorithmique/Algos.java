@@ -17,8 +17,6 @@ import main.io.ChargeurProprietes;
  * @version 1.1
  */
 
-//TODO vérifier qu'on ne peut pas créer d'Agglomération de taille inférieure à 2
-//TODO Changer le franglais
 public class Algos {
 
 	/**

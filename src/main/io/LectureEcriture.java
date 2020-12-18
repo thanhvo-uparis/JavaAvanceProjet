@@ -90,17 +90,13 @@ public class LectureEcriture {
             return agg;
             
         } catch (FileNotFoundException e) {
-            //TODO traite exception si le fichier est introuvable après le chemin
             System.err.println("Le fichier \""+(chemin.length()==0?"vide":chemin)+"\" n'exite pas");
         } catch (IOException e) {
             System.err.println("Problème de lecture avec le fichier \""+(chemin.length()==0?"vide":chemin)+"\"");
 		} catch(Exception e) {
-			System.err.println(e) ; //FIXME 
+			System.err.println(e) ; 
 			e.printStackTrace();
 		}
-        //catch (Exception e) {
-            //System.err.println("Une des villes n'a pas pu être lue correctement lors de la lecture du fichier "+chemin+".s");
-        //}
         return null; // retourne null si rencontre une exception
     }
 
@@ -141,11 +137,9 @@ public class LectureEcriture {
             }
             fileWriter.flush(); // clear buffer de writer
         } catch (FileNotFoundException e) {
-            //TODO traite une exception si le fichier est introuvable après le chemin
-            System.err.println("N'existence pas d'un fichier avec chemin: " + chemin);
+            System.err.println("Le fichier " + chemin+" n'existe pas.");
         } catch (IOException e) {
-            //TODO traite exception s'il y a une erreur Input Output Exception lors de la lecture du fichier
-            e.printStackTrace();
+            System.err.println("Problème avec l'ouverture du fichier " + chemin);
         }
         System.out.println("Votre fichier "+chemin+" a bien été généré.") ;
     }

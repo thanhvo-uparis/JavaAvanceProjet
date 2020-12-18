@@ -20,7 +20,7 @@ public class ChargeurProprietes {
 	 * @param propriete String associé au nom de la propriété
 	 * @return la valeur booleenne associée à la propriété
 	 */
-	public static Boolean getPropriete(String propriete) { //TODO verifier le fonctionnement de cette méthode
+	public static Boolean getPropriete(String propriete) {
 		Boolean prop ;
 		try {
 			prop = Boolean.getBoolean(propriete) ;

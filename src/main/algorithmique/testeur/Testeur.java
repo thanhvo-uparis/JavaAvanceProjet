@@ -186,8 +186,8 @@ public class Testeur {
 	 * @see algos
 	 */
 	public static ArrayList<Rapport> compareAlgorithmes(Agglomeration agg) {
-		
-		System.out.println("\t **** Comparatif des résultats obtenus par nos algorithmes **** \n") ;
+		System.out.println("\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n") ;
+		System.out.println("\n\n\n\t **** Comparatif des résultats obtenus par nos algorithmes **** \n") ;
 		ArrayList<Rapport> tests = getTestComplexiteTousAlgos(agg) ;
 		
 		String nomAlgoMeilleurTemps = "";
@@ -237,7 +237,8 @@ public class Testeur {
 	 * @return Rapport de l'exécution de l'algorithme choisi
 	 */
 	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) { //FIXME je ne donne pas toujours le bon résultat
-		System.out.println("\t **** Choix automatique de l'algorithme et résolution **** \n") ;
+		System.out.println("\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n") ;
+		System.out.println("\n\n\n\t **** Choix automatique de l'algorithme et résolution **** \n") ;
 		System.out.print(" --> ") ;
 		if(agg.getVilles().size() < 20) {
 			Rapport [] coupleRapport = new Rapport[2] ;
@@ -294,7 +295,7 @@ public class Testeur {
 	 * @throws InputMismatchException dans le cas où l'algorithme spécifié n'existerait pas dans algos.
 	 */
 	public static void affichageBilanAlgo(Agglomeration agg, int algo) throws InputMismatchException {
-		System.out.println("\n --> Bilan au sortir de "+algos[algo]+" :");
+		System.out.println("\n --> Bilan au sortir de "+algos[algo]+" :\n");
 		agg.afficheBilan() ;
 		System.out.println("\n-----------------------------") ;
 	}

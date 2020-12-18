@@ -94,6 +94,7 @@ public class Agglomeration{
 	
 
 	//ajoute une ville dans l'agglomeration en verifiant que celle-ci n'est pas deja dans l'agglomeration
+	@SuppressWarnings("unused")
 	private void addVille(Ville a){
 		try {
 			if(getVille(a.getKey()) == null) villes.add(a);
@@ -158,7 +159,7 @@ public class Agglomeration{
 	 */
 	public void ajouterEcole(String c) throws Exception {
 		Ville a = getVille(c);
-		if(a.getAEcole()) throw new EconomieException("La ville a deja une ecole.");
+		if(a.getAEcole()) throw new EconomieException("La ville a déjà une école.");
 		//if(a.hasEcoleVoisins()) throw new ExceptionEconomie("La ville est deja proche d'une ecole."); //	decommenter cette ligne pour que la contrainte d'Economie
 		a.setHasEcole(true);																			//	soit satisfaite en chaque instant de l'execution du programme
 	}
@@ -194,9 +195,9 @@ public class Agglomeration{
 	public void retirerEcole(String c) throws Exception {
 		Ville a = getVille(c);
 		boolean accessibiliteVoisins = true;
-		if(!a.hasEcoleVoisins() && a.getAEcole()) throw new AccessibiliteException("La ville "+a.getKey()+" ne serait plus assez proche une ecole.");
+		if(!a.hasEcoleVoisins() && a.getAEcole()) throw new AccessibiliteException("La ville "+a.getKey()+" ne serait plus assez proche une école.");
 		for(Ville voisin : a.getVoisins()) if(voisin.getNbEcolesAccessibles() == 1 && !voisin.getAEcole()) accessibiliteVoisins = false;
-		if(!accessibiliteVoisins) throw new AccessibiliteException("L'ecole de la ville "+a.getKey()+" est l'unique ecole accessible pour au moins une de ses villes voisines.");
+		if(!accessibiliteVoisins) throw new AccessibiliteException("L'école de la ville "+a.getKey()+" est l'unique école accessible pour au moins une de ses villes voisines.");
 		a.setHasEcole(false);
 	}
 	
@@ -388,9 +389,9 @@ public class Agglomeration{
 	 * @param condense booléen permettant de changer le mode d'affichage
 	 */
 	public void afficheBilan(boolean condense) {
-		System.out.print("Agglomération "+(estConnexe()?"":"non ")+ "connexe de "+villes.size()+" et "+getNbEcoles());
-		System.out.println(" écoles ("+String.format("%.2f", (double) (getNbEcoles())/villes.size()*100)+" %)");
-		System.out.println("Contrainte d'accessibilité : "+(respecteAccessibilite()?"Respectée":"Non respectée")) ;
+		System.out.print("Agglomération "+(estConnexe()?"":"non ")+ "connexe de "+villes.size()+" et "+getNbEcoles()
+						+ " écoles ("+String.format("%.2f", (double) (getNbEcoles())/villes.size()*100)+" %)");
+		System.out.println("\nContrainte d'accessibilité : "+(respecteAccessibilite()?"Respectée":"Non respectée")) ;
 		if(condense) {
 			System.out.println("Représentation du graphe (Ecole [\"*\":oui, \" \":non] - Ville : Voisins) :") ;
 			for(Ville v : villes) {

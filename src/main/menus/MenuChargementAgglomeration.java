@@ -3,6 +3,7 @@ package main.menus;
 import java.util.Scanner;
 
 import main.entites.Agglomeration;
+import main.io.EntreeClavier;
 import main.io.LectureEcriture;
 import main.menus.util.*;
 
@@ -24,7 +25,7 @@ public class MenuChargementAgglomeration {
 		
 		switch (choix) {
 		case 1 :
-			creationAgglomerationAuClavier(agg, sc) ;
+			agg = creationAgglomerationAuClavier(agg, sc) ;
 			break ;
 		case 2 :
 			//Charge l'agglomération depuis un fichier grâce à la fonction LectureDepuisFichier de la classe LectureEcriture
@@ -78,6 +79,9 @@ public class MenuChargementAgglomeration {
 			//Sauvegarde le fichier en utilisant la méthode ecritureVersFichier de la classe LectureEcriture qui prend comme paramètres agg et sc. La variable sc prendra comme valeur le chemin où sauvegarder le fichier.
 			FonctionnalitesCommunes.sauvegarderAgglomerationFichier(agg, sc);
 			break;
+		case 4 : 
+			choixTypeChargement(sc) ;
+			break;	
 		case 0 : 
 			// Fermeture du programme
 			FonctionnalitesCommunes.finProgramme(sc);
@@ -90,21 +94,21 @@ public class MenuChargementAgglomeration {
 	}
 	
 	
-	public static void creationAgglomerationAuClavier(Agglomeration agg, Scanner sc) {
+	public static Agglomeration creationAgglomerationAuClavier(Agglomeration agg, Scanner sc) {
 		System.out.print("Vous avez choisi de rentrer votre agglomération au clavier.\n"
-				+ "Attention, plus ce nombre est grand et plus il vous prendra du temps de créer cette agglomération.\n"
+				+ "Attention, plus le nombre de villes est grand et plus il vous prendra du temps de créer cette agglomération.\n"
 				+ "Entrez le nombre de villes de votre agglomération : ") ;
 		int nbVilles = EntreeClavier.getEntierDansIntervalleInclu(2, 1500, sc) ;/*fait appel à la méthode getEntierDansIntervalleExclu de la classe EntreeClavier afin de s'assurer
 		que l'utilisateur choisisse un nombre entre 2 et 150 .(nombre de villes dans l'agglomération).*/
 		
 		Affichage.afficherDemandeNomsAuClavier();
 		boolean rentreNomsAuClavier = (EntreeClavier.getEntierDansIntervalleInclu(0, 1, sc) == 1)?true:false ;//Demande à l'utilisateur si il veut rentrer lui-même les noms au clavier.
-		
-		System.out.print("Entrez le nombre de villes de votre agglomération : ");
-
 		agg = (rentreNomsAuClavier)? EntreeClavier.nomsVillesAuClavier(sc, nbVilles):new Agglomeration(nbVilles) ;
-				
+		
+		
+		agg.afficheBilan();
 		ajoutRoutesAuClavier(sc, agg) ;//fait appel à la méthode ajoutRoutesAuClavier qui permet à l'utilisateur de rentrer les routes reliant les villes au clavier.
+		return agg ;
 	}
 	
 	/**
@@ -114,10 +118,9 @@ public class MenuChargementAgglomeration {
 	 */
 	public static void ajoutRoutesAuClavier(Scanner sc, Agglomeration agg){
 
-		agg.afficheBilan();
 		Affichage.afficherDemandeConnexite() ;
-		
 		boolean connexiteNecessaire = (EntreeClavier.getEntierDansIntervalleInclu(0, 1, sc) == 1)?true:false ;
+		
 		int choice = -1 ; 
 		boolean exit ;
 		
@@ -128,13 +131,13 @@ public class MenuChargementAgglomeration {
 			case 1 :
 				//Permet à l'utilisateur d'ajouter une route entre 2 villes en lui demandant de relier deux villes via leurs clés. Affiche ensuite la liste des routes de l'agglomération.
 				try {
+					sc.nextLine() ;
 					System.out.print("\nEntrez la clé de la première ville à relier : ");
 					String villeA = sc.nextLine() ; //retourne une ville
 					System.out.print("Entrez la clé de la seconde ville à relier : ");
 					String villeB = sc.nextLine() ; //retourne une ville
-					System.out.println(villeA+" "+villeB) ;
 					agg.ajouterRoute(villeA, villeB) ;
-					System.out.println("Liste des routes de l'agglomération :\n") ;
+					System.out.println("\nListe des routes de l'agglomération :") ;
 					agg.afficheRoutes();
 				} catch(Exception e) {
 					System.err.println(e.getMessage());
@@ -170,12 +173,12 @@ public class MenuChargementAgglomeration {
 	 */
 	private static void ajoutEtRetraitEcolesAuClavier(Agglomeration agg, Scanner sc) {
 		int choix = 0;
-		
+
 		while (choix != 3){ 
 			Affichage.afficherMenuAjoutRetraitEcoles() ;
 			choix = EntreeClavier.getEntierDansIntervalleInclu(0, 3, sc) ;
 			sc.nextLine() ;
-			
+
 			switch(choix) {
 			case 1 :
 				//Permet d'ajouter une école . Il n'est posssible d'en ajouter une que si il n'y a pas déjà une école dans la ville en question.
@@ -183,11 +186,10 @@ public class MenuChargementAgglomeration {
 				try {
 					agg.ajouterEcole(sc.next());
 				} catch(Exception e) {
-					System.out.println("test") ;
-					System.err.println(e);
-					System.out.println("test") ;
+					System.err.println(e.getMessage());
 				}
-				agg.afficheVilleAEcole(); // FIXME
+				System.out.println("\nVos écoles :") ;
+				agg.afficheVilleAEcole();
 				break ;
 
 			case 2:
@@ -196,8 +198,9 @@ public class MenuChargementAgglomeration {
 				try {
 					agg.retirerEcole(sc.next());
 				} catch (Exception e) {
-					System.err.println(e);
+					System.err.println(e.getMessage());
 				}
+				System.out.println("\nVos écoles :") ;
 				agg.afficheVilleAEcole();
 				break ;
 

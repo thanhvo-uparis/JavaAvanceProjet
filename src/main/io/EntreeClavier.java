@@ -1,4 +1,4 @@
-package main.menus.util;
+package main.io;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import main.entites.Agglomeration;
+import main.menus.util.FonctionnalitesCommunes;
 
 public class EntreeClavier {
 	
@@ -43,7 +44,7 @@ public class EntreeClavier {
     		//System.out.println(chemin) ;
 	    	if(!new File(chemin).exists()) {
 	    		chemin = "" ;
-	    		System.err.print("Le chemin que vous avez rentré n'existe pas. Recommencez : ") ;
+	    		System.err.print("Le fichier que vous avez rentré n'existe pas. Recommencez : ") ;
 	    	} else {
 		    	String [] decoupe = chemin.split("\\.") ;
 		    	//System.out.println(decoupe[decoupe.length-1]) ;
@@ -104,14 +105,15 @@ public class EntreeClavier {
 		sc.nextLine();
 		System.out.print("\n");
 		String nom ;
-		boolean contient ;
+		boolean exit ;
 		ArrayList<String> noms = new ArrayList<String>() ;
 		for(int i = 0 ; i < nbVilles ; i++) {
 			do {
 				System.out.print("Nom de la ville #"+(i+1)+" : ") ;
 				nom = sc.nextLine() ;
-				if((contient = noms.contains(nom)) == true) System.err.println("Vous avez déjà proposé la ville "+nom+". Réessayez.\n") ; 
-			} while(contient) ;
+				if(exit = (noms.contains(nom) == true)) System.err.println("Vous avez déjà proposé la ville "+nom+". Réessayez.\n") ; 
+				if(exit = (nom.length() == 0)) System.err.println("Vous avez rentré une chaîne de caractères vide. Réessayez.\n") ;
+			} while(exit) ;
 			noms.add(nom) ;
 		}
 		return new Agglomeration(noms) ;

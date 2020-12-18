@@ -3,10 +3,10 @@ package main.menus;
 import java.util.Scanner;
 
 import main.menus.util.Affichage;
-import main.menus.util.EntreeClavier;
 import main.menus.util.FonctionnalitesCommunes;
 import main.algorithmique.testeur.Testeur;
 import main.entites.Agglomeration;
+import main.io.EntreeClavier;
 
 public class MenuAlgorithmes {
 	

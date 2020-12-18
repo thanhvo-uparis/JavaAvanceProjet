@@ -14,7 +14,7 @@ public class Affichage {
 	
 	public static void afficherIntro() {
 		System.out.println("Bienvenue !\n\nCette application est là pour faciliter la gestion de votre agglomération, de ses villes et de ses écoles.") ;
-		System.out.println("Elle a été développée par Anthony Baptista, Thanh-Vo Cong et Yann Trividic.") ;
+		System.out.println("Programme développé par Anthony Baptista, Thanh-Vo Cong et Yann Trividic dans le cadre du cours IF05X030 de l'Université de Paris.") ;
 	}
 	
 	public static void afficherMenuChoixTypeChargement() {
@@ -33,6 +33,7 @@ public class Affichage {
 		System.out.println("1 - Résoudre manuellement la position de vos écoles");
 		System.out.println("2 - Résoudre automatiquement la position de vos écoles");
 		System.out.println("3 - Sauvegarder votre agglomération dans un fichier CA") ;
+		System.out.println("4 - Retourner au menu de chargement d'agglomérations") ;
 		System.out.println("0 - Quitter le programme") ;
 		politesse() ;
 	}
@@ -47,14 +48,14 @@ public class Affichage {
 	}
 	
 	public static void afficherDemandeConnexite() {
-		System.out.println("Voulez-vous que votre agglomération soit forcément connexe ?") ;
+		System.out.println("\nVoulez-vous que votre agglomération soit forcément connexe ?") ;
 		System.out.println("1 - Oui") ;
 		System.out.println("0 - Non") ;
 		politesse() ;
 	}
 	
 	public static void afficherDemandeNomsAuClavier() {
-		System.out.println("Voulez-vous que vous rentrer vous-même le nom de vos villes ?") ;
+		System.out.println("\nVoulez-vous que vous rentrer vous-même le nom de vos villes ?") ;
 		System.out.println("1 - Oui") ;
 		System.out.println("0 - Non") ;
 		politesse() ;
@@ -63,8 +64,8 @@ public class Affichage {
 	public static void afficherMenuAjoutRetraitEcoles() {
 		enteteMenu() ;
 		System.out.println("\n  - Menu d'ajout et de retrait d'écoles - \n") ;
-		System.out.println("1 - Ajouter une ecole");
-		System.out.println("2 - Retirer une ecole");
+		System.out.println("1 - Ajouter une école");
+		System.out.println("2 - Retirer une école");
 		System.out.println("3 - J'ai fini mes modifications sur les écoles");	
 		System.out.println("0 - Quitter le programme");
 		politesse() ;

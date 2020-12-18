@@ -34,7 +34,7 @@ public class LectureEcriture {
     public static Agglomeration lectureDepuisFichier(String chemin) {
         try (BufferedReader br = new BufferedReader(new FileReader(chemin))) { //un objet reader
             String line; //lit ligne par ligne
-            boolean toutesLesRoutesAjoutees = true, toutesLesEcolesAjoutees = true ;
+            boolean sansErreurRoutes = true, sansErreurEcoles = true, sansErreurVilles = true;
             List<String> villes = new ArrayList<>(); //Une liste de caractères ville pour enregistrer les villes lues à partir d'un fichier
             List<String[]> routes = new ArrayList<>(); //Une liste d'un tableau de 2 caractères route pour enregistrer les routes lues à partir d'un fichier
             List<String> ecoles = new ArrayList<>();  //Une liste de caractères ecoles pour enregistrer les ecoles lues à partir d'un fichier
@@ -42,11 +42,16 @@ public class LectureEcriture {
             while ((line = br.readLine()) != null) { //lit le fichier à la boucle de ligne par ligne, lire jusqu'à ce que le fichier soit terminé
                 if (line.toLowerCase().startsWith("ville(") || line.toLowerCase().startsWith("v(") || line.toLowerCase().startsWith("villes(")) {
                     String ville = parserVille(line) ; // on évite les doublons
-                	if(!villes.contains(ville)) villes.add(ville); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
+                	if(!villes.contains(ville) && ville.length() != 0) {
+                		villes.add(ville); //si la chaîne de lecture commence par "ville (", effectuez un filtrage des données pour ajouter à les villes
+                	} else sansErreurVilles = false ;
                 } else if(line.toLowerCase().startsWith("ecole(") || line.toLowerCase().startsWith("e(") || line.toLowerCase().startsWith("ecoles(")) {
-                    ecoles.add(parserEcole(line));  //si la chaîne de lecture commence par "ecole (", effectuez un filtrage des données pour ajouter à les ecoles
+                    String ecole = parserEcole(line) ;
+                	if(!ecoles.contains(ecole) && ecole.length() != 0) {
+                		ecoles.add(ecole) ;
+                	} else sansErreurEcoles = false ;                
                 } else if(line.toLowerCase().startsWith("route(") || line.toLowerCase().startsWith("r(") || line.toLowerCase().startsWith("routes(")) {
-                    routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
+                	routes.add(parserRoute(line));  //si la chaîne de lecture commence par "route (", effectuez un filtrage des données pour ajouter à les routes
                 } else throw new FichierAgglomerationSyntaxeException("Fichier corrompu. Une ligne de votre fichier "+chemin+" pas pu être parsée. Veuillez présenter un fichier CA valide.") ;
             }
 
@@ -55,23 +60,34 @@ public class LectureEcriture {
             if(villesParsees.length == 1) throw new NbVillesException("Nous n'avons pu lire qu'une  seule ville de votre fichier "+chemin+".\nUne agglomération comporte au moins deux villes.") ;
             Agglomeration agg = new Agglomeration(villesParsees);  //Initialise l'objet Agglom�ration � partir des informations lisibles dans le fichier
             
-            for (String v : villes) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
+            
+            for (String ecole : ecoles) {  //parcourt les villes si les caractères ne sont pas dans la liste des écoles, alors donc la ville est définie comme aucune école
                 try {
-                	if (!ecoles.contains(v)) agg.getVille(v.toString()).setHasEcole(false);
-	            } catch(VilleException e) {
-	            	toutesLesRoutesAjoutees = false ;
-	            }
+                	if (!villes.contains(ecole)) {
+                		sansErreurVilles = false ;
+                	} else agg.getVille(ecole).setHasEcole(true);
+                } catch(VilleException e) {}
             }
+            
             for (String[] ville : routes) {  //parcourt les routes à ajouter
                 if(ville.length != 2) {
-                	toutesLesRoutesAjoutees = false ;
-                } else agg.ajouterRoute(ville[0], ville[1]);
+                	sansErreurRoutes = false ;
+                } else if(villes.contains(ville[0]) && villes.contains(ville[1])) {
+                	agg.ajouterRoute(ville[0], ville[1]) ;
+                } else {
+                	sansErreurRoutes = false ;
+            		sansErreurVilles = false ;
+                }
             }
             br.close();
             
-            if(!toutesLesEcolesAjoutees) System.err.println("Une ou plusieurs écoles n'ont pas pu être correctement ajoutées à l'agglomération car votre fichier est corrompu.") ;
-            if(!toutesLesRoutesAjoutees) System.err.println("Une ou plusieurs routes n'ont pas pu être correctement ajoutées à l'agglomération car votre fichier est corrompu.") ;
-            System.out.println("\nL'agglomération suivante a "+((!toutesLesEcolesAjoutees || !toutesLesRoutesAjoutees)?"pourtant ":"")+"pu être extraite de votre fichier "+chemin+" :") ;
+            if(!sansErreurVilles) System.err.println("Certaines villes ont été déclarées plusieurs fois dans votre fichier, ou des déclarations de villes n'ont pas pu être lues car votre fichier est corrompu.") ; ;
+            if(!sansErreurRoutes) System.err.println("Il est possible que certaines routes n'aient pas pu être correctement ajoutées à l'agglomération car votre fichier est corrompu.") ;
+            if(!sansErreurEcoles) System.err.println("Il est possible que certaines écoles n'aient pas pu être correctement ajoutées à l'agglomération car votre fichier est corrompu.") ;
+            if(sansErreurVilles && sansErreurEcoles && sansErreurRoutes) System.out.println("Le fichier a été lu sans rencontrer une seule erreur.") ;
+            Thread.sleep(3); //pour permettre aux messages de s'afficher dans le bon ordre
+            System.out.println("\nL'agglomération suivante a "+((!sansErreurEcoles || !sansErreurRoutes || !sansErreurVilles)?"pourtant ":"")
+            					+"pu être extraite de votre fichier "+chemin+" :") ;
             agg.afficheBilan();
             return agg;
             
@@ -82,6 +98,7 @@ public class LectureEcriture {
             System.err.println("Problème de lecture avec le fichier \""+(chemin.length()==0?"vide":chemin)+"\"");
 		} catch(Exception e) {
 			System.err.println(e) ; //FIXME 
+			e.printStackTrace();
 		}
         //catch (Exception e) {
             //System.err.println("Une des villes n'a pas pu être lue correctement lors de la lecture du fichier "+chemin+".s");
@@ -142,8 +159,11 @@ public class LectureEcriture {
      * @return nomVille key dans la chaîne ville
      */
      public static String parserVille(String ville) {
-          String nomVille = ville.split("\\(")[1].split("\\).")[0];
-          return nomVille;
+    	 String nomVille = "" ;
+    	 try { 
+             nomVille = ville.split("\\(")[1].split("\\).")[0];
+    	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ville) ;}
+         return nomVille;
 	 }
 	
     /**
@@ -153,8 +173,11 @@ public class LectureEcriture {
      * @return route
      */
        public static String[] parserRoute(String route) {
-            String[] donnees = route.split("\\(")[1].split("\\).")[0].split(",");
-            return donnees;  
+    	   String[] donnees = {} ;
+           try {
+        	   donnees = route.split("\\(")[1].split("\\).")[0].split(",");
+      	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+route) ;}
+           return donnees;  
         }
 
 	
@@ -165,16 +188,19 @@ public class LectureEcriture {
      * @return nomVille
      */
      public static String parserEcole(String ecole) {
-         String nomVille = ecole.split("\\(")[1].split("\\).")[0];
+    	 String nomVille = "" ;
+    	 try { 
+             nomVille = ecole.split("\\(")[1].split("\\).")[0];
+      	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ecole) ;}
          return nomVille;
 	 }
     
-     
+     /*
      public static void main(String[] args) {
          Agglomeration agglomeration = LectureEcriture.lectureDepuisFichier("./src/test/exemple.ca");
          agglomeration.afficheBilan() ;
          LectureEcriture.ecritureVersFichier("./src/resources/out.ca",agglomeration);
-     }
+     }*/
 
 
 }

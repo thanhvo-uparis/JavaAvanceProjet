@@ -1,6 +1,6 @@
 # JavaAvanceProjet : Construction d'ecoles
 
-Version : 1.0 
+Version : 2.0 
 Auteurs : Baptista Anthony, thanh-vo, Trividic Yann 
 Dépôt GitHub du projet : ![https://github.com/thanhvo-uparis/JavaAvanceProjet](https://github.com/thanhvo-uparis/JavaAvanceProjet)
 Date de debut : 12/10/2020
@@ -27,52 +27,109 @@ Si cela ne fonctionne pas, vous pouvez alternativement cloner le depot GitHub de
 Pour comprendre la structure du programme, référez-vous au document `class-diagram.svg`.
 
 Le projet etant charge dans Eclipse, il ne reste plus qu'a le lancer via le bouton `Run`.
-Vous aurez ici le choix entre deux fonctions programme : `Test` ou `Main`.
 
-* __La classe__  `Test` permet de tester les differents cas de figure pouvant se presenter a l'execution du programme. Elle permet de passer en argument `nbVilles` (le nombre de villes constituant l'Agglomeration a tester) et `nbOperations` (le nombre d'opérations ajout ou retraits d'école qui sera effectué).
-Le programme relie aleatoirement des Ville jusqu'a ce que l'agglomeration soit connexe.
-Le programme execute ensuite `nbOperations` operations sur ces villes (ajout d'ecole oou retrait d'ecole).
-Toutes les operations sont affichees pour permettre de comprendre l'execution du programme pas a pas.
-Si vous voulez executer la classe `Test`, il faut parametrer les deux arguments : clic droit sur `Test.java` puis `Run As... > Run Configurations...`. Un menu s'ouvre : aller dans l'onglet `Arguments` et rentrez dans le champ `Program arguments` deux entiers naturels : le premier est `nbVilles` et le second `nbOperations`. Ils doivent être séparés par une espace.
-
-* __Pour la classe__  `Main`, cliquez sur `Run As... > Java Application` puis selectionnez ensuite `Main`.
 
 
 **Execution du programme**:
 
 
-Maintenant que le programme est lance, il ne vous reste plus qu'a l'utiliser correctement. 
+Maintenant que le programme est lancé il ne vous reste plus qu'à l'utiliser correctement. 
 
 
 Voici un bref descriptif du fonctionnement de la classe `Main` :
 
-Dans un premier temps rentrez le nombres de villes dans l'agglomeration (attention, ce nombre doit etre compris entre 1 et 26).
-Une fois le nombre de villes rentrees, le programme vous donnera la possibilite de relier les villes via des routes.
+ETAPE 1: menu de chargement de l'agglomération.
 
-Vous avez un menu permettant soit d'ajouter une route soit de terminer l'ajout de routes soit de quitter le programme.
-Vous devrez donc saisir une premiere ville (elle doit etre dans l'agglomeration) puis une deuxieme ville (elle doit aussi etre valide).
+Dans un premier temps, on vous présente une petite introduction et un menu qui vous demande de :
 
-Ces deux routes seront alors reliees entre elles.
-Pour pouvoir valider que l'ajout de routes est termine, toutes les villes doivent etre reliees entre elles.
+1- Charger une agglomération vous-même.
 
-Maintenant que toutes les routes ont ete ajoutees, vous arrivez sur un menu qui vous permet d'ajouter ou retirer une ecole ou de terminer.
-Si vous voulez ajouter une ecole, rentrez le nom de la ville dans laquelle ajouter une ecole, si la ville possede deja une ecole elle ne sera pas ajoutee.
-Si vous voulez retirer une ecole, rentrez le nom de l'ecole dans laquelle retirer une ecole, si la ville ne possede pas d'ecole, elle ne sera pas retiree. Si le retrait de cette ecole ne respecte pas la contrainte d'accessibilite, alors elle ne sera pas retiree non plus.
-A la fin de chaque action, les villes possedant des ecoles seront affichees.
+2- Charger une agglomération depuis un fichier
 
+3- Générer une agglomération aléatoirement
 
+0- Quitter le programme
 
+1- Charger une agglomération vous-même :
 
-Une fois que vous etes satisfait vous n'avez plus qu'a terminer le programme.
+Tout d'abord, on vous demande le nombre de villes dans l'agglomération(2 villes minimum)
+Ensuite, on laisse la possibilité si vous le souhaiter, de nommer vos villes.
+Une fois les villes nommées, un récapitulatif de l'agglomération vous est proposé.
+On vous demande maintenant si vous souhaitez une agglomération connexe.
+Vous avez maintenant un menu qui vous permet d'ajouter des routes.
+Vous devez choisir 2 villes à relier, si l'une d'elle n'existe pas vous aurez une erreur.
+En choisissant 2 dans ce menu, vous confirmerez avoir rentré vos routes.Si vous souhaitez une agglomération connexe et qu'elle ne l'est pas, vous aurez une erreur.
 
+Une fois fait, vous arriverez sur le menu de résolution des écoles (voir ETAPE 2)
 
+2- Charger une agglomération depuis un fichier
+
+On vous demande de rentrer le chemin vers un fichier CA pour créer l'agglomération.
+Le fichier doit respecter l'écriture suivante:
+Ajout d'une ville: ville(A).
+Ajout d'une route: route(A,B).,
+Une fois fait vous avez un récapitulatif de l'agglomération.
+Vous arrivez ensuite sur le menu de résolution des écoles (voir ETAPE 2)
+
+3- Générer une agglomération aléatoirement.
+
+On vous demande combien de villes vous souhaitez générer( ne mettez pas un trop grand nombre si vous souhaitez la résoudre manuellement; entre 2 et 500).
+Une fois choisi, un récapitulatif de l'agglomération vous est fait.
+on vous présente ensuite le menu de résolution des écoles( voir ETAPE 2).
+
+ETAPE 2 : Résolution des écoles
+
+Vous avez ici le menu qui vous permet de résoudre le problème. Vous avez 4 choix possibles.:
+
+1- Résoudre manuellement la position de vos écoles: 
+
+Vous arrivez sur un menu qui vous permet d'ajouter une école, d'en retirer une ou alors de valider les modifications
+Si vous voulez ajouter une école, rentrez le nom de la ville dans laquelle ajouter une école, si la ville possède deja une école elle ne sera pas ajoutée.
+Si vous voulez retirer une école, rentrez le nom de l'ecole dans laquelle retirer une école, si la ville ne possède pas d'école, elle ne sera pas retirée. Si le retrait de cette école ne respecte pas la contrainte d'accessibilité, alors elle ne sera pas retiree non plus.
+A la fin de chaque action, les villes possédant des écoles seront affichées.
+
+Une fois que vous êtes satisfait vous n'avez plus qu'à choisir 3 pour finir les modifications.
+On vous renverra sur le menu précédent.
+Faites 0 si vous souhaitez quitter le programme.
+
+2- Résoudre automatiquement le problème:
+
+Vous arrivez sur le menu principal Algorithmes qui vous laisse 7 possibilités:
+
+		1- Appliquer l'algorithme de votre choix sur l'agglomération:
+			Vous avez le choix de l'algorithme de votre choix à utiliser. On vous sort le résultat et vous rement sur le le menu principal Algorithmes.
+			
+		2- Appliquer notre meilleur Algorithme sur votre agglomération: 
+			Va utiliser le meilleur Algorithme possible pour votre configuration. Vous renvoie ensuite sur le menu Principal Algorithmes.
+			
+		3- Comparer les différents résultats de nos différents algorithmes sur votre agglomération.
+			Vous affiche une comparaison de nos différents algorithmes (score + temps ). Vous renvoie ensuite sur le menu principal Algorithmes.
+			
+		4- Permet de voir des tests sur la complexité des algorithmes disponibles.
+		
+		5- Sauvegarder votre agglomération dans un fichier CA 
+			Permet de sauvegarder la configuration de l'agglomération actuelle. Vous demande le chemin vers le où sauvegarder votre fichier.
+			Vous renvoie ensuite sur le menu Principal Algorithmes.
+			
+	   6- Retourner au menu de chargement d'agglomération.
+	   
+	   0- Permet de quitter le programme.
+	   	
+3- Sauvegarder votre agglomération dans un fichier CA.
+
+Permet de sauvegarder votre agglomération dans un fichier CA. Vous demande le chemin où sauvegarder le fichier.
+
+0- Quitter le programme.
+
+Vous permet de quitter le programme.
+			
 
 
 **Quelques informations contextuelles** :
 
 
-Il s'agit d'un probleme de theorie des graphes.
-Dans le cadre d'une politique ambitieuse concernant l'education, un elu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
+Il s'agit d'un probleme de théorie des graphes.
+Dans le cadre d'une politique ambitieuse concernant l'éducation, un élu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
 
 - Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee a une ville qui possede une ecole.
 

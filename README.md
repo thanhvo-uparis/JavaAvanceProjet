@@ -42,16 +42,16 @@ ETAPE 1: menu de chargement de l'agglomération.
 
 Dans un premier temps, on vous présente une petite introduction et un menu qui vous demande de :
 
-1- Charger une agglomération vous-même.
+- 1) Charger une agglomération vous-même.
 
-2- Charger une agglomération depuis un fichier
+- 2) Charger une agglomération depuis un fichier
 
-3- Générer une agglomération aléatoirement
+- 3) Générer une agglomération aléatoirement
 
-0- Quitter le programme
+- 0) Quitter le programme
 
-1- Charger une agglomération vous-même :
 
+**1) Charger une agglomération vous-même**
 Tout d'abord, on vous demande le nombre de villes dans l'agglomération(2 villes minimum)
 Ensuite, on laisse la possibilité si vous le souhaiter, de nommer vos villes.
 Une fois les villes nommées, un récapitulatif de l'agglomération vous est proposé.
@@ -62,8 +62,7 @@ En choisissant 2 dans ce menu, vous confirmerez avoir rentré vos routes.Si vous
 
 Une fois fait, vous arriverez sur le menu de résolution des écoles (voir ETAPE 2)
 
-2- Charger une agglomération depuis un fichier
-
+**2) Charger une agglomération depuis un fichier**
 On vous demande de rentrer le chemin vers un fichier CA pour créer l'agglomération.
 Le fichier doit respecter l'écriture suivante:
 Ajout d'une ville: ville(A).
@@ -71,11 +70,11 @@ Ajout d'une route: route(A,B).,
 Une fois fait vous avez un récapitulatif de l'agglomération.
 Vous arrivez ensuite sur le menu de résolution des écoles (voir ETAPE 2)
 
-3- Générer une agglomération aléatoirement.
-
+**3) Générer une agglomération aléatoirement**
 On vous demande combien de villes vous souhaitez générer( ne mettez pas un trop grand nombre si vous souhaitez la résoudre manuellement; entre 2 et 500).
 Une fois choisi, un récapitulatif de l'agglomération vous est fait.
 on vous présente ensuite le menu de résolution des écoles( voir ETAPE 2).
+
 
 ETAPE 2 : Résolution des écoles
 

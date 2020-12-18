@@ -52,7 +52,7 @@ Dans un premier temps, on vous présente une petite introduction et un menu qui 
 
 1- Charger une agglomération vous-même :
 
-Tout d'abord, on vous demande le nombre de villes dans l'agglomération.
+Tout d'abord, on vous demande le nombre de villes dans l'agglomération(2 villes minimum)
 Ensuite, on laisse la possibilité si vous le souhaiter, de nommer vos villes.
 Une fois les villes nommées, un récapitulatif de l'agglomération vous est proposé.
 On vous demande maintenant si vous souhaitez une agglomération connexe.
@@ -65,18 +65,21 @@ Une fois fait, vous arriverez sur le menu de résolution des écoles (voir ETAPE
 2- Charger une agglomération depuis un fichier
 
 On vous demande de rentrer le chemin vers un fichier CA pour créer l'agglomération.
+Le fichier doit respecter l'écriture suivante:
+Ajout d'une ville: ville(A).
+Ajout d'une route: route(A,B).,
 Une fois fait vous avez un récapitulatif de l'agglomération.
 Vous arrivez ensuite sur le menu de résolution des écoles (voir ETAPE 2)
 
 3- Générer une agglomération aléatoirement.
 
-On vous demande combien de villes vous souhaitez générer( ne mettez pas un trop grand nombre si vous souhauitez la résoudre manuellement ).
+On vous demande combien de villes vous souhaitez générer( ne mettez pas un trop grand nombre si vous souhaitez la résoudre manuellement; entre 2 et 500).
 Une fois choisi, un récapitulatif de l'agglomération vous est fait.
 on vous présente ensuite le menu de résolution des écoles( voir ETAPE 2).
 
 ETAPE 2 : Résolution des écoles
 
-Vous avez ici le menu qui vous permetde résoudre le problème. Vous avez 4 choix possibles:
+Vous avez ici le menu qui vous permet de résoudre le problème. Vous avez 4 choix possibles.:
 
 1- Résoudre manuellement la position de vos écoles: 
 
@@ -125,8 +128,8 @@ Vous permet de quitter le programme.
 **Quelques informations contextuelles** :
 
 
-Il s'agit d'un probleme de theorie des graphes.
-Dans le cadre d'une politique ambitieuse concernant l'education, un elu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
+Il s'agit d'un probleme de théorie des graphes.
+Dans le cadre d'une politique ambitieuse concernant l'éducation, un élu souhaite construire de nouvelles ecoles, modernes, dans la communaute d'agglomeration dont il est responsable. Durant la campagne electorale, il a promis deux choses :
 
 - Accessibilite : Chaque ville doit posseder son ecole, ou etre directement reliee a une ville qui possede une ecole.
 

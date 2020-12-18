@@ -1,14 +1,23 @@
 package test.algorithmique;
 
-import org.junit.Before;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import main.algorithmique.Algos;
 import main.entites.Agglomeration;
 
 public class TestAlgos {
+
+	private static Agglomeration agg1 ;
+	private static Agglomeration agg2 ;
+	private static Agglomeration agg3 ;
 	
 	@Before
 	public void init() {
-		Agglomeration agg1 = new Agglomeration(22) ;
+		
+		agg1 = new Agglomeration(22) ;
 		try {
 			agg1.ajouterRoute("A", "B", "C", "E") ;
 			agg1.ajouterRoute("B", "D") ;
@@ -31,9 +40,9 @@ public class TestAlgos {
 			agg1.ajouterRoute("S", "U") ;
 			agg1.ajouterRoute("T", "V") ;
 			agg1.ajouterRoute("U","V") ;
-		} catch(Exception e){}
+		} catch(Exception e){ System.err.println(e) ; }
 		
-		Agglomeration agg2 = new Agglomeration(12) ;
+		agg2 = new Agglomeration(12) ;
 		try {
 			agg2.ajouterRoute("A", "C") ;
 			agg2.ajouterRoute("B", "C") ;
@@ -46,15 +55,85 @@ public class TestAlgos {
 			agg2.ajouterRoute("I", "J") ;
 			agg2.ajouterRoute("J") ;
 			agg2.ajouterRoute("K") ;
-		} catch(Exception e){}
+		} catch(Exception e){ System.err.println(e) ; }
 		
-		Agglomeration agg3 = new Agglomeration(5) ;
+		agg3 = new Agglomeration(5) ;
 		try {
 			agg3.ajouterRoute("A", "B", "C", "D") ;
 			agg3.ajouterRoute("B", "C", "E") ;
 			agg3.ajouterRoute("C", "D") ;
 			agg3.ajouterRoute("D", "E") ;
-		} catch(Exception e){}
+		} catch(Exception e){ System.err.println(e) ; }
 	}
 	
+	@Test
+	public void testScoreAlgoFilePrioAgg1() {
+		Algos.algorithmeFilePriorite(agg1, false) ;
+		assertEquals(6, agg1.getNbEcoles()) ;
+	}
+	
+	@Test
+	public void testScoreAlgoFilePrioAgg2() {
+		Algos.algorithmeFilePriorite(agg2, false) ;
+		assertEquals(5, agg2.getNbEcoles()) ;
+	}
+	
+	@Test
+	public void testScoreAlgoFilePrioAgg3() {
+		Algos.algorithmeFilePriorite(agg3, false) ;
+		assertEquals(2, agg3.getNbEcoles()) ;
+	}
+	
+	@Test
+	public void testScoreAlgoParSoustraction1() {
+		Algos.algorithmeParSoustraction(agg1, true, true) ;
+		assertEquals(6, agg1.getNbEcoles()) ;
+	}
+	
+	@Test
+	public void testScoreAlgoParSoustraction2() {
+		Algos.algorithmeParSoustraction(agg2, true, true) ;
+		assertEquals(5, agg2.getNbEcoles()) ;
+	}	
+	
+	@Test
+	public void testScoreAlgoParSoustraction3() {
+		Algos.algorithmeParSoustraction(agg3, true, true) ;
+		assertEquals(2, agg3.getNbEcoles()) ;
+	}
+	
+	/* Test à implémenter : 
+	 * 		//agg1.afficheBilan();
+		//agg.ajouterRoute("V") ;
+		//agg.ajouterRoute(V) ;
+		//System.out.println("Entrée dans le Tester : ") 
+		
+		//Scanner sc = new Scanner(System.in) ;
+		//compareAlgorithmes(agg3) ;
+		//compareAlgorithmes(agg1) ;
+		
+		//Agglomeration agg = GenerateurAgglomeration.randomAggloConnexeGenerateur(2) ;
+		//agg.afficheBilan();
+		
+		//System.out.println(getTestSurAlgo(agg1, 2, true)) ;
+		//System.out.println(Testeur.getTestAlgoSurAgglomerationAleatoire(45, 2)) ;
+		
+		//getTestAlgoSurAgglomerationAleatoire(4, 3) ;
+		
+		//System.out.println(resolutionAgglomerationAvecBascule(GenerateurAgglomeration.randomAggloConnexeGenerateur(10))) ;
+		
+		//String chemin = "./src/resources/rapports.csv" ;
+		//ArrayList<Rapport> testsAleatoiresSurAlgos = getTestsAlgosSurAgglomerationAleatoire(2, 400) ;
+
+		//ecrireRapportsDansCSV(testsAleatoiresSurAlgos, chemin) ;
+        
+
+		System.out.println("\n-----------------------------------------------\n\n\n\t\t****** Tests sur algorithmeFilePriorite avec agglomérations connues ******\n\n") ;
+		ArrayList<RapportTest> testsSurAlgoAvecAggloDefinie = getTestSurAlgo(2, agg1, agg2, agg3) ;
+		System.out.println("\n-----------------------------------------------\n\nVotre fichier CSV :\n\n"+RapportTest.enteteCSV()) ;
+		for(RapportTest t : testsSurAlgoAvecAggloDefinie) System.out.println(t.formatCSV()) ;
+
+		//System.out.println(Tester.testComplexiteTousAlgos(500).toString()) ;
+		//Tester.testComplexiteTousAlgos(25) ;
+	 */
 }

@@ -1,0 +1,16 @@
+ville(Marseille).
+ville(Lyon).
+ville(Lille).
+ville(Paris).
+ville(Bordeaux).
+route(Marseille,Lyon).
+route(Marseille,Paris).
+route(Lyon,Lille).
+route(Lyon,Bordeaux).
+route(Lille,Paris).
+route(Lille,Lyon).
+route(Paris,Bordeaux).
+route(Bordeaux,Paris).
+ecole(Lyon).
+ecole(Bordeaux).
+ecole(Lille).

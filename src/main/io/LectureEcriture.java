@@ -71,7 +71,7 @@ public class LectureEcriture {
                 if(ville.length != 2) {
                 	sansErreurRoutes = false ;
                 } else if(villes.contains(ville[0]) && villes.contains(ville[1])) {
-                	agg.ajouterRoute(ville[0], ville[1]) ;
+                	agg.ajouterRoute(ville[0].replace(")", "").replace(".", ""), ville[1].replace(")", "").replace(".", "")) ;
                 } else {
                 	sansErreurRoutes = false ;
             		sansErreurVilles = false ;
@@ -154,7 +154,7 @@ public class LectureEcriture {
     	 try { 
              nomVille = ligneVille.split("\\(")[1].split("\\).")[0];
     	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ligneVille) ;}
-         return nomVille;
+         return nomVille.replace(")", "").replace(".", ""); //enlève les points et les parenthèses dans le cas d'une mauvaise écriture du fichier
 	 }
 	
     /**
@@ -167,7 +167,7 @@ public class LectureEcriture {
            try {
         	   donnees = ligneRoute.split("\\(")[1].split("\\).")[0].split(",");
       	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ligneRoute) ;}
-           return donnees;  
+           return donnees ;  
         }
 
 	
@@ -181,6 +181,6 @@ public class LectureEcriture {
     	 try { 
              nomVille = ligneEcole.split("\\(")[1].split("\\).")[0];
       	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ligneEcole) ;}
-         return nomVille;
+         return nomVille.replace(")", "").replace(".", ""); //enlève les points et les parenthèses dans le cas d'une mauvaise écriture du fichier
 	 }
 }

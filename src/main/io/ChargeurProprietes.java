@@ -1,6 +1,5 @@
 package main.io;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
 
 public class ChargeurProprietes {
 	
-	static String fichier = "./src/resources/config/config.properties";
+	static String fichier = "resources/config/config.properties";
 	
 	/**
 	 * Retourne la valeur associée à une propriété passée en argument
@@ -36,7 +35,8 @@ public class ChargeurProprietes {
 	 * @param affichage Permet d'afficher ou non les propriétés systèmes chargées
 	 */
 	public static void chargerProprietes(boolean affichage) {
-        try (InputStream input = new FileInputStream(fichier)) {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream input = classLoader.getResourceAsStream(fichier)) {
 
             Properties prop = new Properties();
 
@@ -53,6 +53,22 @@ public class ChargeurProprietes {
 
         } catch (IOException ex) {
             System.err.println("Le fichier "+fichier+" n'a pas pu être lu correctement.") ;
+            chargerProprietesParDefaut() ;
+        } catch (NullPointerException e) {
+            System.err.println("Le fichier "+fichier+" n'a pas pu être accédé (peut-être que vous n'avez pas une machine sous UNIX ?)") ;
+            chargerProprietesParDefaut() ;
         }
+	}
+	
+	private static void chargerProprietesParDefaut() {
+
+        System.setProperty("affichageDebug", "false") ;
+        System.setProperty("affichageDebug", "false") ;
+        System.setProperty("affichageDebug", "false") ;
+
+        System.out.println("Les propriétés systèmes ont pris pour valeur par défaut : ") ;
+        System.out.println("affichageExceptions="+System.getProperty("affichageExceptions"));
+        System.out.println("affichageDebug="+System.getProperty("affichageDebug"));
+        System.out.println("affichageLogs="+System.getProperty("affichageLogs"));
 	}
 }

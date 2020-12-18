@@ -14,14 +14,12 @@ import main.exceptions.NbVillesException;
 import main.exceptions.VilleException;
 
 /**
- *Cette classe manipule un fichier avec un objet Agglomération, écrit un objet dans un fichier avec un chemin spécifié,
- *synchronise le fichier selon le chemin spécifié vers un objet Agglomération.
- *
+ * Cette classe manipule les fichiers CA utilisés pour contenir les informations relatives à un objet Agglomeration.
+ * Cette classer permet aussi bien la lecture que l'écriture des fichiers CA.
  * @author thanh-congvo
+ * @author Yann Trividic
  * @version 1.0
  */
-
-
 
 public class LectureEcriture {
 	/**
@@ -154,53 +152,41 @@ public class LectureEcriture {
 
     /**
      * Methode effectue le filtrage des données des villes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
-     *
-     * @param ligne
-     * @return nomVille key dans la chaîne ville
+     * @param ligneVille La ligner à parser
+     * @return nomVille la clé associée à la ville, une chaîne vide sinon
      */
-     public static String parserVille(String ville) {
+     public static String parserVille(String ligneVille) {
     	 String nomVille = "" ;
     	 try { 
-             nomVille = ville.split("\\(")[1].split("\\).")[0];
-    	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ville) ;}
+             nomVille = ligneVille.split("\\(")[1].split("\\).")[0];
+    	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ligneVille) ;}
          return nomVille;
 	 }
 	
     /**
      * Methode effectue le filtrage des données des routes lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
-     *
-     * @param ligne
-     * @return route
+     * @param ligneRoute La ligner à parser
+     * @return donnees Le couple de routes à relier si elles ont pu être lues, un string vide sinon
      */
-       public static String[] parserRoute(String route) {
+       public static String[] parserRoute(String ligneRoute) {
     	   String[] donnees = {} ;
            try {
-        	   donnees = route.split("\\(")[1].split("\\).")[0].split(",");
-      	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+route) ;}
+        	   donnees = ligneRoute.split("\\(")[1].split("\\).")[0].split(",");
+      	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ligneRoute) ;}
            return donnees;  
         }
 
 	
     /**
      * Method effectue le filtrage des données des ecoles lors de la lecture du fichier pour se synchroniser avec l'objet Agglomeration
-     *
-     * @param ligne 
-     * @return nomVille
+     * @param ligneEcole La ligner à parser
+     * @return nomVille la clé associée à la ville contenant une école, une chaîne vide si erreur
      */
-     public static String parserEcole(String ecole) {
+     public static String parserEcole(String ligneEcole) {
     	 String nomVille = "" ;
     	 try { 
-             nomVille = ecole.split("\\(")[1].split("\\).")[0];
-      	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ecole) ;}
+             nomVille = ligneEcole.split("\\(")[1].split("\\).")[0];
+      	 } catch(Exception e) { System.err.println("La ligne suivante n'a pas pu être lue correctement : "+ligneEcole) ;}
          return nomVille;
 	 }
-    
-     /*
-     public static void main(String[] args) {
-         Agglomeration agglomeration = LectureEcriture.lectureDepuisFichier("./src/test/exemple.ca");
-         agglomeration.afficheBilan() ;
-         LectureEcriture.ecritureVersFichier("./src/resources/out.ca",agglomeration);
-     }*/
-
-
 }

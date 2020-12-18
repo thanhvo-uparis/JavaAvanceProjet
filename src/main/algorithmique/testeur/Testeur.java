@@ -16,7 +16,6 @@ import main.entites.Agglomeration;
  * @version 1.0
  */
 
-
 public class Testeur {
 	
 	private static final Integer k = 100 ;	// paramètre des deux algorithmes naïfs
@@ -60,7 +59,7 @@ public class Testeur {
 	 * Méthode retournant une liste de Rapport contenant des informations sur l'exécution des algorithmes de la liste algos
 	 * @param agg Une agglomération quelconque.
 	 * @see algos
-	 * @return
+	 * @return tests les rapports générés par la méthode
 	 */
 	public static ArrayList<Rapport> getTestComplexiteTousAlgos(Agglomeration agg) {
 		ArrayList<Rapport> tests = new ArrayList<Rapport>(algos.length) ;
@@ -73,7 +72,7 @@ public class Testeur {
 	 * @param nbVilles le nombre de villes de l'agglomération aléatoire (minimum 2, maximum 500)
 	 * @param algo le numéro associé à l'algorithme à exécuter (voir la méthode privée switchAlgo) ou la liste algos
 	 * @see algos
-	 * @return ArrayList<Rapport> contenant le bilan des différentes exécutions d'algorithmes
+	 * @return rapports contenant le bilan des différentes exécutions d'algorithmes
 	 * @throws InputMismatchException dans le cas où les valeurs ne correspondraient pas à celles spécifiées ici.
 	 */
 	public static Rapport getTestAlgoSurAgglomerationAleatoire(int nbVilles, int algo) throws InputMismatchException {
@@ -91,7 +90,7 @@ public class Testeur {
 	 * Méthode retournant des Rapport après avoir exécutés les différents algorithmes de la liste algo sur des agglomérations aléatoires
 	 * @param nbVillesMin la taille minimale des agglomérations aléatoires à tester (au minimum 2)
 	 * @param nbVillesMax la taille maximale des agglomératoires aléatoires à tester (au maximum 500)
-	 * @return Un ArrayList<Rapport> contenant les résultats des tests effectués
+	 * @return rapports contenant les résultats des tests effectués
 	 * @see algos
 	 * @throws InputMismatchException dans le cas où les valeurs ne correspondraient pas à celles spécifiées ici.
 	 */
@@ -137,7 +136,7 @@ public class Testeur {
 	 * Méthode appliquant un algorithme sur une série d'agglomérations.
 	 * @param algo int correspondant à l'identifiant d'un algorithme dans la liste algos
 	 * @param aggs varargs d'agglomérations quelconque
-	 * @return ArrayList<Rapport> contenant les rapports des tests effectués
+	 * @return rapports contenant les rapports des tests effectués
 	 * @throws InputMismatchException dans le cas où l'algorithme spécifié n'existerait pas dans algos.
 	 * @see algos
 	 */
@@ -182,7 +181,7 @@ public class Testeur {
 	/**
 	 * Méthode affichant et comparant les résultats obtenus par les différents algorithmes de la liste algos
 	 * @param agg Une agglomération quelconque
-	 * @return ArrayList<Rapport> contenant les rapports des tests effectués
+	 * @return rapports contenant les rapports des tests effectués
 	 * @see algos
 	 */
 	public static ArrayList<Rapport> compareAlgorithmes(Agglomeration agg) {
@@ -230,13 +229,10 @@ public class Testeur {
 	 * Il est cependant à noter que algorithmeParSoustraction avec sa file de priorité ne donnera pas à chaque fois le résultat optimal.
 	 * Cet algorithme favorise la vitesse de calcul. La méthode compareAlgorithmes vous donnera le meilleur résultat de nos algorithmes à coup sûr.
 	 * @param agg Agglomération quelconque
-	 * @see algorithmeParSoustraction(Agglomeration, boolean, boolean)
-	 * @see algorithmeFilePriorite(Agglomeration, boolean)
-	 * @see Le fichier ./src/resources/rapports.ods pour comprendre les choix expliqués dans la description
 	 * @see compareAlgorithmes(Agglomeration)
 	 * @return Rapport de l'exécution de l'algorithme choisi
 	 */
-	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) { //FIXME je ne donne pas toujours le bon résultat
+	public static Rapport resolutionAgglomerationAvecBascule(Agglomeration agg) {
 		System.out.println("\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n") ;
 		System.out.println("\n\n\n\t **** Choix automatique de l'algorithme et résolution **** \n") ;
 		System.out.print(" --> ") ;
@@ -271,7 +267,7 @@ public class Testeur {
 	
 	/**
 	 * Méthode écrivant dans un fichier CSV les résultats passés en arguments
-	 * @param rapports ArrayList<Rapport> quelconque
+	 * @param rapports une liste de rapports quelconque
 	 * @param chemin Chemin valide
 	 */
 	public static void ecrireRapportsDansCSV(ArrayList<Rapport> rapports, String chemin) {

@@ -8,6 +8,10 @@ import java.util.Scanner;
 import main.entites.Agglomeration;
 import main.menus.util.FonctionnalitesCommunes;
 
+/**
+ * Classe utilitaire statique permettant la gestion des entrées faites au clavier par l'utilisateur
+ * @author Yann Trividic
+ */
 public class EntreeClavier {
 	
 	public static int nbEssaisMax = 10 ; 

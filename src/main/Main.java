@@ -2,7 +2,7 @@ package main;
 
 import java.util.Scanner;
 
-import main.menus.MenuPrincipal;
+import main.menus.EntreeApp;
 
 /**
  * La classe Main va permettre a l'utilisateur de modeliser son agglomeration en manipulant une instance d'un objet Agglomeration. A l'aide d'un menu, l'utilisateur va pouvoir :
@@ -17,17 +17,6 @@ import main.menus.MenuPrincipal;
  * @version 1.0
  */
 
-//TODO 	faire un Main concis et faire une classe UtilMain.java avec tout le nécessaire, mettre le moins de code possible
-//		il existe des architectures java pour lesquelles le main tient en une seule ligne (voir 
-//TODO reprendre les nommages, supprimer le franglais, utiliser des noms parlant
-//TODO compléter la Javadoc
-//TODO revoir l'architecture globale du programme et l'emboîtement des packages, faire en sorte que le JAR soit exécutable
-//TODO donner à l'utilisateur la possibilité de nommer les villes (utiliser pour ça le constructeur Agglomeration(Ville...villes)
-//TODO rendre le code robuste à une agglomération de plus de 26 villes (viser 100 villes)
-
-//TODO une fois que tout ça est fait, penser à l'utilisateur, le prof va tester différents scénarios et on doit fournir un truc robuste
-//TODO vérifier que tout le code s'exécute bien en testant différentes toutes les erreurs possibles (fichier inexistant, mauvais input au clavier...)
-
 //TODO Mettre à jour le readme (expliquer très brièvement le rôle des packages, peut-être mettre un lien vers la JavaDoc ? Expliquer brièvement les algos)
 //TODO Vérifier que toutes les exceptions sont bien gérées
 
@@ -36,7 +25,7 @@ public class Main {
 		
 		Scanner sc = new Scanner(System.in) ; 
 		main.io.ChargeurProprietes.chargerProprietes(false); //FIXME apparemment, si cette ligne apparaît avant l'initialisation du scanner, le scanner est cassé
-		MenuPrincipal.lancement(sc, true);
+		EntreeApp.lancement(sc);
 		sc.close();
 	}
 }	

@@ -7,15 +7,18 @@ import main.io.EntreeClavier;
 import main.io.LectureEcriture;
 import main.menus.util.*;
 
+/**
+ * Menu de gestion du chargement des agglomérations
+ * @author Anthony Baptista
+ * @author Yann Trividic
+ */
 public class MenuChargementAgglomeration {
 	
 	/**
-	 * Méthode qui permet à l'utilisateur de choisir le type de chargement de l'agglomération(manuelle/depuis un fichier)
-	 * 
+	 * Méthode qui permet à l'utilisateur de choisir le type de chargement de l'agglomération (au clavier, depuis un fichier ou générée par le programme)
 	 * @param sc entrée clavier qui permet de prendre le choix de l'utilisateur
-	 * @return l'agglomération agg 
 	 */
-	public static Agglomeration choixTypeChargement(Scanner sc) {
+	public static void choixTypeChargement(Scanner sc) {
 
 		Affichage.afficherMenuChoixTypeChargement() ;//fait appel à la méthode afficherMenuTypeChargement de la classe Affichage 
 		int choix = EntreeClavier.getEntierDansIntervalleInclu(0, 3, sc) ;/*fait appel à la méthode getEntierDansIntervalleExclu de la classe EntreeClavier afin de s'assurer que l'utilisateur
@@ -34,7 +37,7 @@ public class MenuChargementAgglomeration {
 			agg = LectureEcriture.lectureDepuisFichier(chemin) ;//fait appel à la méthode lectureDepuisFichier de la classe LectureEcriture avec comme paramètre chemin qui mène au fichier à lire.
 			if(agg == null) {
 				System.out.println("Retour au menu de chargement d'agglomération.") ;//Si l'agglomération est nulle, on retourne au menu principal.
-				MenuPrincipal.lancement(sc, false);
+				MenuChargementAgglomeration.choixTypeChargement(sc);
 			}
 			break ;
 		case 3 :
@@ -53,7 +56,7 @@ public class MenuChargementAgglomeration {
 			agg = null ;
 			break ;
 		}
-		return agg ;
+		menuResolutionProbleme(agg, sc) ;
 	}
 	
 	/**
@@ -112,9 +115,10 @@ public class MenuChargementAgglomeration {
 	}
 	
 	/**
-	 * Méthode qui permet d'ajouter une route au clavier (dans le cas d'une création manuelle de l'agglomération
-	 * @param sc qui permet de prendre les entrées clavier de l'utilisateur (notamment les villes à relier par une route
-	 * @return l'agglomération crée agg
+	 * Méthode qui permet d'ajouter une route au clavier à une agglomération passée en argument
+	 * L'agglomération retourner pourra être connexe ou non
+	 * @param sc Scanner permet de prendre les entrées clavier de l'utilisateur (notamment les villes à relier par une route
+	 * @param agg Agglomeration dans laquelle on va ajouter des routes
 	 */
 	public static void ajoutRoutesAuClavier(Scanner sc, Agglomeration agg){
 

@@ -8,6 +8,11 @@ import main.algorithmique.testeur.Testeur;
 import main.entites.Agglomeration;
 import main.io.EntreeClavier;
 
+/**
+ * Menu de gestion des algorithmes
+ * @author Anthony Baptista
+ * @author Yann Trividic
+ */
 public class MenuAlgorithmes {
 	
 	//TODO il ne serait pas très long d'implémenter la possibilité de générer un CSV bilan de tous les algos
@@ -42,7 +47,7 @@ public class MenuAlgorithmes {
 			FonctionnalitesCommunes.sauvegarderAgglomerationFichier(agg, sc);
 			break;
 		case 6 :
-			MenuPrincipal.lancement(sc, false) ;//fait appel à la méthode lancement de la classe MenuPrincipal avec comme arguments sc et false.
+			MenuChargementAgglomeration.choixTypeChargement(sc) ;
 		default :
 			System.out.println("Choix incorrect.");
 			break ;

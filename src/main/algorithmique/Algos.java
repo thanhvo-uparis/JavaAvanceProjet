@@ -91,7 +91,6 @@ public class Algos {
 	 * @param agg						l'agglomération dont on cherche à réduire le nombre d'écoles. Le graphe qui la représente peut-être non-connexe et orienté.
 	 * @param garderEcolesConstruites	booléen permettant de préciser si on souhaite garder ou non les écoles déjà présentes dans l'agglomération
 	 * @see algorithmeParSoustraction(Agglomeration, boolean, boolean)
-	 * @see le fichier ./src/resources/rapports.ods contenant des statistiques sur les algorithmes
 	 * @return							l'agglomération donnée en argument avec un nombre d'école minimisé
 	 */
 	
@@ -154,9 +153,8 @@ public class Algos {
 	 * @param utiliseFilePriorite Booléen permettant de choisir si l'utilisateur veut utiliser une file de priorité ou non pour déterminer l'ordre dans lequel
 	 * seront remplies avec des écoles les villes voisines de villes de degré 1. Permet d'améliorer significativement la complexité calcul et de la limiter dans les pire cas. 
 	 * Le score de l'algorithme peut varier selon la valeur de ce paramètre. Il sera en moyenne meilleur si utiliseFilePriorite est à true
-	 * @see le fichier ./src/resources/rapports.ods contenant des statistiques sur les algorithmes
 	 * @return Une agglomération avec une configuration d'écoles proche de la configuration optimale
-	 * @see algorithmeFilePriorite(
+	 * @see algorithmeFilePriorite(Agglomeration, boolean)
 	 */
 	public static Agglomeration algorithmeParSoustraction(Agglomeration agg, boolean estDynamique, boolean utiliseFilePriorite) {
 		return algorithmeParSoustraction(agg, estDynamique, null, null, true, utiliseFilePriorite) ;

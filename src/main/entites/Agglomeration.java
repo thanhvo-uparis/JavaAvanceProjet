@@ -37,7 +37,7 @@ public class Agglomeration{
 
 	  /**
 	   * Constructeur initialisant ses villes grace aux villes passees en arguments
-	   * @param villes	varargs de villes qui seront stockees dans l'attribut villes de l'objet
+	   * @param noms une liste de noms, celles-ci ne doit pas contenir de chaîne de caractères vide ou de doublons.
 	   * @see Agglomeration()
 	   * @see Agglomeration(int)
 	   */
@@ -89,7 +89,7 @@ public class Agglomeration{
 	 */
 	public Ville getVille(Ville a) throws Exception {
 		for (Ville v : villes) if (v.getKey() == a.getKey()) return v;
-		throw new VilleException("La ville "+a.getKey()+" n'existe pas dans l'agglomeration");
+		throw new VilleException("La ville "+a.getKey()+" n'existe pas dans l'agglomération");
 	}
 	
 
@@ -99,7 +99,7 @@ public class Agglomeration{
 		try {
 			if(getVille(a.getKey()) == null) villes.add(a);
 		} catch(Exception e) {
-			System.out.println("La ville "+a.getKey()+" est deja dans l'agglomeration.");
+			System.out.println("La ville "+a.getKey()+" est déjà dans l'agglomération.");
 		}
 	}
 
@@ -121,7 +121,7 @@ public class Agglomeration{
 	public void ajouterRoute(Ville a, Ville b) throws Exception {
 		if(a.equals(b)) throw new VilleException("Les deux villes sont identiques"); // equals ne marche pas ?
 		if(getVille(a) == null || getVille(b) == null) throw new VilleException("L'une des villes n'existe pas");
-		if(a.getVoisins().contains(b)) throw new UniciteException("Les deux villes sont deja reliees");
+		if(a.getVoisins().contains(b)) throw new UniciteException("Les deux villes sont déjà reliées");
 		a.getVoisins().add(b);
 		b.getVoisins().add(a);
 	}
@@ -311,7 +311,7 @@ public class Agglomeration{
 	
 	/**
 	 * Methode permettant d'afficher la liste des villes avec un certain nombre de villes par lignes
-	 * @param tailleLigne
+	 * @param tailleLigne la longueur de la ligne (en nombre de strings)
 	 */
 	public void afficheVilles(int tailleLigne) {
 		int compteur = 0 ;
@@ -350,7 +350,7 @@ public class Agglomeration{
 	/**
 	 * Methode permettant d'afficher toutes les routes de l'agglomeration. Il n'y a pas de doublons. 
 	 * Par exemple, si [a, b] apparait, alors [b, a] n'apparaitra pas.
-	 * @return	un string compose d'autant de lignes qu'il y a de routes.
+	 * @param enListe permet d'utiliser un autre mode d'affichage (en liste)
 	 */
 	public void afficheRoutes(boolean enListe) {
 		for(Ville ville : villes) {

@@ -2,6 +2,10 @@ package main.menus.util;
 
 import main.algorithmique.testeur.Testeur;
 
+/**
+ * Classe utilitaire permettant l'affichage des différents menus
+ * @author Yann Trividic
+ */
 public class Affichage {
 
 	private static void enteteMenu() {
